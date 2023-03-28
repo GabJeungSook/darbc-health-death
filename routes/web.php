@@ -15,17 +15,48 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+
+Route::get('/masterlist', function () {
+    return view('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('masterlist');
+Route::get('/inquiry', function () {
+    return view('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('inquiry');
+
+Route::get('/calendar', function () {
+    return view('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('calendar');
+
+Route::get('/report', function () {
+    return view('dashboard');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('report');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name(
+        'profile.edit'
+    );
+    Route::patch('/profile', [ProfileController::class, 'update'])->name(
+        'profile.update'
+    );
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
+        'profile.destroy'
+    );
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
