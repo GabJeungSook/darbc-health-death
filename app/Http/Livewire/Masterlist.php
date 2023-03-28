@@ -26,6 +26,18 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->label('MEMBER ID')
                 ->searchable()
                 ->sortable(),
+            TextColumn::make('memberName')
+                ->formatStateUsing(function ($record) {
+                    return $record->members->name;
+                })
+                ->label('MEMBER NAME')
+                ->searchable(query: function (Builder $query, string $search): Builder {
+        return $query->whereHas('members', function($k) use ($search){
+            $k->where('name', 'like', "%{$search}%");
+        });
+            
+            
+    }),
             TextColumn::make('batch')
                 ->label('BATCH')
                 ->searchable()
@@ -109,11 +121,9 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->sortable(),
             TextColumn::make('_batch')
                 ->label('_BATCH')
-                ->searchable()
                 ->sortable(),
             TextColumn::make('with_hollogrophic_will')
                 ->label('HOLOGRAPHIC WILL')
-                ->searchable()
                 ->sortable(),
             TextColumn::make('vehicle_cash')
                 ->label('VEHICLE CASH')
