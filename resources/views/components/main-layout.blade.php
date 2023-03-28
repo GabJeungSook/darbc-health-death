@@ -140,7 +140,7 @@
           <img class="h-8 w-auto" src="{{ asset('images/darbc.png') }}" alt="Your Company">
           <div>
             <h1 class="font-black text-sidebar font-montserrat  text-xl">DARBC</h1>
-            <h1 class="font-semibold leading-3 text-indigo-600 text-sm">Land Management</h1>
+            <h1 class="font-semibold leading-3 text-indigo-600 text-sm">Health | Death</h1>
           </div>
         </div>
         <div class="flex font-sans flex-1 flex-col overflow-y-auto">
@@ -183,16 +183,7 @@
               </svg>
               Inquiry
             </a>
-            {{-- <a href="{{ route('upload') }}"
-              class="{{ request()->routeIs('upload') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
-              <svg class="mr-3 h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                fill="none">
-                <path
-                  d="M2 6.75C2 5.23122 3.23122 4 4.75 4H19.25C20.7688 4 22 5.23122 22 6.75V17.25C22 18.7688 20.7688 20 19.25 20H12.4749L10.4253 17.9504C10.7931 17.2126 11 16.3805 11 15.5H15.25C15.6642 15.5 16 15.1642 16 14.75C16 14.3358 15.6642 14 15.25 14H10.793C10.6408 13.4619 10.4088 12.9574 10.1105 12.5H17.25C17.6642 12.5 18 12.1642 18 11.75C18 11.3358 17.6642 11 17.25 11H8.66308C7.76841 10.37 6.67741 10 5.5 10C4.17037 10 2.95094 10.4718 2 11.2572V6.75ZM6.75 8C6.33579 8 6 8.33579 6 8.75C6 9.16421 6.33579 9.5 6.75 9.5H13.25C13.6642 9.5 14 9.16421 14 8.75C14 8.33579 13.6642 8 13.25 8H6.75ZM5.5 20C6.47187 20 7.37179 19.6919 8.1074 19.1681L10.7197 21.7803C11.0126 22.0732 11.4874 22.0732 11.7803 21.7803C12.0732 21.4874 12.0732 21.0126 11.7803 20.7197L9.16806 18.1074C9.69191 17.3718 10 16.4719 10 15.5C10 13.0147 7.98528 11 5.5 11C3.01472 11 1 13.0147 1 15.5C1 17.9853 3.01472 20 5.5 20ZM5.5 18.5C3.84315 18.5 2.5 17.1569 2.5 15.5C2.5 13.8431 3.84315 12.5 5.5 12.5C7.15685 12.5 8.5 13.8431 8.5 15.5C8.5 17.1569 7.15685 18.5 5.5 18.5Z"
-                  fill="currentColor"></path>
-              </svg>
-              Upload
-            </a> --}}
+
             <a href="{{ route('calendar') }}"
               class="{{ request()->routeIs('calendar') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
               <svg class="mr-3 h-6 w-6 flex-shrink-0" viewBox="0 0 48 48" fill="none"
@@ -227,6 +218,16 @@
               </svg>
               Reports
             </a>
+            <a href="{{ route('upload') }}"
+              class="{{ request()->routeIs('upload') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
+              <svg class="mr-3 h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                stroke="none" viewBox="0 0 24 24">
+                <path
+                  d="m20 8-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM9 19H7v-9h2v9zm4 0h-2v-6h2v6zm4 0h-2v-3h2v3zM14 9h-1V4l5 5h-4z">
+                </path>
+              </svg>
+              Upload
+            </a>
 
 
 
@@ -246,21 +247,7 @@
         </button>
         <div class="flex flex-1 justify-between px-4">
           <div class="flex flex-1">
-            {{-- <form class="flex w-full lg:ml-0" action="#" method="GET">
-              <label for="search-field" class="sr-only">Search</label>
-              <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-                <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                  <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                      d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-                      clip-rule="evenodd" />
-                  </svg>
-                </div>
-                <input id="search-field"
-                  class="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 focus:border-transparent focus:outline-none focus:ring-0 focus:placeholder:text-gray-400 sm:text-sm"
-                  placeholder="Search" type="search" name="search">
-              </div>
-            </form> --}}
+
           </div>
           <div class="ml-4 flex items-center lg:ml-6" x-data="{ dropdown: false }">
 
