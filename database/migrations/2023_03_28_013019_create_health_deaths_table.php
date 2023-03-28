@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('health_deaths', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('member_id');
+            $table->string('member_id');
             $table->string('batch')->nullable();
             $table->string('date')->nullable();
             $table->string('patients_name')->nullable();
