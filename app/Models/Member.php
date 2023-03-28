@@ -10,8 +10,8 @@ class Member extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function members()
+    public function health_death()
     {
-        return $this->hasOne(Member::class, 'member_id');
+        return $this->hasOne(HealthDeath::class, 'member_id');
     }
 }
