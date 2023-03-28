@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
     ->name('dashboard');
 
 Route::get('/masterlist', function () {
-    return view('dashboard');
+    return view('masterlist');
 })
     ->middleware(['auth', 'verified'])
     ->name('masterlist');
