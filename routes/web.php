@@ -30,7 +30,7 @@ Route::get('/masterlist', function () {
     ->middleware(['auth', 'verified'])
     ->name('masterlist');
 Route::get('/inquiry', function () {
-    return view('dashboard');
+    return view('inquiry');
 })
     ->middleware(['auth', 'verified'])
     ->name('inquiry');
