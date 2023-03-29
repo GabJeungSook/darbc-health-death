@@ -140,7 +140,7 @@
           <img class="h-8 w-auto" src="{{ asset('images/darbc.png') }}" alt="Your Company">
           <div>
             <h1 class="font-black text-sidebar font-montserrat  text-xl">DARBC</h1>
-            <h1 class="font-semibold leading-3 text-indigo-600 text-sm">Health | Death</h1>
+            <h1 class="font-semibold leading-3 text-indigo-600 text-sm">Health-Death</h1>
           </div>
         </div>
         <div class="flex font-sans flex-1 flex-col overflow-y-auto">
