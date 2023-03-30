@@ -1,7 +1,9 @@
-import './bootstrap';
+import './bootstrap'
+import autoAnimate from '@formkit/auto-animate'
+import Alpine from 'alpinejs'
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+window.Alpine = Alpine
+Alpine.directive('animate', (el) => {
+  autoAnimate(el)
+})
+Alpine.start()

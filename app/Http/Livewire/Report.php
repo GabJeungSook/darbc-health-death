@@ -4,14 +4,18 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\HealthDeath;
+use App\Models\Member;
 
 class Report extends Component
 {
     public $report_get;
+    public $date_from;
+    public $date_to;
     public function render()
     {
         return view('livewire.report', [
-            'healths' => HealthDeath::get(),
+            'healths' => HealthDeath::all(),
+            'members' => Member::all(),
         ]);
     }
 

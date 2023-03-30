@@ -2,7 +2,7 @@
 <x-main-layout>
   <livewire:report />
 
-  <script>
+  {{-- <script>
     function printOut(data) {
       var mywindow = window.open('', '', 'height=1000,width=1000');
       mywindow.document.write('<html><head>');
@@ -21,5 +21,5 @@
 
 
     }
-  </script>
+  </script> --}}
 </x-main-layout>
