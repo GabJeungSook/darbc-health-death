@@ -158,8 +158,8 @@
               Dashboard
             </a>
 
-            <a href="{{ route('masterlist') }}"
-              class="{{ request()->routeIs('masterlist') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
+            <a href="{{ route('health') }}"
+              class="{{ request()->routeIs('health') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
               <svg class="mr-3 h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg"
                 xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 36 36"
                 preserveAspectRatio="xMidYMid meet" fill="currentColor">
@@ -171,7 +171,22 @@
                   class="clr-i-solid--badged clr-i-solid-path-2--badged clr-i-badge"></circle>
                 <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
               </svg>
-              Masterlist
+              Health
+            </a>
+            <a href="{{ route('death') }}"
+              class="{{ request()->routeIs('death') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
+              <svg class="mr-3 h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 36 36"
+                preserveAspectRatio="xMidYMid meet" fill="currentColor">
+                <title>list-solid-badged</title>
+                <path
+                  d="M23.66,10H15V8h7.78a7.42,7.42,0,0,1,.89-6H8A2,2,0,0,0,6,4V32a2,2,0,0,0,2,2H28a2,2,0,0,0,2-2V13.5A7.49,7.49,0,0,1,23.66,10ZM13,26H11V24h2Zm0-4H11V20h2Zm0-4H11V16h2Zm0-4H11V12h2Zm0-4H11V8h2ZM25,26H15V24H25Zm0-4H15V20H25Zm0-4H15V16H25Zm0-4H15V12H25Z"
+                  class="clr-i-solid--badged clr-i-solid-path-1--badged"></path>
+                <circle cx="30" cy="6" r="5"
+                  class="clr-i-solid--badged clr-i-solid-path-2--badged clr-i-badge"></circle>
+                <rect x="0" y="0" width="36" height="36" fill-opacity="0"></rect>
+              </svg>
+              Death
             </a>
             <a href="{{ route('inquiry') }}"
               class="{{ request()->routeIs('inquiry') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">

@@ -53,13 +53,31 @@
             <td class="border text-gray-600  px-3  py-1">{{ $item->member_id }}</td>
             <td class="border text-gray-600  px-3  py-1">{{ $item->name }}</td>
             <td class="border text-gray-600  px-3  py-1">
-             {{$item->health_death->number_of_days ?? 0}}
+              @php
+                $total = App\Models\HealthDeath::where('member_id', $item->member_id)->sum('number_of_days');
+              @endphp
+              {{ $total }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-              @dump($item->health_death)
+              @php
+                
+                $jan = $total =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereRaw('DATE_FORMAT(date_of_confinement_from, "%m") = ?', [1])
+                        ->first()->number_of_days ?? 0;
+              @endphp
+              {{ $jan }}
             </td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
+            <td class="border text-gray-600  px-3  py-1">
+              @php
+                $march = $total =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereRaw('DATE_FORMAT(created_at, "%m") = ?', [3])
+                        ->first()->number_of_days ?? 0;
+              @endphp
+              {{ $march }}
+            </td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>

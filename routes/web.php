@@ -24,11 +24,18 @@ Route::get('/dashboard', function () {
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::get('/masterlist', function () {
-    return view('masterlist');
+Route::get('/health', function () {
+    return view('health');
 })
     ->middleware(['auth', 'verified'])
-    ->name('masterlist');
+    ->name('health');
+
+Route::get('/death', function () {
+    return view('death');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('death');
+
 Route::get('/inquiry', function () {
     return view('inquiry');
 })

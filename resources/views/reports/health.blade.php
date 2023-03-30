@@ -63,7 +63,7 @@
             </td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_id }}
             </td>
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->members->name }}
+            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->members->name ?? '' }}
             </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->patients_name }}
             </td>

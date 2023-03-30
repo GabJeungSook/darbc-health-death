@@ -39,7 +39,7 @@
       @break
 
       @default
-        <h1 class="text-gray-600">Please select report to generate.</h1>
+        <h1 class="text-gray-600">Select report to generate.</h1>
       @break
     @endswitch
   </div>
