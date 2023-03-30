@@ -42,7 +42,7 @@ Route::get('/calendar', function () {
     ->name('calendar');
 
 Route::get('/report', function () {
-    return view('dashboard');
+    return view('report');
 })
     ->middleware(['auth', 'verified'])
     ->name('report');
@@ -53,6 +53,11 @@ Route::get('/upload', function () {
     ->middleware(['auth', 'verified'])
     ->name('upload');
 
+Route::get('/report', function () {
+    return view('report');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('report');
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
         'profile.edit'
