@@ -14,6 +14,11 @@ class Report extends Component
     public $date_to;
     public function render()
     {
+        // dd(
+        //     \App\Models\HealthDeath::where('member_id', 21)
+        //         ->whereMonth('date_of_confinement_to', 03)
+        //         ->get()
+        // );
         return view('livewire.report', [
             'healths' =>
                 $this->report_get != 2 ? [] : HealthDeath::paginate(100),

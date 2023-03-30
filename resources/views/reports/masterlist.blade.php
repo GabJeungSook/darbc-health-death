@@ -56,29 +56,40 @@
               @php
                 $total = App\Models\HealthDeath::where('member_id', $item->member_id)->sum('number_of_days');
               @endphp
-              {{ $total }}
+              {{ $total == 0 ? '-' : $total }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
               @php
                 
-                $jan = $total =
+                $jan =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
-                        ->whereRaw('DATE_FORMAT(date_of_confinement_from, "%m") = ?', [1])
-                        ->first()->number_of_days ?? 0;
+                        ->whereMonth('date_of_confinement_to', '=', 1)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
               @endphp
-              {{ $jan }}
+              {{ $jan == 0 ? '-' : $jan }}
             </td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">
               @php
-                $march = $total =
+                $march =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
-                        ->whereRaw('DATE_FORMAT(created_at, "%m") = ?', [3])
-                        ->first()->number_of_days ?? 0;
+                        ->whereMonth('date_of_confinement_to', '=', 3)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
               @endphp
-              {{ $march }}
+              {{ $march == 0 ? '-' : $march }}
             </td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
+            <td class="border text-gray-600  px-3  py-1">
+              @php
+                $april =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 4)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $april == 0 ? '-' : $april }}
+            </td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>

@@ -43,7 +43,7 @@ class Upload extends Component
             HealthDeath::create([
                 'member_id' => $csvRecord[0],
                 'batch' => $csvRecord[1],
-                'date' => $csvRecord[2] ?? null,
+                'date' => \Carbon\Carbon::parse($csvRecord[2])->format('Y-m-d'),
                 'patients_name' => $csvRecord[3],
                 'contact_number' => $csvRecord[4],
                 'age' => $csvRecord[5],
@@ -56,9 +56,13 @@ class Upload extends Component
                 'amount' => $csvRecord[12],
                 'transmittal_status' => $csvRecord[13],
                 'batches' => $csvRecord[14],
-                'transmittal_date' => $csvRecord[15] ?? null,
+                'transmittal_date' => \Carbon\Carbon::parse(
+                    $csvRecord[15]
+                )->format('Y-m-d'),
                 'fortune_paid' => $csvRecord[16],
-                'date_of_payment' => $csvRecord[17] ?? null,
+                'date_of_payment' => \Carbon\Carbon::parse(
+                    $csvRecord[17]
+                )->format('Y-m-d'),
                 'status' => $csvRecord[18],
                 'difference' => $csvRecord[19],
                 '_batches' => $csvRecord[20],
