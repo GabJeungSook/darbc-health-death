@@ -53,20 +53,10 @@
             <td class="border text-gray-600  px-3  py-1">{{ $item->member_id }}</td>
             <td class="border text-gray-600  px-3  py-1">{{ $item->name }}</td>
             <td class="border text-gray-600  px-3  py-1">
-              @php
-                $total = \App\Models\HealthDeath::where('member_id', $item->member_id)->sum('number_of_days');
-              @endphp
-              {{ $total }}
+             {{$item->health_death->number_of_days ?? 0}}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-              @php
-                // $month = \App\Models\HealthDeath::where('member_id', $item->member_id)->first()->date_of_confinement_from;
-                $total = \App\Models\HealthDeath::where('member_id', $item->member_id)
-                    ->whereMonth('date_of_confinement_from', '=', '3')
-                    ->count();
-                
-              @endphp
-              @dump($total)
+              @dump($item->health_death)
             </td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>
             <td class="border text-gray-600  px-3  py-1">SDSD</td>

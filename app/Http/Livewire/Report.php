@@ -14,8 +14,8 @@ class Report extends Component
     public function render()
     {
         return view('livewire.report', [
-            'healths' => HealthDeath::all(),
-            'members' => Member::all(),
+            'healths' => HealthDeath::get(),
+            'members' => Member::with('health_death')->get(),
         ]);
     }
 

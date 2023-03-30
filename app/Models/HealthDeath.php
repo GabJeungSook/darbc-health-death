@@ -12,6 +12,6 @@ class HealthDeath extends Model
 
     public function members()
     {
-        return $this->belongsTo(Member::class, 'member_id');
+        return $this->belongsTo(Member::class, 'member_id', 'member_id');
     }
 }
