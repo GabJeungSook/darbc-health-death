@@ -60,7 +60,7 @@
             </td>
             <td class="border text-gray-600  px-3  py-1">
               @php
-                
+
                 $jan =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 1)
@@ -69,7 +69,17 @@
               @endphp
               {{ $jan == 0 ? '-' : $jan }}
             </td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $feb =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 2)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $feb == 0 ? '-' : $feb }}
+            </td>
             <td class="border text-gray-600  px-3  py-1">
               @php
                 $march =
@@ -90,14 +100,94 @@
               @endphp
               {{ $april == 0 ? '-' : $april }}
             </td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
-            <td class="border text-gray-600  px-3  py-1">SDSD</td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $may =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 5)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $may == 0 ? '-' : $may }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $june =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 6)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $june == 0 ? '-' : $june }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $july =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 7)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $july == 0 ? '-' : $july }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $aug =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 8)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $aug == 0 ? '-' : $aug }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $sep =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 9)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $sep == 0 ? '-' : $sep }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $oct =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 10)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $oct == 0 ? '-' : $oct }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $nov =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 11)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $nov == 0 ? '-' : $nov }}
+            </td>
+            <td class="border text-gray-600  px-3  py-1">
+                @php
+
+                $dec =
+                    App\Models\HealthDeath::where('member_id', $item->member_id)
+                        ->whereMonth('date_of_confinement_to', '=', 12)
+                        ->get()
+                        ->sum('number_of_days') ?? '-';
+              @endphp
+              {{ $dec == 0 ? '-' : $dec }}
+            </td>
           </tr>
         @endforeach
       </tbody>
