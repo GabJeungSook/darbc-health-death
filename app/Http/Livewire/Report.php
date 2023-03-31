@@ -45,7 +45,6 @@ class Report extends Component
     {
         switch ($this->report_get) {
             case 1:
-                # code...
                 break;
 
             case 2:
@@ -59,6 +58,12 @@ class Report extends Component
                 return \Excel::download(
                     new \App\Exports\DeathExport(),
                     'Death-MembersAndDependent.xlsx'
+                );
+                break;
+            case 3:
+                return \Excel::download(
+                    new \App\Exports\MasterListExport(),
+                    'MasterList.xlsx'
                 );
                 break;
 
