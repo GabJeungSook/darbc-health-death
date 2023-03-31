@@ -50,7 +50,7 @@
       <tbody class="">
         @foreach ($members as $item)
           <tr>
-            <td class="border text-gray-600  px-3  py-1">{{ $item->member_id }}</td>
+            <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ $item->member_id }}</td>
             <td class="border text-gray-600  px-3  py-1">{{ $item->name }}</td>
             <td class="border text-gray-600  px-3  py-1">
               @php
@@ -60,7 +60,7 @@
             </td>
             <td class="border text-gray-600  px-3  py-1">
               @php
-
+                
                 $jan =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 1)
@@ -70,8 +70,8 @@
               {{ $jan == 0 ? '-' : $jan }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $feb =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 2)
@@ -101,8 +101,8 @@
               {{ $april == 0 ? '-' : $april }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $may =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 5)
@@ -112,8 +112,8 @@
               {{ $may == 0 ? '-' : $may }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $june =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 6)
@@ -123,8 +123,8 @@
               {{ $june == 0 ? '-' : $june }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $july =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 7)
@@ -134,8 +134,8 @@
               {{ $july == 0 ? '-' : $july }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $aug =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 8)
@@ -145,8 +145,8 @@
               {{ $aug == 0 ? '-' : $aug }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $sep =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 9)
@@ -156,8 +156,8 @@
               {{ $sep == 0 ? '-' : $sep }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $oct =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 10)
@@ -167,8 +167,8 @@
               {{ $oct == 0 ? '-' : $oct }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $nov =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 11)
@@ -178,8 +178,8 @@
               {{ $nov == 0 ? '-' : $nov }}
             </td>
             <td class="border text-gray-600  px-3  py-1">
-                @php
-
+              @php
+                
                 $dec =
                     App\Models\HealthDeath::where('member_id', $item->member_id)
                         ->whereMonth('date_of_confinement_to', '=', 12)

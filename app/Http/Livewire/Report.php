@@ -28,6 +28,11 @@ class Report extends Component
                     : Member::whereHas('health_death', function ($query) {
                         $query->whereNotNull('number_of_days');
                     })->paginate(100),
+            'accountings' => HealthDeath::when($this->date_from, function (
+                $query
+            ) {
+                $query->where('date_of_confinement_to', '=', $this->date_from);
+            })->paginate(100),
         ]);
     }
 

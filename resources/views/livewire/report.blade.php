@@ -18,16 +18,17 @@
         <x-button label="EXPORT" sm positive wire:click="exportReport({{ $report_get }})"
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
-      <div class="flex space-x-2">
-        <x-datetime-picker placeholder="Date From" wire:model.defer="date_from" />
-        <x-datetime-picker placeholder="Date To" wire:model.defer="date_to" />
-      </div>
+      @if ($report_get == 1)
+        <div class="flex space-x-2">
+          <x-datetime-picker placeholder="Select Date" without-time wire:model="date_from" />
+        </div>
+      @endif
     </div>
   @endif
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
       @case(1)
-        @include('reports.health')
+        @include('reports.accounting')
       @break
 
       @case(2)
