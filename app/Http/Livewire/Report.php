@@ -31,11 +31,12 @@ class Report extends Component
         ]);
     }
 
+
     public function exportReport($id)
     {
         switch ($this->report_get) {
             case 1:
-                # code...
+
                 break;
 
             case 2:
@@ -44,6 +45,13 @@ class Report extends Component
                     'health-MembersAndDependent.xlsx'
                 );
                 break;
+
+            case 3:
+                    return \Excel::download(
+                        new \App\Exports\MasterListExport(),
+                        'MasterList.xlsx'
+                    );
+                    break;
 
             default:
                 # code...

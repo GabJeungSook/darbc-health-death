@@ -35,8 +35,8 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
         return $query->whereHas('members', function($k) use ($search){
             $k->where('name', 'like', "%{$search}%");
         });
-            
-            
+
+
     }),
             TextColumn::make('batch')
                 ->label('BATCH')
