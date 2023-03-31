@@ -1,4 +1,4 @@
 @section('title', 'Death')
 <x-main-layout>
-  sdsd
+  <livewire:death />
 </x-main-layout>
