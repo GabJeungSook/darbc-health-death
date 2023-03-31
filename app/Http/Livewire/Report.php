@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\HealthDeath;
 use App\Models\Member;
 use Livewire\WithPagination;
+use App\Models\Death;
 class Report extends Component
 {
     use WithPagination;
@@ -33,6 +34,10 @@ class Report extends Component
             ) {
                 $query->where('date_of_confinement_to', '=', $this->date_from);
             })->paginate(100),
+            'deaths' =>
+                $this->report_get != 5
+                    ? []
+                    : Death::whereNotNull('date_of_death')->paginate(100),
         ]);
     }
 
@@ -47,6 +52,13 @@ class Report extends Component
                 return \Excel::download(
                     new \App\Exports\HealthExport(),
                     'health-MembersAndDependent.xlsx'
+                );
+                break;
+
+            case 5:
+                return \Excel::download(
+                    new \App\Exports\DeathExport(),
+                    'Death-MembersAndDependent.xlsx'
                 );
                 break;
 
