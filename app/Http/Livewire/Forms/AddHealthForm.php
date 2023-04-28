@@ -79,7 +79,13 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                     if($this->date_of_confinement_to != null)
                     {
-                        $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_to', $this->date_of_confinement_to)->first()->sum('number_of_days');
+                        if(Health::get()->count() == 0)
+                        {
+                            $confinement_days = 0;
+                        }else{
+                            $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_to', $this->date_of_confinement_to)->first()->sum('number_of_days');
+
+                        }
                     }else{
                         $confinement_days = null;
                     }
@@ -97,32 +103,39 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                          if ($this->date_of_confinement_to != null) {
                              $year = date('Y', strtotime($this->date_of_confinement_to));
 
-                             $totalDays = Health::where('member_id', $this->darbc_id)
-                                 ->where('enrollment_status', 'member')
-                                 ->whereYear('confinement_date_to', $year)
-                                 ->sum('number_of_days');
-                         }
-
-                         if(($totalDays + $days) < 30)
-                         {
-                             if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                             if(Health::get()->count() == 0)
                              {
-                                 $set('number_of_days', 1);
+                                $totalDays = 0;
                              }else{
+                                $totalDays = Health::where('member_id', $this->darbc_id)
+                                ->where('enrollment_status', 'member')
+                                ->whereYear('confinement_date_to', $year)
+                                ->sum('number_of_days');
+                             }
+                             if(($totalDays + $days) < 30)
+                             {
+                                 if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                 {
+                                     $set('number_of_days', 1);
+                                 }else{
+                                     $set('number_of_days', $days);
+                                 }
+                                 $amount = $get('number_of_days') * 1000;
+                                 $set('amount', $amount);
+                             }else{
+                                 $excessDays = ($totalDays + $days) - 30;
+                                 $remaining_days = 30 - $totalDays;
+                                 $this->dialog()->info(
+                                 $title = 'Information',
+                                 $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 30 days within this year.');
+                                 $amount = $remaining_days * 1000;
+                                 $set('amount', $amount);
                                  $set('number_of_days', $days);
                              }
-                             $amount = $get('number_of_days') * 1000;
-                             $set('amount', $amount);
-                         }else{
-                             $excessDays = ($totalDays + $days) - 30;
-                             $remaining_days = 30 - $totalDays;
-                             $this->dialog()->info(
-                             $title = 'Information',
-                             $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 30 days within this year.');
-                             $amount = $remaining_days * 1000;
-                             $set('amount', $amount);
-                             $set('number_of_days', $days);
-                         }
+
+                            }
+
+
 
                       }elseif($get('enrollment_status') == 'dependent')
                       {
@@ -135,32 +148,40 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                          if ($this->date_of_confinement_to != null) {
                              $year = date('Y', strtotime($this->date_of_confinement_to));
 
-                             $totalDays = Health::where('member_id', $this->darbc_id)
-                                 ->where('enrollment_status', 'dependent')
-                                 ->whereYear('confinement_date_to', $year)
-                                 ->sum('number_of_days');
-                         }
-
-                         if(($totalDays + $days) < 15)
-                         {
-                             if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                             if(Health::get()->count() == 0)
                              {
-                                 $set('number_of_days', 1);
+                                $totalDays = 0;
                              }else{
+                                $totalDays = Health::where('member_id', $this->darbc_id)
+                                ->where('enrollment_status', 'member')
+                                ->whereYear('confinement_date_to', $year)
+                                ->sum('number_of_days');
+                             }
+
+                             if(($totalDays + $days) < 15)
+                             {
+                                 if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                 {
+                                     $set('number_of_days', 1);
+                                 }else{
+                                     $set('number_of_days', $days);
+                                 }
+                                 $amount = $get('number_of_days') * 300;
+                                 $set('amount', $amount);
+                             }else{
+                                 $excessDays = ($totalDays + $days) - 15;
+                                 $remaining_days = 15 - $totalDays;
+                                 $this->dialog()->info(
+                                 $title = 'Information',
+                                 $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 15 days within this year.');
+                                 $amount = $remaining_days * 300;
+                                 $set('amount', $amount);
                                  $set('number_of_days', $days);
                              }
-                             $amount = $get('number_of_days') * 300;
-                             $set('amount', $amount);
-                         }else{
-                             $excessDays = ($totalDays + $days) - 15;
-                             $remaining_days = 15 - $totalDays;
-                             $this->dialog()->info(
-                             $title = 'Information',
-                             $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 15 days within this year.');
-                             $amount = $remaining_days * 300;
-                             $set('amount', $amount);
-                             $set('number_of_days', $days);
+
                          }
+
+
                       }
                 })
                 ->required(),
