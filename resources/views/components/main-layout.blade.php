@@ -233,7 +233,7 @@
                 </path>
               </svg>
               Reports
-            </a> --}}
+            </a>
             <a href="{{ route('upload') }}"
               class="{{ request()->routeIs('upload') ? 'bg-violet-800' : '' }} hover:bg-violet-800 text-white group flex items-center rounded-md px-2 py-2 text-sm font-medium">
               <svg class="mr-3 h-6 w-6 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -243,7 +243,7 @@
                 </path>
               </svg>
               Upload
-            </a>
+            </a> --}}
 
 
 
