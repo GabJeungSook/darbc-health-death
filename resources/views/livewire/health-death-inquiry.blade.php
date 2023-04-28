@@ -1,106 +1,57 @@
 <div>
   <div>
     <div class="flex justify-between">
-      {{-- <div>
-          <h1 class="font-bold font-montserrat uppercase text-lg text-gray-700">Search</h1>
-          <h1 class="text-gray-500 text-sm">
-            You can search anything you like as long as the datails existed in the table columns
-          </h1>
-        </div> --}}
     </div>
-    {{-- <div class="grid grid-cols-4 gap-2 mt-4">
+    <div class="grid grid-cols-4 gap-2 mt-4">
       <div class="border p-1 px-3 rounded">
-        <x-checkbox label="N0." wire:model="filters.number" />
+        <x-checkbox label="DARBC ID" wire:model="filters.darbc_id" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox label="LOT NO." wire:model="filters.lot_number" />
+        <x-checkbox label="MEMBER" wire:model="filters.member" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="SUREVY NO." wire:model="filters.survey_number" />
+        <x-checkbox label="HOSPITAL" wire:model="filters.hospital" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="TITLE AREA" wire:model="filters.title_area" />
+        <x-checkbox id="right-label" label="BATCH NUMBER" wire:model="filters.batch_number" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-          AWARDED-AREA" wire:model="filters.awarded_area" />
+        <x-checkbox id="right-label" label="ENROLLMENT STATUS" wire:model="filters.enrollment_status" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="PREVIOUS LAND OWNER" wire:model="filters.previous_land_owner" />
+        <x-checkbox id="right-label" label="FIRST NAME" wire:model="filters.first_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-          FIELD" wire:model="filters.field_number" />
+        <x-checkbox id="right-label" label="MIDDLE NAME" wire:model="filters.middle_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="LOCATION" wire:model="filters.location" />
+        <x-checkbox id="right-label" label="LAST NAME" wire:model="filters.last_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="MUNICIPALITY" wire:model="filters.municipality" />
+        <x-checkbox id="right-label" label="CONTACT NUMBER" wire:model="filters.contact_number" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="TITLE" wire:model="filters.title" />
+        <x-checkbox id="right-label" label="AGE" wire:model="filters.age" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="CLOA NO." wire:model="filters.cloa_number" />
+        <x-checkbox id="right-label" label="CONFINEMENT DATE FROM" wire:model="filters.confinement_date_from" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="PAGE" wire:model="filters.page" />
+        <x-checkbox id="right-label" label="CONFINEMENT DATE TO" wire:model="filters.confinement_date_to" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              ENCUMBERED" wire:model="filters.encumbered" />
-      </div>
-
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="PREVIOUS COPY OF TITLE" wire:model="filters.previous_copy_of_title" />
+        <x-checkbox id="right-label" label="NUMBER OF DAYS" wire:model="filters.number_of_days" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              TITLE STATUS" wire:model="filters.title_status" />
+        <x-checkbox id="right-label" label="AMOUNT" wire:model="filters.amount" />
       </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              TITLE COPY" wire:model="filters.title_copy" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              REMARKS" wire:model="filters.remarks" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              STATUS" wire:model="filters.status" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              AMORTIZATION" wire:model="filters.land_bank_amortization" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              AMOUNT" wire:model="filters.amount" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              DATE PAID" wire:model="filters.date_paid" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              DATE OF CERT" wire:model="filters.date_of_cert" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              NDC" wire:model="filters.ndc_direct_payment_scheme" />
-      </div>
-      <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="
-              NOTES" wire:model="filters.notes" />
-      </div>
-    </div> --}}
+    </div>
 
     <div class="mt-4 relative">
       <div class="p-3 border rounded-lg">
         <div class="flex mb-2 justify-between items-center">
           <div>
+            <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToHealth" />
             {{-- <div class="border rounded-lg flex items-center  px-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-5 w-5 fill-gray-500">
                   <path fill="none" d="M0 0h24v24H0z" />
@@ -116,29 +67,274 @@
           </div>
         </div>
         <div class="flow-root overflow-x-auto" id="print_table">
-          {{ $this->table }}
+            @php
+            $count = count(
+                array_filter($filters, function ($value) {
+                    return $value !== null;
+                }),
+            );
+          @endphp
+            <table class="min-w-full divide-y divide-gray-300">
+                <thead>
+                  @if ($count < 1)
+                    <tr class="divide-x divide-gray-200">
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                        DARBC ID
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
+                        MEMBER
+                      </th>
+                      <th
+                        class=" whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
+                        HOSPITAL
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t  py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        BATCH NUMBER
+                      </th>
+                      <th
+                        class=" whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        ENROLLMENT STATUS
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        FIRST NAME
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        MIDDLE NAME
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        LAST NAME
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        CONTACT NUMBER
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        AGE
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        CONFINEMENT DATE FROM
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        CONFINEMENT DATE TO
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        NUMBER OF DAYS
+                      </th>
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                        AMOUNT
+                      </th>
+                    </tr>
+                  @elseif($count > 0)
+                    <tr class="divide-x divide-gray-200">
 
+                      @if ($filters['darbc_id'] != false && $filters['darbc_id'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          DARBC ID
+                        </th>
+                      @endif
+                      @if ($filters['member'] != false && $filters['member'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          MEMBER
+                        </th>
+                      @endif
+                      @if ($filters['hospital'] != false && $filters['hospital'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          HOSPITAL
+                        </th>
+                      @endif
+                      @if ($filters['batch_number'] != false && $filters['batch_number'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          BATCH NUMBER
+                        </th>
+                      @endif
+                      @if ($filters['enrollment_status'] != false && $filters['enrollment_status'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          ENROLLMENT STATUS
+                        </th>
+                      @endif
+                      @if ($filters['first_name'] != false && $filters['first_name'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          FRIST NAME
+                        </th>
+                      @endif
+                      @if ($filters['middle_name'] != false && $filters['middle_name'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          MIDDLE NAME
+                        </th>
+                      @endif
+                      @if ($filters['last_name'] != false && $filters['last_name'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          LAST NAME
+                        </th>
+                      @endif
+                      @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          CONTACT NUMBER
+                        </th>
+                      @endif
+                      @if ($filters['age'] != false && $filters['age'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          AGE
+                        </th>
+                      @endif
+                      @if ($filters['confinement_date_from'] != false && $filters['confinement_date_from'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          CONFINEMENT DATE FROM
+                        </th>
+                      @endif
+                      @if ($filters['confinement_date_to'] != false && $filters['confinement_date_to'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          CONFINEMENT DATE FROM
+                        </th>
+                      @endif
+                      @if ($filters['number_of_days'] != false && $filters['number_of_days'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          NUMBER OF DAYS
+                        </th>
+                      @endif
+                      @if ($filters['amount'] != false && $filters['amount'] != null)
+                        <th
+                          class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                          AMOUNT
+                        </th>
+                      @endif
+                    </tr>
+                  @endif
+                </thead>
+                <tbody class="divide-y divide-gray-200 bg-white">
+                  @foreach ($records as $record)
+                    @if ($count < 1)
+                      <tr class="divide-x divide-gray-200">
+
+                        <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
+                          {{ $record->member_id }}</td>
+                        <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->members->name }}</td>
+                        <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->hospitals->name }}</td>
+                        <td class="p-4 text-sm text-gray-700 text-left">{{ $record->batch_number }}</td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->enrollment_status }}
+                        </td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->first_name }}
+                        </td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                          {{ $record->middle_name }}</td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->last_name }}
+                        </td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->contact_number }}</td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->age }}
+                        </td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ \Carbon\Carbon::parse($record->confinement_date_from)->format('F d, Y') }}</td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{  \Carbon\Carbon::parse($record->confinement_date_to)->format('F d, Y') }}
+                        </td>
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->number_of_days }}</td>
+
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->amount }}
+                        </td>
+                      </tr>
+                    @elseif($count > 0)
+                      <tr class="divide-x divide-gray-200">
+
+                        @if ($filters['darbc_id'] != false && $filters['darbc_id'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm font-medium text-gray-900 ">
+                            {{ $record->member_id }}</td>
+                        @endif
+
+                        @if ($filters['member'] != false && $filters['member'] != null)
+                          <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->members->name }}</td>
+                        @endif
+                        @if ($filters['hospital'] != false && $filters['hospital'] != null)
+                          <td class="p-4 text-sm text-gray-700 text-left">{{ $record->hospitals->name }}</td>
+                        @endif
+
+                        @if ($filters['batch_number'] != false && $filters['batch_number'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->batch_number }}
+                          </td>
+                        @endif
+
+                        @if ($filters['enrollment_status'] != false && $filters['enrollment_status'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->enrollment_status }}
+                          </td>
+                        @endif
+
+                        @if ($filters['first_name'] != false && $filters['first_name'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->first_name }}</td>
+                        @endif
+
+                        @if ($filters['middle_name'] != false && $filters['middle_name'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->middle_name }}
+                          </td>
+                        @endif
+
+                        @if ($filters['last_name'] != false && $filters['last_name'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->last_name }}
+                          </td>
+                        @endif
+                        @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->contact_number }}
+                          </td>
+                        @endif
+
+                        @if ($filters['age'] != false && $filters['age'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->age }}</td>
+                        @endif
+
+                        @if ($filters['confinement_date_from'] != false && $filters['confinement_date_from'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ \Carbon\Carbon::parse($record->confinement_date_from)->format('F d, Y') }}
+                          </td>
+                        @endif
+                        @if ($filters['confinement_date_to'] != false && $filters['confinement_date_to'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ \Carbon\Carbon::parse($record->confinement_date_to)->format('F d, Y') }}</td>
+                        @endif
+                        @if ($filters['number_of_days'] != false && $filters['number_of_days'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->number_of_days }}</td>
+                        @endif
+
+                        @if ($filters['amount'] != false && $filters['amount'] != null)
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            {{ $record->amount }}
+
+                          </td>
+                        @endif
+                      </tr>
+                    @endif
+                  @endforeach
+
+                  <!-- More people... -->
+                </tbody>
+        </table>
         </div>
       </div>
     </div>
   </div>
-
-
-
-  <x-modal wire:model="add_modal">
-    <x-card title="Consent Terms">
-      <p class="text-gray-600">
-        Lorem Ipsum...
-      </p>
-
-      <x-slot name="footer">
-        <div class="flex justify-end gap-x-4">
-          <x-button flat label="Cancel" x-on:click="close" />
-          <x-button primary label="I Agree" />
-        </div>
-      </x-slot>
-    </x-card>
-  </x-modal>
 
   @push('scripts')
     <script>

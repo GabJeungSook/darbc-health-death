@@ -41,6 +41,11 @@ class Report extends Component
         ]);
     }
 
+    public function redirectToHealth()
+    {
+        return redirect()->route('health');
+    }
+
     public function exportReport($id)
     {
         switch ($this->report_get) {

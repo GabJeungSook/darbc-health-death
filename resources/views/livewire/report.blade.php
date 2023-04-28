@@ -1,15 +1,20 @@
 <div x-data x-animate>
-  <div class="select flex space-x-2  items-end">
-    <x-native-select label="Report" wire:model="report_get">
-      <option selected hidden>Select Report</option>
-      <option value="1">Accounting</option>
-      <option value="2">Health - Members & Dependent</option>
-      <option value="3">Masterlist</option>
-      <option value="4">To Acctg < 10k</option>
-      <option value="5">Death - Members & Dependent</option>
-    </x-native-select>
-    <x-button.circle positive icon="refresh" spinner="report_get" />
-  </div>
+    <div class="flex justify-between">
+        <div>
+            <div>
+                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToHealth" />
+              </div>
+          </div>
+        <div class="select flex space-x-2 items-end">
+            <x-native-select label="Report" wire:model="report_get">
+              <option selected hidden>Select Report</option>
+              <option value="2">Health - Members & Dependent</option>
+              <option value="3">Masterlist</option>
+            </x-native-select>
+            <x-button.circle positive icon="refresh" spinner="report_get" />
+          </div>
+    </div>
+
   @if ($report_get)
     <div class="mt-5 flex justify-between items-end">
       <div class="mt-5 flex space-x-2 ">

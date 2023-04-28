@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,38 @@ Route::get('/death', function () {
 })
     ->middleware(['auth', 'verified'])
     ->name('death');
+
+Route::get('/log', function () {
+    return view('log');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('log');
+
+Route::get('/view-log/{record}', function ($record) {
+    $logRecord = Log::findOrFail($record);
+
+    return view('view-log', ['record' => $logRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-log');
+
+Route::get('/mortuary', function () {
+    return view('mortuary');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('mortuary');
+
+Route::get('/cash-advance', function () {
+    return view('cash-advance');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('cash-advance');
+
+Route::get('/hospital', function () {
+    return view('hospital');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('hospital');
 
 Route::get('/inquiry', function () {
     return view('inquiry');

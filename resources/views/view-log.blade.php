@@ -1,6 +1,6 @@
-@section('title', 'Health Reports')
+@section('title', 'Letter Of Guarantee')
 <x-main-layout>
-  <livewire:report />
+  <livewire:forms.view-log :record="$record"/>
 
   <script>
     function printOut(data) {

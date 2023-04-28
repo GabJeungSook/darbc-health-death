@@ -4,108 +4,113 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Filament\Tables;
-use App\Models\HealthDeath;
+use App\Models\Health;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
 
 class HealthDeathInquiry extends Component implements Tables\Contracts\HasTable
 {
     use Tables\Concerns\InteractsWithTable;
+    public $filters = [
+        'darbc_id' => null,
+        'member' => null,
+        'hospital' => null,
+        'batch_number' => null,
+        'enrollment_status' => null,
+        'first_name' => null,
+        'middle_name' => null,
+        'last_name' => null,
+        'contact_number' => null,
+        'age' => null,
+        'confinement_date_from' => null,
+        'confinement_date_to' => null,
+        'number_of_days' => null,
+        'amount' => null,
+    ];
+
+    public $search = '';
 
     protected function getTableQuery(): Builder
     {
-        return HealthDeath::query();
+        return Health::query();
     }
 
     protected function getTableColumns(): array
     {
         return [
             TextColumn::make('member_id')
-                ->label('Member ID')
+                ->label('DARBC ID')
                 ->searchable(),
-            TextColumn::make('memberName')
+            TextColumn::make('members.name')
                 ->formatStateUsing(function ($record) {
                     return $record->members->name;
                 })
                 ->label('Member Name')
                 ->searchable(),
-            TextColumn::make('batch')
-                ->label('Batch')
+            TextColumn::make('hospitals.name')
+                ->label('HOSPITAL')
                 ->searchable(),
-            TextColumn::make('date')
-                ->label('Date')
-                ->date('F d, Y')
-                ->searchable(),
-            TextColumn::make('patients_name')
-                ->label('Patient\'s Name')
-                ->searchable(),
-            TextColumn::make('contact_number')
-                ->label('Contact Number')
-                ->searchable(),
-            TextColumn::make('age')
-                ->label('Age')
+            TextColumn::make('batch_number')
+                ->label('BATCH NUMBER')
                 ->searchable(),
             TextColumn::make('enrollment_status')
-                ->label('Enrollment Status')
+                ->label('ENROLLMENT STATUS')
                 ->searchable(),
-            TextColumn::make('dhib')
-                ->label('')
+            TextColumn::make('first_name')
+                ->label('FIRST NAME')
                 ->searchable(),
-            TextColumn::make('date_of_confinement_from')
-                ->label('Date of Confinement From')
+            TextColumn::make('middle_name')
+                ->label('MIDDLE NAME')
+                ->searchable(),
+            TextColumn::make('last_name')
+                ->label('LAST NAME')
+                ->searchable(),
+            TextColumn::make('contact_number')
+                ->label('CONTACT NUMBER')
+                ->searchable(),
+            TextColumn::make('age')
+                ->label('AGE')
+                ->searchable(),
+            TextColumn::make('confinement_date_from')
+                ->label('CONFINEMENT DATE FROM')
                 ->date('F d, Y')
                 ->searchable(),
-            TextColumn::make('date_of_confinement_to')
-                ->label('Date of Confinement To')
+            TextColumn::make('confinement_date_to')
+                ->label('CONFINEMENT DATE TO')
                 ->date('F d, Y')
-                ->searchable(),
-            TextColumn::make('hospital_name')
-                ->label('Hospital')
                 ->searchable(),
             TextColumn::make('number_of_days')
-                ->label('Number Of Days')
+                ->label('NUMBER OF DAYS')
                 ->searchable(),
             TextColumn::make('amount')
-                ->label('Amount')
-                ->searchable(),
-            TextColumn::make('transmittal_status')
-                ->label('Transmittal Status')
-                ->searchable(),
-            TextColumn::make('fortune_paid')
-                ->label('Fortune Paid')
-                ->searchable(),
-            TextColumn::make('date_of_payment')
-                ->label('Date Of Payment')
-                ->searchable(),
-            TextColumn::make('status')
-                ->label('Remarks/Status')
-                ->searchable(),
-            TextColumn::make('difference')
-                ->label('Difference')
-                ->searchable(),
-            TextColumn::make('_batches')
-                ->label('Batches')
-                ->searchable(),
-            TextColumn::make('with_hollographic_will')
-                ->label('With Hollographic Will')
-                ->searchable(),
-            TextColumn::make('vehicle_cash')
-                ->label('Vehicle Cash')
-                ->searchable(),
-            TextColumn::make('vehicle')
-                ->label('Vehicle')
-                ->searchable(),
-            TextColumn::make('cannery')
-                ->label('Cannery')
-                ->searchable(),
-            TextColumn::make('polomolok')
-                ->label('Polomolok')
+                ->label('AMOUNT')
                 ->searchable(),
         ];
     }
 
+    public function redirectToHealth()
+    {
+        return redirect()->route('health');
+    }
+
     public function render()
     {
-        return view('livewire.health-death-inquiry');
+        return view('livewire.health-death-inquiry', [
+            'records' => Health::where(
+                'member_id',
+                'like',
+                '%' . $this->search . '%'
+            )
+            ->orWhere('batch_number', 'like', '%' . $this->search . '%')
+            ->orWhere('enrollment_status', 'like', '%' . $this->search . '%')
+            ->orWhere('first_name', 'like', '%' . $this->search . '%')
+            ->orWhere('middle_name', 'like', '%' . $this->search . '%')
+            ->orWhere('last_name', 'like', '%' . $this->search . '%')
+            ->orWhere('contact_number', 'like', '%' . $this->search . '%')
+            ->orWhere('age', 'like', '%' . $this->search . '%')
+            ->orWhere('number_of_days', 'like', '%' . $this->search . '%')
+            ->orWhere('amount', 'like', '%' . $this->search . '%')
+            ->get()
+        ]);
     }
 }
