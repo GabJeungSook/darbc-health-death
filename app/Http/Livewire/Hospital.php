@@ -53,7 +53,7 @@ class Hospital extends Component implements Tables\Contracts\HasTable
                 TextInput::make('name')
                     ->label('Name')
                     ->required(),
-                TextArea::make('address')
+                TextInput::make('address')
                     ->label('Address')
                     ->required(),
             ]),
