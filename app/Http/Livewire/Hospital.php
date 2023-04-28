@@ -4,13 +4,13 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Filament\Tables;
-use Filament\Forms\Components;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TextArea;
 use App\Models\Hospital as HospitalModel;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Tables\Actions\Action;
-use Filament\Forms;
 use WireUi\Traits\Actions;
 use DB;
 
@@ -50,10 +50,10 @@ class Hospital extends Component implements Tables\Contracts\HasTable
                 $record->save();
             })
             ->form([
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->label('Name')
                     ->required(),
-                Forms\Components\TextArea::make('address')
+                TextArea::make('address')
                     ->label('Address')
                     ->required(),
             ]),
