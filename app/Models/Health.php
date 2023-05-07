@@ -20,6 +20,16 @@ class Health extends Model
         return $this->belongsTo(Hospital::class, 'hospital_id');
     }
 
+    public function transmittals()
+    {
+        return $this->hasMany(Transmittal::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 
 
 }

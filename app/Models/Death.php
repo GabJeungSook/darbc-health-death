@@ -14,4 +14,9 @@ class Death extends Model
     {
         return $this->belongsTo(Member::class, 'member_id', 'member_id');
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(VehicleSchedule::class);
+    }
 }

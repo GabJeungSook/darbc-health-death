@@ -1,4 +1,4 @@
-<div>
+<div x-data x-animate>
   <div>
     <div class="flex justify-between">
     </div>
@@ -63,10 +63,10 @@
               </div> --}}
           </div>
           <div>
-            <x-button label="PRINT" class="font-bold" icon="printer" dark onclick="printDiv('print_table')" />
+            <x-button label="PRINT" class="font-bold" icon="printer" dark @click="printOut($refs.printContainer.outerHTML);" />
           </div>
         </div>
-        <div class="flow-root overflow-x-auto" id="print_table">
+        <div x-ref="printContainer" class="flow-root overflow-x-auto" id="print_table">
             @php
             $count = count(
                 array_filter($filters, function ($value) {
@@ -171,7 +171,7 @@
                       @if ($filters['first_name'] != false && $filters['first_name'] != null)
                         <th
                           class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
-                          FRIST NAME
+                          FIRST NAME
                         </th>
                       @endif
                       @if ($filters['middle_name'] != false && $filters['middle_name'] != null)

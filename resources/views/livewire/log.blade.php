@@ -5,7 +5,7 @@
     <div class="mt-4">
         {{$this->table}}
     </div>
-    <x-modal.card title="Add Letter Of Guarantee (Log)" align="center" max-width="4xl" blur wire:model.defer="addLog">
+    <x-modal.card hide-close="false" title="Add Letter Of Guarantee (Log)" align="center" max-width="4xl" blur wire:model.defer="addLog">
         <livewire:forms.add-log />
     </x-modal.card>
 </div>

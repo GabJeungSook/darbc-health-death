@@ -18,8 +18,6 @@
         mywindow.print();
         return true;
       }, 1000);
-
-
     }
   </script>
 </x-main-layout>

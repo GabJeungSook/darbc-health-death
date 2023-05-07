@@ -14,7 +14,7 @@
     {{ $this->table }}
   </div>
 
-  <x-modal.card title="Add Health Information" align="center" max-width="4xl" blur wire:model.defer="addHealth">
+  <x-modal.card hide-close="false" title="Add Health Information" align="center" max-width="4xl" blur wire:model.defer="addHealth">
     <livewire:forms.add-health-form />
-</x-modal.card>
+  </x-modal.card>
 </div>

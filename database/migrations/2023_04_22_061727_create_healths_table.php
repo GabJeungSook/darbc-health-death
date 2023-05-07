@@ -26,6 +26,7 @@ return new class extends Migration
             $table->date('confinement_date_to');
             $table->integer('number_of_days');
             $table->integer('amount');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

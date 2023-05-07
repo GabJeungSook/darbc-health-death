@@ -37,6 +37,12 @@ Route::get('/death', function () {
     ->middleware(['auth', 'verified'])
     ->name('death');
 
+Route::get('/death-inquiry', function () {
+    return view('death-inquiry');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('death-inquiry');
+
 Route::get('/log', function () {
     return view('log');
 })
@@ -63,6 +69,12 @@ Route::get('/cash-advance', function () {
     ->middleware(['auth', 'verified'])
     ->name('cash-advance');
 
+Route::get('/cash-advance-inquiry', function () {
+    return view('cash-advance-inquiry');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('cash-advance-inquiry');
+
 Route::get('/hospital', function () {
     return view('hospital');
 })
@@ -76,7 +88,7 @@ Route::get('/inquiry', function () {
     ->name('inquiry');
 
 Route::get('/calendar', function () {
-    return view('dashboard');
+    return view('calendar');
 })
     ->middleware(['auth', 'verified'])
     ->name('calendar');

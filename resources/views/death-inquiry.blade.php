@@ -1,5 +1,5 @@
 <x-main-layout>
-    <livewire:health-death-inquiry />
+    <livewire:death-inquiry />
     <script>
         function printOut(data) {
           var mywindow = window.open('', '', 'height=1000,width=1000');

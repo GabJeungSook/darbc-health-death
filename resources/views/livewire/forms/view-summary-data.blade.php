@@ -3,24 +3,38 @@
         <div class="border border-gray-400">
           <dl class="">
             <div class="px-4 py-3 flex space-x-4">
+                @php
+                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                $response = file_get_contents($url);
+                $member_data = json_decode($response, true);
+
+                $collection = collect($member_data['data']);
+                $darbc_id = $collection['darbc_id'];
+                $member_name = strtoupper($collection['user']['surname']) . ' '
+                .strtoupper($collection['user']['first_name']) . ' '
+                . strtoupper($collection['user']['middle_name']).'.';
+                $contact_number = $collection["contact_number"];
+                $date_of_birth = $collection['date_of_birth'];
+                $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+          @endphp
               <dt class="text-sm font-medium text-gray-900">DARBC ID: </dt>
-              <dd class="text-sm text-center">{{$record->member_id}}</dd>
+              <dd class="text-sm text-center">{{$darbc_id}}</dd>
             </div>
             <div class="px-4 py-3 flex space-x-4">
                 <dt class="text-sm font-medium text-gray-900">Full name: </dt>
-                <dd class="text-sm text-center">{{$record->members->name}}</dd>
+                <dd class="text-sm text-center">{{$member_name}}</dd>
             </div>
             <div class="px-4 py-3 flex space-x-4">
                 <dt class="text-sm font-medium text-gray-900">Contact Number: </dt>
-                <dd class="text-sm text-center">Margot Foster</dd>
+                <dd class="text-sm text-center">{{$contact_number}}</dd>
             </div>
             <div class="px-4 py-3 flex space-x-4">
                 <dt class="text-sm font-medium text-gray-900">Age: </dt>
-                <dd class="text-sm text-center">21</dd>
+                <dd class="text-sm text-center">{{$age}}</dd>
             </div>
             <div class="px-4 py-3 flex space-x-4">
                 <dt class="text-sm font-medium text-gray-900">Dependent: </dt>
-                <dd class="text-sm text-center">Margot Foster</dd>
+                <dd class="text-sm text-center"></dd>
             </div>
             {{-- <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-900">Application for</dt>

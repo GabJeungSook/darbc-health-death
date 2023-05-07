@@ -20,6 +20,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     use Forms\Concerns\InteractsWithForms;
     use Actions;
 
+    public $member_ids;
     public $batch_number;
     public $darbc_id;
     public $enrollment_status;
@@ -44,15 +45,29 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                 ->required(),
                 Forms\Components\Select::make('darbc_id')->label('DARBC ID')
                 ->reactive()
+                ->options($this->member_ids->pluck('darbc_id', 'id'))
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $member = Member::where('member_id', $state)->first();
+                    $url = 'https://darbc.org/api/member-information/'.$state;
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
+
+                    $collection = collect($member_data['data']);
+
+                    //$member = Member::where('member_id', $state)->first();
                     if($get('enrollment_status') == 'member')
                     {
-                        $set('patients_first_name', $member->name);
-                        $set('patients_middle_name', $member->name);
-                        $set('patients_last_name', $member->name);
-                        $set('contact_number', $member->name);
-                        $set('age', $member->name);
+                        $set('patients_first_name', $collection['user']['first_name']);
+                        $set('patients_middle_name',$collection['user']['middle_name']);
+                        $set('patients_last_name', $collection['user']['surname']);
+                        $set('contact_number', $collection['contact_number']);
+                        if($collection['date_of_birth'] != null)
+                        {
+                            $date_of_birth = $collection['date_of_birth'];
+                            $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                            $set('age', $age);
+                        }else{
+                            $set('age', null);
+                        }
                     }else{
                         $set('patients_first_name', null);
                         $set('patients_middle_name', null);
@@ -61,9 +76,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                         $set('age', null);
                     }
                 })
-                ->searchable()
-                ->options(Member::all()->pluck('member_id', 'member_id'))
-                ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
+                ->searchable(),
+                // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
                 Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->darbc_id == null)
                 ->options([
                     'member' => 'M',
@@ -71,7 +85,13 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                 ])
                 ->reactive()
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $member = Member::where('member_id', $get('darbc_id'))->first();
+                    $url = 'https://darbc.org/api/member-information/'.$get('darbc_id');
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
+
+                    $collection = collect($member_data['data']);
+
+                   // $member = Member::where('member_id', $get('darbc_id'))->first();
 
                     $startDate = strtotime($get('date_of_confinement_from'));
                     $endDate = strtotime($get('date_of_confinement_to'));
@@ -83,7 +103,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                         {
                             $confinement_days = 0;
                         }else{
-                            $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_to', $this->date_of_confinement_to)->first()->sum('number_of_days');
+                            $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_from', $this->date_of_confinement_to)->first()->sum('number_of_days');
 
                         }
                     }else{
@@ -94,11 +114,19 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                       //set amount computation
                       if($get('enrollment_status') == 'member')
                       {
-                            $set('patients_first_name', $member->name);
-                            $set('patients_middle_name', $member->name);
-                            $set('patients_last_name', $member->name);
-                            $set('contact_number', $member->name);
-                            $set('age', $member->name);
+                            $set('patients_first_name', $collection['user']['first_name']);
+                            $set('patients_middle_name',$collection['user']['middle_name']);
+                            $set('patients_last_name', $collection['user']['surname']);
+                            $set('contact_number', $collection['contact_number']);
+                            if($collection['date_of_birth'] != null)
+                            {
+                                $date_of_birth = $collection['date_of_birth'];
+                                $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                                $set('age', $age);
+                            }else{
+                                $set('age', null);
+                            }
+
 
                          if ($this->date_of_confinement_to != null) {
                              $year = date('Y', strtotime($this->date_of_confinement_to));
@@ -109,7 +137,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                              }else{
                                 $totalDays = Health::where('member_id', $this->darbc_id)
                                 ->where('enrollment_status', 'member')
-                                ->whereYear('confinement_date_to', $year)
+                                ->whereYear('confinement_date_from', $year)
                                 ->sum('number_of_days');
                              }
                              if(($totalDays + $days) < 30)
@@ -154,7 +182,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                              }else{
                                 $totalDays = Health::where('member_id', $this->darbc_id)
                                 ->where('enrollment_status', 'member')
-                                ->whereYear('confinement_date_to', $year)
+                                ->whereYear('confinement_date_from', $year)
                                 ->sum('number_of_days');
                              }
 
@@ -221,7 +249,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                                    $totalDays = Health::where('member_id', $this->darbc_id)
                                        ->where('enrollment_status', 'member')
-                                       ->whereYear('confinement_date_to', $year)
+                                       ->whereYear('confinement_date_from', $year)
                                        ->sum('number_of_days');
                                }
 
@@ -254,7 +282,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                                    $totalDays = Health::where('member_id', $this->darbc_id)
                                        ->where('enrollment_status', 'dependent')
-                                       ->whereYear('confinement_date_to', $year)
+                                       ->whereYear('confinement_date_from', $year)
                                        ->sum('number_of_days');
                                }
 
@@ -307,7 +335,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                                     $totalDays = Health::where('member_id', $this->darbc_id)
                                         ->where('enrollment_status', 'member')
-                                        ->whereYear('confinement_date_to', $year)
+                                        ->whereYear('confinement_date_from', $year)
                                         ->sum('number_of_days');
                                 }
 
@@ -340,7 +368,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                                     $totalDays = Health::where('member_id', $this->darbc_id)
                                         ->where('enrollment_status', 'dependent')
-                                        ->whereYear('confinement_date_to', $year)
+                                        ->whereYear('confinement_date_from', $year)
                                         ->sum('number_of_days');
                                 }
 
@@ -395,6 +423,12 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
+        $url = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $response = file_get_contents($url);
+        $member_data = json_decode($response, true);
+
+        $this->member_ids = collect($member_data);
+
         if (Health::count() > 0) {
             // get the latest record
             $latestData = Health::latest('created_at')->first();
@@ -472,6 +506,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
             'confinement_date_to' => $this->date_of_confinement_to,
             'number_of_days' => $this->number_of_days,
             'amount' => $this->amount,
+            'status' => 'ENCODED',
         ]);
         DB::commit();
 
@@ -481,6 +516,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
             $description = 'Data successfully saved'
         );
     }
+
+
 
     public function render()
     {
