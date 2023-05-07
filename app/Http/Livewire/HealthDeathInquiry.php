@@ -41,12 +41,20 @@ class HealthDeathInquiry extends Component implements Tables\Contracts\HasTable
             TextColumn::make('member_id')
                 ->label('DARBC ID')
                 ->searchable(),
-            TextColumn::make('members.name')
+            TextColumn::make('memberName')
                 ->formatStateUsing(function ($record) {
-                    return $record->members->name;
+                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) .'.' ;
                 })
-                ->label('Member Name')
-                ->searchable(),
+                ->label('MEMBERS NAME')
+                ->formatStateUsing(function ($record) {
+                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
+
+                    $collection = collect($member_data['data']);
+
+                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) .'.' ;
+                })->searchable(),
             TextColumn::make('hospitals.name')
                 ->label('HOSPITAL')
                 ->searchable(),

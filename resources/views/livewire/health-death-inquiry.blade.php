@@ -231,8 +231,16 @@
                       <tr class="divide-x divide-gray-200">
 
                         <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
+                            @php
+                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $response = file_get_contents($url);
+                            $member_data = json_decode($response, true);
+
+                            $collection = collect($member_data['data']);
+                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']).'.';
+                            @endphp
                           {{ $record->member_id }}</td>
-                        <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->members->name }}</td>
+                        <td class=" p-4 text-sm text-gray-700 text-left"> {{ $member_name }}</td>
                         <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->hospitals->name }}</td>
                         <td class="p-4 text-sm text-gray-700 text-left">{{ $record->batch_number }}</td>
                         <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->enrollment_status }}
@@ -263,7 +271,15 @@
                         @endif
 
                         @if ($filters['member'] != false && $filters['member'] != null)
-                          <td class=" p-4 text-sm text-gray-700 text-left"> {{ $record->members->name }}</td>
+                            @php
+                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $response = file_get_contents($url);
+                            $member_data = json_decode($response, true);
+
+                            $collection = collect($member_data['data']);
+                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']).'.';
+                            @endphp
+                          <td class=" p-4 text-sm text-gray-700 text-left"> {{  $member_name }}</td>
                         @endif
                         @if ($filters['hospital'] != false && $filters['hospital'] != null)
                           <td class="p-4 text-sm text-gray-700 text-left">{{ $record->hospitals->name }}</td>
