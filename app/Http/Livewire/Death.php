@@ -9,6 +9,7 @@ use Filament\Tables\Actions\ViewAction;
 use App\Models\Death as deathModel;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\IconColumn;
 
 class Death extends Component  implements Tables\Contracts\HasTable
@@ -87,9 +88,15 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     }
                 })
                 ->searchable(),
-            IconColumn::make('has_diamond_package')
-                ->boolean()
-                ->label('Diamond Package'),
+                BadgeColumn::make('has_diamond_package')
+                ->enum([
+                    0 => 'No',
+                    1 => 'Yes',
+                ])
+                ->colors([
+                    'danger' => 0,
+                    'success' => 1,
+                ]),
             TextColumn::make('date_of_death')
                 ->label('Date of Death')
                 ->date('F d, Y'),
@@ -128,6 +135,11 @@ class Death extends Component  implements Tables\Contracts\HasTable
     public function redirectToInquiry()
     {
         return redirect()->route('death-inquiry');
+    }
+
+    public function redirectToReport()
+    {
+        return redirect()->route('death-report');
     }
 
     public function render()

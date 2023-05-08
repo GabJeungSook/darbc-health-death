@@ -16,7 +16,7 @@
                 $contact_number = $collection["contact_number"];
                 $date_of_birth = $collection['date_of_birth'];
                 $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
-          @endphp
+                @endphp
               <dt class="text-sm font-medium text-gray-900">DARBC ID: </dt>
               <dd class="text-sm text-center">{{$darbc_id}}</dd>
             </div>
@@ -34,7 +34,14 @@
             </div>
             <div class="px-4 py-3 flex space-x-4">
                 <dt class="text-sm font-medium text-gray-900">Dependent: </dt>
-                <dd class="text-sm text-center"></dd>
+                @if ($record->enrollment_status == "member")
+                    <dd class="text-sm text-center">{{$member_name}}</dd>
+                @else
+                    <dd class="text-sm text-center">{{strtoupper($record->last_name) . ' '
+                        .strtoupper($record->first_name) . ' '
+                        . strtoupper($record->middle_name).'.'}}</dd>
+                @endif
+
             </div>
             {{-- <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-900">Application for</dt>
@@ -89,7 +96,7 @@
             </div> --}}
           </dl>
         </div>
-        <div class="mt-4 border border-gray-400">
+        {{-- <div class="mt-4 border border-gray-400">
             <dl class="">
             <div class="px-4 py-2 flex space-x-4">
                     <dt class="text-md font-bold text-gray-900">Available Days </dt>
@@ -103,8 +110,8 @@
                   <dd class="text-sm text-center">{{$record->number_of_days}}</dd>
               </div>
             </dl>
-          </div>
-          <div class="mt-4 border border-gray-400">
+          </div> --}}
+          {{-- <div class="mt-4 border border-gray-400">
             <dl class="">
             <div class="px-4 py-2 flex space-x-4">
                 <dt class="text-md font-bold text-gray-900">Summary</dt>
@@ -188,6 +195,6 @@
                   </div>
               </div>
             </dl>
-          </div>
+          </div> --}}
       </div>
 </div>

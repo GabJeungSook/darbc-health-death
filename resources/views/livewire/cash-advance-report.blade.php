@@ -2,13 +2,13 @@
     <div class="flex justify-between">
         <div>
             <div>
-                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToHealth" />
+                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToCashAdvance" />
               </div>
           </div>
         <div class="select flex space-x-2 items-end">
             <x-native-select label="Report" wire:model="report_get">
               <option selected hidden>Select Report</option>
-              <option value="2">Health - Members & Dependent</option>
+              <option value="2">Cash Advances</option>
               {{-- <option value="3">Masterlist</option> --}}
             </x-native-select>
             <x-button.circle positive icon="refresh" spinner="report_get" />
@@ -23,7 +23,7 @@
         <x-button label="EXPORT" sm positive wire:click="exportReport({{ $report_get }})"
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
-      @if ($report_get == 2)
+      {{-- @if ($report_get == 2)
         <div class="flex space-x-2">
           <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
@@ -33,7 +33,7 @@
                 <x-select.option label="Paid" value="PAID" />
             </x-select>
         </div>
-      @endif
+      @endif --}}
     </div>
   @endif
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
@@ -43,7 +43,7 @@
       @break
 
       @case(2)
-        @include('reports.health')
+        @include('reports.cash-advance')
       @break
 
       @case(3)

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\HealthDeath;
+use App\Models\Health;
 use App\Models\Member;
 use Livewire\WithPagination;
 use App\Models\Death;
@@ -13,6 +14,8 @@ class Report extends Component
     public $report_get;
     public $date_from;
     public $date_to;
+    public $status;
+
     public function render()
     {
         // dd(
@@ -22,7 +25,16 @@ class Report extends Component
         // );
         return view('livewire.report', [
             'healths' =>
-                $this->report_get != 2 ? [] : HealthDeath::paginate(100),
+                $this->report_get != 2 ? [] : Health::when($this->date_from && $this->date_to, function ($query) {
+                    $query->where(function ($query) {
+                        $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+                              ->orWhereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+                    });
+                })
+                ->when($this->status, function ($query) {
+                    $query->where('status', '=', $this->status);
+                })
+                ->paginate(100),
             'members' =>
                 $this->report_get != 3
                     ? []

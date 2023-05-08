@@ -99,6 +99,18 @@ Route::get('/report', function () {
     ->middleware(['auth', 'verified'])
     ->name('report');
 
+Route::get('/death-report', function () {
+        return view('death-report');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('death-report');
+
+Route::get('/cash-advance-report', function () {
+        return view('cash-advance-report');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('cash-advance-report');
+
 Route::get('/upload', function () {
     return view('upload');
 })

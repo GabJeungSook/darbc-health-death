@@ -63,14 +63,14 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
     public function getTableActions()
     {
         return [
-                ViewAction::make()
-                ->label('View Data')
-                ->modalHeading('Member Summary Data')
-                ->color('success')
-                ->modalWidth('6xl')
-                ->modalContent(fn ($record) => view('livewire.forms.view-summary-data', [
-                    'record' => $record,
-                ]))->visible(fn ($record) => $record->status == "PAID"),
+                // ViewAction::make()
+                // ->label('View Data')
+                // ->modalHeading('Member Summary Data')
+                // ->color('success')
+                // ->modalWidth('6xl')
+                // ->modalContent(fn ($record) => view('livewire.forms.view-summary-data', [
+                //     'record' => $record,
+                // ]))->visible(fn ($record) => $record->status == "PAID"),
                 ActionGroup::make([
                     Action::make('transmitted')
                     ->icon('heroicon-o-arrow-right')

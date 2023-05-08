@@ -98,7 +98,6 @@ class CashAdvanceInquiry extends Component implements Tables\Contracts\HasTable
                 '%' . $this->search . '%'
             )
             ->orWhere('purpose', 'like', '%' . $this->search . '%')
-            ->orWhere('contact_number', 'like', '%' . $this->search . '%')
             ->orWhere('account', 'like', '%' . $this->search . '%')
             ->orWhere('amount_requested', 'like', '%' . $this->search . '%')
             ->orWhere('amount_approved', 'like', '%' . $this->search . '%')

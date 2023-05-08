@@ -278,8 +278,8 @@
                         src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=3&w=256&h=256&q=80"
                         alt="">
                       <span class="flex min-w-0 flex-1 flex-col">
-                        <span class="truncate text-sm font-medium text-gray-700 uppercase">MARIA TERESISA</span>
-                        <span class="truncate text-sm text-indigo-500">Land Admin</span>
+                        <span class="truncate text-sm font-medium text-gray-700 uppercase">DARBC ADMIN</span>
+                        <span class="truncate text-sm text-indigo-500"></span>
                       </span>
                     </span>
                     <svg class="h-5 w-5 group-hover:text-indigo-700 flex-shrink-0 text-gray-400 " viewBox="0 0 20 20"

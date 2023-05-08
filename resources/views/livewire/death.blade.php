@@ -3,7 +3,7 @@
         <div>
             <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addDeath', true)"/>
             <x-button label="INQUIRY" class="font-bold" indigo icon="document-search" wire:click="redirectToInquiry" />
-            <x-button label="REPORTS" class="font-bold" indigo icon="document-report" />
+            <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
 
         </div>
         <div>

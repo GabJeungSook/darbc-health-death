@@ -79,6 +79,11 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
         return redirect()->route('cash-advance-inquiry');
     }
 
+    public function redirectToReport()
+    {
+        return redirect()->route('cash-advance-report');
+    }
+
     public function closeModal()
     {
         $this->addCashAdvance = false;

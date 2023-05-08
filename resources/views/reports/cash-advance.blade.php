@@ -1,6 +1,19 @@
 <div>
-    <table id="example" class="table-auto mt-5" style="width:100%">
+    <div class="flex space-x-1">
+      <div class="grid place-content-center">
+        <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="">
+      </div>
+      <div>
+        <h1 class="text-xl font-bold text-gray-700"> DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
+        <h1>DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
+      </div>
+    </div>
+
+    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">Cash Advances</h1>
+    <div class="mt-5 overflow-x-auto">
+      <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
+          <tr>
               <tr>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER NAME</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">PURPOSE</th>
@@ -10,6 +23,7 @@
                   </th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE RECEIVED</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">STATUS</th>
+                </tr>
           </tr>
         </thead>
         <tbody class="">
@@ -39,4 +53,5 @@
           @endforeach
         </tbody>
       </table>
-</div>
+    </div>
+  </div>

@@ -9,9 +9,9 @@
         <div class="border p-1 px-3 rounded">
           <x-checkbox id="right-label" label="PURPOSE" wire:model="filters.purpose" />
         </div>
-        <div class="border p-1 px-3 rounded">
+        {{-- <div class="border p-1 px-3 rounded">
             <x-checkbox id="right-label" label="CONTACT NUMBER" wire:model="filters.contact_number" />
-          </div>
+          </div> --}}
         <div class="border p-1 px-3 rounded">
           <x-checkbox id="right-label" label="ACCOUNT" wire:model="filters.account" />
         </div>
@@ -68,10 +68,10 @@
                           class="whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
                           PURPOSE
                         </th>
-                        <th
+                        {{-- <th
                         class="whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
                         CONTACT NUMBER
-                       </th>
+                       </th> --}}
                         <th
                           class=" whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
                           ACCOUNT
@@ -108,12 +108,12 @@
                             PURPOSE
                           </th>
                         @endif
-                        @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
+                        {{-- @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
                         <th
                           class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
                           CONTACT NUMBER
                         </th>
-                        @endif
+                        @endif --}}
                         @if ($filters['account'] != false && $filters['account'] != null)
                           <th
                             class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
@@ -163,8 +163,8 @@
                             @endphp
                             {{ $member_name }}</td>
                           <td class="p-4 text-sm text-gray-700 text-left">{{ $record->purpose }}</td>
-                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->contact_number }}
-                          </td>
+                          {{-- <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->contact_number }}
+                          </td> --}}
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->account }}
                           </td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
@@ -196,10 +196,10 @@
                             <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->purpose }}
                             </td>
                           @endif
-                          @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
+                          {{-- @if ($filters['contact_number'] != false && $filters['contact_number'] != null)
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->contact_number }}
                           </td>
-                          @endif
+                          @endif --}}
                           @if ($filters['account'] != false && $filters['account'] != null)
                             <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
                               {{ $record->account }}
