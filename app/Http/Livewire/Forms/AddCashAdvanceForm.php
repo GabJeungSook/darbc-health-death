@@ -9,6 +9,7 @@ use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
 use WireUi\Traits\Actions;
 use Carbon\Carbon;
@@ -120,7 +121,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
 
             Forms\Components\DatePicker::make('date_received')
             ->required(),
-            Forms\Components\TextArea::make('reason')
+            Textarea::make('reason')
             ->required()
             ->reactive()
             ->visible(fn ($get) => $get('status') == "Pending" || $get('status') == "Disapproved"),
