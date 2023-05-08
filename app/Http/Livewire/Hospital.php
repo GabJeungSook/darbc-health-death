@@ -5,7 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Filament\Tables;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\TextArea;
+use Filament\Forms\Components\Textarea;
 use App\Models\Hospital as HospitalModel;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,7 +53,7 @@ class Hospital extends Component implements Tables\Contracts\HasTable
                 TextInput::make('name')
                     ->label('Name')
                     ->required(),
-                TextInput::make('address')
+                Textarea::make('address')
                     ->label('Address')
                     ->required(),
             ]),
