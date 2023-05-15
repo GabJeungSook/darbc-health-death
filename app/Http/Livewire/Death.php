@@ -207,7 +207,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             ->schema([
                                 Grid::make()
                                 ->schema([
-                                    Forms\Components\Textinput::make('mortuary_id')->label('Member')
+                                    Forms\Components\TextInput::make('mortuary_id')->label('Member')
                                     ->disabled()
                                     ->reactive()
                                 ])->columns(1),
