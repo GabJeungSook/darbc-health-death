@@ -6,6 +6,8 @@ use Livewire\Component;
 use Filament\Tables;
 use App\Models\CashAdvance as CashAdvanceModel;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\Position;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\BadgeColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,6 +25,23 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
         return CashAdvanceModel::query();
+    }
+
+    protected function getTableActionsPosition(): ?string
+    {
+        return Position::AfterCells;
+    }
+
+    public function getTableActions()
+    {
+        return [
+            Action::make('view')
+            ->icon('heroicon-o-eye')
+            ->button()
+            ->color('success')
+            ->url(fn (CashAdvanceModel $record): string => route('view-cash-advance', $record))
+            ->openUrlInNewTab(),
+        ];
     }
 
     protected function getTableColumns(): array

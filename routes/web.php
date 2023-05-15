@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Log;
 use App\Models\Health;
 use App\Models\Death;
+use App\Models\CashAdvance;
+use App\Models\Mortuary;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -53,6 +55,22 @@ Route::get('/death-information/{record}', function ($record) {
 })
     ->middleware(['auth', 'verified'])
     ->name('view-death');
+
+Route::get('/cash-advance-information/{record}', function ($record) {
+    $cashAdvanceRecord = CashAdvance::findOrFail($record);
+
+    return view('view-cash-advance-data', ['record' => $cashAdvanceRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-cash-advance');
+
+Route::get('/mortuary-information/{record}', function ($record) {
+    $mortuaryRecord = Mortuary::findOrFail($record);
+
+    return view('mortuary-data', ['record' => $mortuaryRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-mortuary');
 
 Route::get('/death', function () {
     return view('death');
