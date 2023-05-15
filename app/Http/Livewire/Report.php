@@ -8,39 +8,58 @@ use App\Models\Health;
 use App\Models\Member;
 use Livewire\WithPagination;
 use App\Models\Death;
+use App\Models\Report as ReportModel;
+use App\Models\ReportHeader;
 class Report extends Component
 {
     use WithPagination;
     public $report_get;
     public $date_from;
     public $date_to;
-    public $status;
+    public $status = [];
+    public $transmittal_date_from;
+    public $transmittal_date_to;
+    public $transmittal_status = [];
+    protected $health;
+    protected $transmittal;
 
     public function render()
     {
-        // dd(
-        //     \App\Models\HealthDeath::where('member_id', 21)
-        //         ->whereMonth('date_of_confinement_to', 03)
-        //         ->get()
-        // );
+
+        $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
+            $query->where(function ($query) {
+                $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+                      ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+            });
+        })
+        ->when(!empty($this->status), function ($query) {
+            if (is_array($this->status)) {
+                $query->whereIn('status', $this->status);
+            } else {
+                $query->where('status', $this->status);
+            }
+        })
+        ->paginate(100);
+
         return view('livewire.report', [
             'healths' =>
-                $this->report_get != 2 ? [] : Health::when($this->date_from && $this->date_to, function ($query) {
-                    $query->where(function ($query) {
-                        $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
-                              ->orWhereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
-                    });
-                })
-                ->when($this->status, function ($query) {
-                    $query->where('status', '=', $this->status);
-                })
-                ->paginate(100),
-            'members' =>
-                $this->report_get != 3
-                    ? []
-                    : Member::whereHas('health_death', function ($query) {
-                        $query->whereNotNull('number_of_days');
-                    })->paginate(100),
+                $this->report_get != 1 ? [] : ($this->health == null ? [] : $this->health),
+            'transmittals' =>
+                    $this->report_get != 2
+                        ? []
+                        : Health::whereHas('transmittals')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
+                            $query->where(function ($query) {
+                                $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
+                                      ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
+                            });
+                        })
+                        ->when(!empty($this->transmittal_status), function ($query) {
+                            if (is_array($this->transmittal_status)) {
+                                $query->whereIn('status', $this->transmittal_status);
+                            } else {
+                                $query->where('status', $this->transmittal_status);
+                            }
+                        })->paginate(100),
             'accountings' => HealthDeath::when($this->date_from, function (
                 $query
             ) {
@@ -50,9 +69,11 @@ class Report extends Component
                 $this->report_get != 5
                     ? []
                     : Death::whereNotNull('date_of_death')->paginate(100),
+            'reports' => ReportHeader::where('report_id', 1)->get(),
+            'first_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Health - Members & Dependent')->first(),
+            'second_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Transmittals')->first(),
         ]);
     }
-
     public function redirectToHealth()
     {
         return redirect()->route('health');
@@ -79,8 +100,8 @@ class Report extends Component
                 break;
             case 3:
                 return \Excel::download(
-                    new \App\Exports\MasterListExport(),
-                    'MasterList.xlsx'
+                    new \App\Exports\TransmittalExport(),
+                    'Transmittals.xlsx'
                 );
                 break;
 

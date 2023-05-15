@@ -107,6 +107,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
                 ->options(Hospital::all()->pluck('name', 'id'))
                 ->required(),
                 Forms\Components\TextInput::make('amount')
+                ->numeric()
                 ->reactive()
                 ->disabled(fn ($get) => $this->member_id == null)
                 ->required(),

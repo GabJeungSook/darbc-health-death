@@ -6,7 +6,7 @@
             <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
           </div>
           <div>
-            <x-button label="MANAGE" class="font-bold" indigo icon="adjustments" wire:click="redirectToHospital"/>
+            <x-button label="INSURANCE COVERAGE" class="font-bold" indigo icon="folder" wire:click="redirectToInsuranceCoverage"/>
           </div>
     </div>
 

@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">Cash Advances</h1>
+    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{$first_report->header}}</h1>
     <div class="mt-5 overflow-x-auto">
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">

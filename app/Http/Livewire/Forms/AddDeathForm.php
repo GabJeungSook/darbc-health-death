@@ -6,11 +6,13 @@ use Livewire\Component;
 use Filament\Forms;
 use App\Models\Death;
 use App\Models\VehicleSchedule;
+use App\Models\Mortuary;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use WireUi\Traits\Actions;
 use Carbon\Carbon;
 use DB;
@@ -22,6 +24,8 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
 
     // public $data;
     public $member_ids;
+    public $mortuary_ids;
+    public $mortuary_id;
     public $date;
     public $batch_number;
     public $member_id;
@@ -54,6 +58,8 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
     public $vehicle_type;
     public $remarks;
 
+    public $attachment = [];
+
     // protected function getFormStatePath(): string
     // {
     //     return 'data';
@@ -67,15 +73,45 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                     ->schema([
                         Card::make()
                         ->schema([
+                            Grid::make()
+                            ->schema([
+                                Forms\Components\Select::make('mortuary_id')->label('Member')
+                                ->reactive()
+                                ->searchable()
+                                ->options(Mortuary::whereDoesntHave('death')->pluck('member_name', 'id'))
+                                ->afterStateUpdated(function ($set, $get, $state) {
+                                    $url = 'https://darbc.org/api/member-information/'.$state;
+                                    $response = file_get_contents($url);
+                                    $member_data = json_decode($response, true);
+
+                                    $collection = collect($member_data['data']);
+                                    $mortuary = Mortuary::where('id', $state)->first();
+                                    $set('member_id', $mortuary->member_id);
+                                    $set('has_diamond_package', $mortuary->diamond_package);
+                                    $set('has_vehicle', $mortuary->vehicle);
+                                    $set('birthday', $collection['date_of_birth']);
+                                    $set('contact_number', $collection['contact_number']);
+
+                                    if($get('has_diamond_package') === "Islam")
+                                    {
+                                        $set('islam_cash', '30000');
+                                    }else{
+                                        $set('cash', '20000');
+                                        $set('grocery', '2000');
+                                        $set('water', '1000');
+                                    }
+
+                                })
+                            ])->columns(1),
                             DatePicker::make('date')->label('Date')
                             ->disabled()
                             ->required(),
                             Forms\Components\TextInput::make('batch_number')->label('Batch No.')
                             ->disabled()
                             ->required(),
-                            Forms\Components\Select::make('member_id')->label('DARBC ID')
+                            Forms\Components\TextInput::make('member_id')->label('DARBC ID')
                             ->reactive()
-                            ->options($this->member_ids->pluck('darbc_id', 'id'))
+                            ->disabled()
                             ->afterStateUpdated(function ($set, $get, $state) {
                                 $url = 'https://darbc.org/api/member-information/'.$state;
                                 $response = file_get_contents($url);
@@ -107,7 +143,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                     $set('age', null);
                                 }
                             })
-                            ->searchable()
+                            // ->searchable()
                             // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
 
                         ])->columns(3),
@@ -147,15 +183,17 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 $set('birthday', null);
                                 $set('age', null);
                             }
-
-                            $set('birthday', null);
-                            $set('age', null);
-                            $set('contact_number', null);
-                            $set('date_of_death', null);
-                            $set('place_of_death', null);
-                            $set('coverage_type', null);
-                            $set('has_vehicle', null);
-                            $set('amount', 0);
+                            $set('dependents_first_name', null);
+                            $set('dependents_middle_name', null);
+                            $set('dependents_last_name', null);
+                            // $set('birthday', null);
+                            // $set('age', null);
+                            // $set('contact_number', null);
+                            // $set('date_of_death', null);
+                            // $set('place_of_death', null);
+                            // $set('coverage_type', null);
+                            // $set('has_vehicle', null);
+                            // $set('amount', 0);
                         })
                         ->required(),
                         Fieldset::make('Member\'s Name')
@@ -185,16 +223,18 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                     ]),
                 Wizard\Step::make('Step 2')
                     ->schema([
-                        Forms\Components\Select::make('has_diamond_package')->label('Avail Diamond Package?')->disabled(fn ($get) => $this->member_id == null)
-                        ->options([
-                            '1' => 'Yes',
-                            '0' => 'No',
-                        ])
+                        Forms\Components\TextInput::make('has_diamond_package')->label('Avail Diamond Package?')
+                        ->disabled()
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
-                            $set('cash', '20000');
-                            $set('grocery', '2000');
-                            $set('water', '1000');
+                            if($state == "Islam")
+                            {
+                                $set('islam_cash', '30000');
+                            }else{
+                                $set('cash', '20000');
+                                $set('grocery', '2000');
+                                $set('water', '1000');
+                            }
                         })
                         ->required(),
                         Fieldset::make('Benefits')
@@ -205,7 +245,12 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             ->reactive(),
                             Forms\Components\TextInput::make('water')->label('Water')->disabled()
                             ->reactive(),
-                        ])->columns(3)->visible(fn ($get) => $this->has_diamond_package == '0'),
+                        ])->columns(3)->visible(fn ($get) => $this->has_diamond_package == 'No' || $this->has_diamond_package == 'Distant'),
+                        Fieldset::make('Benefits')
+                        ->schema([
+                            Forms\Components\TextInput::make('islam_cash')->label('Cash')->disabled()
+                            ->reactive(),
+                        ])->columns(1)->visible(fn ($get) => $this->has_diamond_package == 'Islam'),
                         Card::make()
                         ->schema([
                             DatePicker::make('birthday')->label('Birthday')->disabled(fn ($get) => $this->member_id == null)
@@ -216,7 +261,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 $age = $currentYear - $birthYear;
                                 $set('age', $age);
                                 $set('coverage_type', null);
-                                $set('has_vehicle', null);
+                                // $set('has_vehicle', null);
                                 $set('amount', 0);
 
                             })
@@ -237,13 +282,9 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')->disabled(fn ($get) => $this->member_id == null)
                             ->reactive()
                             ->required(),
-                            Forms\Components\Select::make('has_vehicle')->label('Vehicle')->disabled(fn ($get) => $this->member_id == null)
-                            ->options([
-                                '1' => 'Yes',
-                                '0' => 'No',
-                            ])
+                            Forms\Components\TextInput::make('has_vehicle')->label('Vehicle')
                             ->afterStateUpdated(function ($set, $get, $state){
-                                if($state == '1')
+                                if($state == 'Yes')
                                 {
                                     $set('coverage_type', null);
                                     $set('amount', 0);
@@ -251,6 +292,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                     $set('amount', $get('amount') + 1000);
                                 }
                             })
+                            ->disabled()
                             ->reactive()
                             ->required(),
                             Forms\Components\Select::make('coverage_type')->label('Type Of Coverage')->disabled(fn ($get) => $this->member_id == null)
@@ -265,7 +307,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state){
-                                if($get('has_vehicle') == '0')
+                                if($get('has_vehicle') == 'No')
                                 {
                                     $amount = 1000;
                                 }else{
@@ -408,18 +450,25 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         ->schema([
                             Fieldset::make('Members Name')
                             ->schema([
-                                Forms\Components\TextInput::make('schedule_first_name')->label('First Name')->reactive()->required(),
+                                Forms\Components\TextInput::make('schedule_first_name')->label('First Name')->reactive(),
                                 Forms\Components\TextInput::make('schedule_middle_name')->label('Middle Name')->reactive(),
-                                Forms\Components\TextInput::make('schedule_last_name')->label('Last Name')->reactive()->required(),
+                                Forms\Components\TextInput::make('schedule_last_name')->label('Last Name')->reactive(),
                             ])->columns(3),
-                            DatePicker::make('date_requested')->label('Date Requested')
-                            ->required(),
-                            DatePicker::make('scheduled_date')->label('Scheduled Date')
-                            ->required(),
-                            Forms\Components\TextInput::make('vehicle_type')->label('Type Of Vehicle')->reactive()->required(),
-                            Forms\Components\TextInput::make('remarks')->label('Remarks')->reactive()->required(),
-                        ])->visible(fn ($get) => $this->has_vehicle == '1')
+                            DatePicker::make('date_requested')->label('Date Requested'),
+                            DatePicker::make('scheduled_date')->label('Scheduled Date'),
+                            Forms\Components\TextInput::make('vehicle_type')->label('Type Of Vehicle')->reactive(),
+                            Forms\Components\TextInput::make('remarks')->label('Remarks')->reactive(),
+                        ])->visible(fn ($get) => $this->has_vehicle == 'Yes')
                     ]),
+                    Wizard\Step::make('Step 4')
+                    ->schema([
+                        FileUpload::make('attachment')
+                        ->enableOpen()
+                        ->multiple()
+                        ->disk('public')
+                        ->preserveFilenames()
+                        ->reactive()
+                    ])
                 ]),
             Forms\Components\TextInput::make('amount')->label('Amount')->disabled(fn ($get) => $this->member_id == null)
             ->reactive()
@@ -431,7 +480,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
     public function closeModal()
     {
         $this->reset([
-            'date','batch_number','member_id',
+            'date','batch_number','member_id', 'mortuary_id',
             'enrollment_status','first_name', 'middle_name',
             'last_name', 'dependents_first_name', 'dependents_middle_name',
             'dependents_last_name', 'dependent_type', 'has_diamond_package',
@@ -445,12 +494,13 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
     {
         $this->validate();
 
-        if($this->has_vehicle == '1')
+        if($this->has_vehicle == 'Yes')
         {
             // $this->emit('show_vehicle_schedule');
             DB::beginTransaction();
             $death = Death::create([
                 'member_id' => $this->member_id,
+                'mortuary_id' => $this->mortuary_id,
                 'batch_number' => $this->batch_number,
                 'date' => $this->date,
                 'enrollment_status' => $this->enrollment_status,
@@ -474,16 +524,31 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
 
             VehicleSchedule::create([
                 'death_id' => $death->id,
+                'schedule_first_name' => $this->schedule_first_name,
+                'schedule_middle_name' => $this->schedule_middle_name,
+                'schedule_last_name' => $this->schedule_last_name,
                 'date_requested' => $this->date_requested,
                 'scheduled_date' => $this->scheduled_date,
                 'vehicle_type' => $this->vehicle_type,
                 'remarks' => $this->remarks,
             ]);
+
+            //save Files from fileupload
+            foreach($this->attachment as $document){
+            $death->death_attachments()->create(
+                [
+                    "path"=>$document->storeAs('public',now()->format("HismdY-").$document->getClientOriginalName()),
+                                    "document_name"=>$document->getClientOriginalName(),
+                ]
+            );
+            }
+
             DB::commit();
         }else{
             DB::beginTransaction();
             $death = Death::create([
                 'member_id' => $this->member_id,
+                'mortuary_id' => $this->mortuary_id,
                 'batch_number' => $this->batch_number,
                 'date' => $this->date,
                 'enrollment_status' => $this->enrollment_status,
@@ -504,10 +569,19 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                 'has_vehicle' =>  $this->has_vehicle,
                 'amount' =>  $this->amount,
             ]);
+              //save Files from fileupload
+              foreach($this->attachment as $document){
+                $death->death_attachments()->create(
+                    [
+                         "path"=>$document->storeAs('public',now()->format("HismdY-").$document->getClientOriginalName()),
+                        "document_name"=>$document->getClientOriginalName(),
+                    ]
+                );
+            }
             DB::commit();
         }
 
-        $this->emit('close_modal');
+        $this->closeModal();
         $this->dialog()->success(
             $title = 'Success',
             $description = 'Data successfully saved'

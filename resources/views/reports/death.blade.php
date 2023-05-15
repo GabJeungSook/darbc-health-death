@@ -15,20 +15,13 @@
       <thead class="font-normal">
         <tr>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">BATCH NUMBER
-                </th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER FIRST NAME</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER MIDDLE NAME</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER LAST NAME</th>
-
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT FIRST NAME</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT MIDDLE NAME</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT LAST NAME</th>
-
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HAS DIAMOND PACKAGE
-                </th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF DEATH
-                </th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">BATCH NUMBER</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS NAME FIRST NAME</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AGE</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENTS NAME</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HAS DIAMOND PACKAGE</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HAS VEHICLE</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF DEATH</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">PLACE OF DEATH</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">COVERAGE TYPE</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT</th>
@@ -48,37 +41,21 @@
 
                 $collection = collect($member_data['data']);
                 $darbc_id = $collection['darbc_id'];
-                $member_name = strtoupper($collection['user']['surname']) . ' '
-                .strtoupper($collection['user']['first_name']) . ' '
-                . strtoupper($collection['user']['middle_name']).'.';
+                $member_name = strtoupper($collection['user']['first_name']) . ' '
+                .strtoupper($collection['user']['middle_name']) . ' '
+                . strtoupper($collection['user']['surname']);
                 @endphp
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['first_name'] }}
-            </td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['middle_name'] }}
-            </td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['surname'] }}
-            </td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}</td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->age }}</td>
             @if ($item->enrollment_status == "member")
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['first_name'] }}
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['middle_name'] }}
-            </td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $collection['user']['surname'] }}
-            </td>
-            @else
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->dependets_first_name ?? '' }}
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->dependets_middle_name ?? '' }}
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->dependets_last_name ?? '' }}
+            @elseif($item->enrollment_status == "dependent")
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->dependents_first_name).' '.
+            strtoupper($item->dependents_middle_name).' '.strtoupper($item->dependents_last_name)}}</td>
             @endif
-            @if ($item->has_diamond_package == '1')
-            <td class="border text-gray-600 uppercase  px-3  py-1">
-                YES
-            </td>
-            @else
-            <td class="border text-gray-600 uppercase  px-3  py-1">
-                NO
-            </td>
-            @endif
+            <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_diamond_package == 'Yes' ? 'Yes' : 'No'}}</td>
+            <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_vehicle}}</td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
               {{ \Carbon\Carbon::parse($item->date_of_death)->format('F d, Y') }}
             </td>

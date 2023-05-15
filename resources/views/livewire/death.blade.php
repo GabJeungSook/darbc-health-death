@@ -7,16 +7,18 @@
 
         </div>
         <div>
-            <x-button label="Calendar" class="font-bold" indigo icon="calendar" wire:click="redirectToCalendar"/>
-            <x-button label="Records" class="font-bold" indigo icon="document" wire:click="$set('showRecord', true)"/>
+            <x-button label="Vehicle Management" class="font-bold" indigo icon="truck" wire:click="redirectToCalendar"/>
+
+            {{-- <x-button label="Calendar" class="font-bold" indigo icon="calendar" wire:click="redirectToCalendar"/>
+            <x-button label="Records" class="font-bold" indigo icon="document" wire:click="$set('showRecord', true)"/> --}}
         </div>
     </div>
 
-    <x-modal.card title="Vehicle Schedules" max-width="4xl" align="center" blur wire:model.defer="showRecord">
+    {{-- <x-modal.card title="Vehicle Schedules" max-width="4xl" align="center" blur wire:model.defer="showRecord">
        <div class="p-4">
         <livewire:forms.show-records />
        </div>
-    </x-modal.card>
+    </x-modal.card> --}}
 
 
     <div class="mt-4">

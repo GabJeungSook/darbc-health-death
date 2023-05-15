@@ -22,7 +22,7 @@ class ShowRecords extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return VehicleSchedule::query();
+        return VehicleSchedule::query()->whereNotNull('scheduled_date');
     }
 
     protected function getTableFilters(): array

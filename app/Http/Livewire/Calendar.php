@@ -11,6 +11,7 @@ use DB;
 class Calendar extends Component
 {
     use Actions;
+    public $showRecord = false;
 
     public function mount()
     {
@@ -19,7 +20,7 @@ class Calendar extends Component
 
     private function getFormattedEvents()
     {
-        $events = VehicleSchedule::query()->get();
+        $events = VehicleSchedule::query()->whereNotNull('scheduled_date');
         $formattedEvents = [];
         foreach ($events as $event) {
             $formattedEvents[] = [

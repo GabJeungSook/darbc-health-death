@@ -26,6 +26,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     public $middle_name;
     public $last_name;
     public $purpose;
+    public $other_purpose;
     public $contact_numbers = [];
     public $contact_number;
     public $account;
@@ -81,6 +82,9 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
                         'Others' => 'Others',
                     ])
                     ->reactive(),
+                    Forms\Components\Textarea::make('other_purpose')->label('State purpose')
+                    ->reactive()
+                    ->required()->visible(fn ($get) => $get('purpose') == "Others"),
                     Repeater::make('contact_numbers')
                     ->label('Contact Numbers')
                     ->schema([
@@ -132,6 +136,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
                 'Approved' => 'Approved',
                 'Disapproved' => 'Disapproved',
             ])
+            ->default('On-going')
             ->disablePlaceholderSelection()
             ->reactive(),
         ];
@@ -161,6 +166,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
         CashAdvance::create([
             'member_id' => $this->darbc_id,
             'purpose' => $this->purpose,
+            'other_purpose' => $this->other_purpose,
             'contact_numbers' => collect($this->contact_numbers)->values(),
             'account' => $this->account,
             'amount_requested' => $this->amount_requested,

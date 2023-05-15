@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('dependents_first_name');
             $table->string('dependents_middle_name')->nullable();
             $table->string('dependents_last_name');
-            $table->integer('amount');
+            $table->double('amount');
             $table->date('date_received');
             $table->timestamps();
         });

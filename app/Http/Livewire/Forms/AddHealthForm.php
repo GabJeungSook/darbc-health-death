@@ -7,10 +7,13 @@ use Filament\Forms;
 use App\Models\Member;
 use App\Models\Health;
 use App\Models\Hospital;
+use App\Models\InsuranceCoverage;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\FileUpload;
 use WireUi\Traits\Actions;
 use Carbon\Carbon;
 use DB;
@@ -34,388 +37,420 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     public $hospital_id;
     public $number_of_days;
     public $amount;
+    public $attachment = [];
+    public $insurance_coverage_member;
+    public $insurance_coverage_dependent;
+
 
     protected function getFormSchema(): array
     {
         return [
-            Card::make()
-            ->schema([
-                Forms\Components\TextInput::make('batch_number')->label('Batch No.')
-                ->disabled()
-                ->required(),
-                Forms\Components\Select::make('darbc_id')->label('DARBC ID')
-                ->reactive()
-                ->options($this->member_ids->pluck('darbc_id', 'id'))
-                ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$state;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+            Wizard::make([
+                Wizard\Step::make('Information')
+                    ->schema([
+                        Card::make()
+                        ->schema([
+                            Forms\Components\TextInput::make('batch_number')->label('Batch No.')
+                            ->disabled()
+                            ->required(),
+                            Forms\Components\Select::make('darbc_id')->label('DARBC ID')
+                            ->reactive()
+                            ->options($this->member_ids->pluck('darbc_id', 'id'))
+                            ->afterStateUpdated(function ($set, $get, $state) {
+                                if($state == null)
+                                {
+                                    $set('emrollment_status', null);
+                                    $set('patients_first_name', null);
+                                    $set('patients_middle_name', null);
+                                    $set('patients_last_name', null);
+                                    $set('contact_number', null);
+                                    $set('age', null);
+                                    $set('date_of_confinement_from', null);
+                                    $set('date_of_confinement_to', null);
+                                    $set('hospital_id', null);
+                                    $set('number_of_days', null);
+                                    $set('amount', null);
 
-                    $collection = collect($member_data['data']);
+                                }else{
+                                    $url = 'https://darbc.org/api/member-information/'.$state;
+                                    $response = file_get_contents($url);
+                                    $member_data = json_decode($response, true);
 
-                    //$member = Member::where('member_id', $state)->first();
-                    if($get('enrollment_status') == 'member')
-                    {
-                        $set('patients_first_name', $collection['user']['first_name']);
-                        $set('patients_middle_name',$collection['user']['middle_name']);
-                        $set('patients_last_name', $collection['user']['surname']);
-                        $set('contact_number', $collection['contact_number']);
-                        if($collection['date_of_birth'] != null)
-                        {
-                            $date_of_birth = $collection['date_of_birth'];
-                            $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
-                            $set('age', $age);
-                        }else{
-                            $set('age', null);
-                        }
-                    }else{
-                        $set('patients_first_name', null);
-                        $set('patients_middle_name', null);
-                        $set('patients_last_name', null);
-                        $set('contact_number', null);
-                        $set('age', null);
-                    }
-                })
-                ->searchable(),
-                // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
-                Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->darbc_id == null)
-                ->options([
-                    'member' => 'M',
-                    'dependent' => 'D',
-                ])
-                ->reactive()
-                ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$get('darbc_id');
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                                    $collection = collect($member_data['data']);
 
-                    $collection = collect($member_data['data']);
+                                    //$member = Member::where('member_id', $state)->first();
+                                    if($get('enrollment_status') == 'member')
+                                    {
+                                        $set('patients_first_name', $collection['user']['first_name']);
+                                        $set('patients_middle_name',$collection['user']['middle_name']);
+                                        $set('patients_last_name', $collection['user']['surname']);
+                                        $set('contact_number', $collection['contact_number']);
+                                        if($collection['date_of_birth'] != null)
+                                        {
+                                            $date_of_birth = $collection['date_of_birth'];
+                                            $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                                            $set('age', $age);
+                                        }else{
+                                            $set('age', null);
+                                        }
+                                    }else{
+                                        $set('patients_first_name', null);
+                                        $set('patients_middle_name', null);
+                                        $set('patients_last_name', null);
+                                        $set('contact_number', null);
+                                        $set('age', null);
+                                    }
+                                }
 
-                   // $member = Member::where('member_id', $get('darbc_id'))->first();
+                            })
+                            ->searchable(),
+                            // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
+                            Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->darbc_id == null)
+                            ->options([
+                                'member' => 'M',
+                                'dependent' => 'D',
+                            ])
+                            ->reactive()
+                            ->afterStateUpdated(function ($set, $get, $state) {
+                                $url = 'https://darbc.org/api/member-information/'.$get('darbc_id');
+                                $response = file_get_contents($url);
+                                $member_data = json_decode($response, true);
 
-                    $startDate = strtotime($get('date_of_confinement_from'));
-                    $endDate = strtotime($get('date_of_confinement_to'));
-                    $days = ($endDate - $startDate) / (60 * 60 * 24);
+                                $collection = collect($member_data['data']);
 
-                    if($this->date_of_confinement_to != null)
-                    {
-                        if(Health::get()->count() == 0)
-                        {
-                            $confinement_days = 0;
-                        }else{
-                            $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_from', $this->date_of_confinement_to)->first()->sum('number_of_days');
+                               // $member = Member::where('member_id', $get('darbc_id'))->first();
 
-                        }
-                    }else{
-                        $confinement_days = null;
-                    }
+                                $startDate = strtotime($get('date_of_confinement_from'));
+                                $endDate = strtotime($get('date_of_confinement_to'));
+                                $days = ($endDate - $startDate) / (60 * 60 * 24);
 
-
-                      //set amount computation
-                      if($get('enrollment_status') == 'member')
-                      {
-                            $set('patients_first_name', $collection['user']['first_name']);
-                            $set('patients_middle_name',$collection['user']['middle_name']);
-                            $set('patients_last_name', $collection['user']['surname']);
-                            $set('contact_number', $collection['contact_number']);
-                            if($collection['date_of_birth'] != null)
-                            {
-                                $date_of_birth = $collection['date_of_birth'];
-                                $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
-                                $set('age', $age);
-                            }else{
-                                $set('age', null);
-                            }
-
-
-                         if ($this->date_of_confinement_to != null) {
-                             $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                             if(Health::get()->count() == 0)
-                             {
-                                $totalDays = 0;
-                             }else{
-                                $totalDays = Health::where('member_id', $this->darbc_id)
-                                ->where('enrollment_status', 'member')
-                                ->whereYear('confinement_date_from', $year)
-                                ->sum('number_of_days');
-                             }
-                             if(($totalDays + $days) < 30)
-                             {
-                                 if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                 {
-                                     $set('number_of_days', 1);
-                                 }else{
-                                     $set('number_of_days', $days);
-                                 }
-                                 $amount = $get('number_of_days') * 1000;
-                                 $set('amount', $amount);
-                             }else{
-                                 $excessDays = ($totalDays + $days) - 30;
-                                 $remaining_days = 30 - $totalDays;
-                                 $this->dialog()->info(
-                                 $title = 'Information',
-                                 $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 30 days within this year.');
-                                 $amount = $remaining_days * 1000;
-                                 $set('amount', $amount);
-                                 $set('number_of_days', $days);
-                             }
-
-                            }
+                                if($this->date_of_confinement_to != null)
+                                {
+                                    if(Health::where('member_id', $this->darbc_id)->get()->count() == 0)
+                                    {
+                                        $confinement_days = 0;
+                                    }else{
+                                        $confinement_days = Health::where('member_id', $this->darbc_id)->whereYear('confinement_date_from', $this->date_of_confinement_to)->first()->sum('number_of_days');
+                                    }
+                                }else{
+                                    $confinement_days = null;
+                                }
 
 
-
-                      }elseif($get('enrollment_status') == 'dependent')
-                      {
-                            $set('patients_first_name', null);
-                            $set('patients_middle_name', null);
-                            $set('patients_last_name', null);
-                            $set('contact_number', null);
-                            $set('age', null);
-
-                         if ($this->date_of_confinement_to != null) {
-                             $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                             if(Health::get()->count() == 0)
-                             {
-                                $totalDays = 0;
-                             }else{
-                                $totalDays = Health::where('member_id', $this->darbc_id)
-                                ->where('enrollment_status', 'member')
-                                ->whereYear('confinement_date_from', $year)
-                                ->sum('number_of_days');
-                             }
-
-                             if(($totalDays + $days) < 15)
-                             {
-                                 if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                 {
-                                     $set('number_of_days', 1);
-                                 }else{
-                                     $set('number_of_days', $days);
-                                 }
-                                 $amount = $get('number_of_days') * 300;
-                                 $set('amount', $amount);
-                             }else{
-                                 $excessDays = ($totalDays + $days) - 15;
-                                 $remaining_days = 15 - $totalDays;
-                                 $this->dialog()->info(
-                                 $title = 'Information',
-                                 $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 15 days within this year.');
-                                 $amount = $remaining_days * 300;
-                                 $set('amount', $amount);
-                                 $set('number_of_days', $days);
-                             }
-
-                         }
+                                  //set amount computation
+                                  if($get('enrollment_status') == 'member')
+                                  {
+                                        $set('patients_first_name', $collection['user']['first_name']);
+                                        $set('patients_middle_name',$collection['user']['middle_name']);
+                                        $set('patients_last_name', $collection['user']['surname']);
+                                        $set('contact_number', $collection['contact_number']);
+                                        if($collection['date_of_birth'] != null)
+                                        {
+                                            $date_of_birth = $collection['date_of_birth'];
+                                            $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                                            $set('age', $age);
+                                        }else{
+                                            $set('age', null);
+                                        }
 
 
-                      }
-                })
-                ->required(),
-            ])->columns(3),
+                                     if ($this->date_of_confinement_to != null) {
+                                         $year = date('Y', strtotime($this->date_of_confinement_to));
 
-            Fieldset::make('Patient\'s Information')
-            ->schema([
-                Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->required(),
-                Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->reactive(),
-                Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->reactive()->required(),
-                Grid::make()
-                ->schema([
-                    Forms\Components\TextInput::make('contact_number')->label('Contact Number')->reactive()->required(),
-                    Forms\Components\TextInput::make('age')->reactive()->required(),
-                ]) ->columns(2)
+                                         if(Health::get()->count() == 0)
+                                         {
+                                            $totalDays = 0;
+                                         }else{
+                                            $totalDays = Health::where('member_id', $this->darbc_id)
+                                            ->where('enrollment_status', 'member')
+                                            ->whereYear('confinement_date_from', $year)
+                                            ->sum('number_of_days');
+                                         }
+                                         if(($totalDays + $days) < $this->insurance_coverage_member->number_of_days)
+                                         {
+                                             if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                             {
+                                                 $set('number_of_days', 1);
+                                             }else{
+                                                 $set('number_of_days', $days);
+                                             }
+                                             $amount = $get('number_of_days') * $this->insurance_coverage_member->amount;
+                                             $set('amount', $amount);
+                                         }else{
+                                             $excessDays = ($totalDays + $days) - $this->insurance_coverage_member->number_of_days;
+                                             $remaining_days = $this->insurance_coverage_member->number_of_days - $totalDays;
+                                             $this->dialog()->info(
+                                             $title = 'Information',
+                                             $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_member->number_of_days.' days within this year.');
+                                             $amount = $remaining_days * $this->insurance_coverage_member->amount;
+                                             $set('amount', $amount);
+                                             $set('number_of_days', $days);
+                                         }
+
+                                        }
+
+
+
+                                  }elseif($get('enrollment_status') == 'dependent')
+                                  {
+                                        $set('patients_first_name', null);
+                                        $set('patients_middle_name', null);
+                                        $set('patients_last_name', null);
+                                        $set('contact_number', null);
+                                        $set('age', null);
+
+                                     if ($this->date_of_confinement_to != null) {
+                                         $year = date('Y', strtotime($this->date_of_confinement_to));
+
+                                         if(Health::get()->count() == 0)
+                                         {
+                                            $totalDays = 0;
+                                         }else{
+                                            $totalDays = Health::where('member_id', $this->darbc_id)
+                                            ->where('enrollment_status', 'member')
+                                            ->whereYear('confinement_date_from', $year)
+                                            ->sum('number_of_days');
+                                         }
+
+                                         if(($totalDays + $days) < $this->insurance_coverage_dependent->number_of_days)
+                                         {
+                                             if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                             {
+                                                 $set('number_of_days', 1);
+                                             }else{
+                                                 $set('number_of_days', $days);
+                                             }
+                                             $amount = $get('number_of_days') * $this->insurance_coverage_dependent->amount;
+                                             $set('amount', $amount);
+                                         }else{
+                                             $excessDays = ($totalDays + $days) - $this->insurance_coverage_dependent->number_of_days;
+                                             $remaining_days = $this->insurance_coverage_dependent->number_of_days - $totalDays;
+                                             $this->dialog()->info(
+                                             $title = 'Information',
+                                             $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_dependent->number_of_days.' days within this year.');
+                                             $amount = $remaining_days * $this->insurance_coverage_dependent->amount;
+                                             $set('amount', $amount);
+                                             $set('number_of_days', $days);
+                                         }
+
+                                     }
+
+
+                                  }
+                            })
+                            ->required(),
+                        ])->columns(3),
+
+                        Fieldset::make('Patient\'s Information')
+                        ->schema([
+                            Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->required(),
+                            Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->reactive(),
+                            Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->reactive()->required(),
+                            Grid::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('contact_number')->label('Contact Number')->reactive()->required(),
+                                Forms\Components\TextInput::make('age')->reactive()->required(),
+                            ]) ->columns(2)
+                        ])
+                        ->columns(3),
+                        Fieldset::make('Confinement Information')
+                        ->schema([
+                            Grid::make()
+                            ->schema([
+                                DatePicker::make('date_of_confinement_from')->label('From')
+                                ->reactive()
+                                ->afterStateUpdated(function ($set, $get, $state){
+                                    if(($state != null && $get('date_of_confinement_to') != null) && $state <= $get('date_of_confinement_to'))
+                                    {
+                                        $startDate = strtotime($state);
+                                        $endDate = strtotime($get('date_of_confinement_to'));
+
+                                        $days = ($endDate - $startDate) / (60 * 60 * 24);
+
+                                        //set amount computation
+                                        if($get('enrollment_status') == 'member')
+                                        {
+                                           if ($this->date_of_confinement_to != null) {
+                                               $year = date('Y', strtotime($this->date_of_confinement_to));
+
+                                               $totalDays = Health::where('member_id', $this->darbc_id)
+                                                   ->where('enrollment_status', 'member')
+                                                   ->whereYear('confinement_date_from', $year)
+                                                   ->sum('number_of_days');
+                                           }
+
+                                           if(($totalDays + $days) < $this->insurance_coverage_member->number_of_days)
+                                           {
+                                               if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                               {
+                                                   $set('number_of_days', 1);
+                                               }else{
+                                                   $set('number_of_days', $days);
+                                               }
+                                               $amount = $get('number_of_days') * $this->insurance_coverage_member->amount;
+                                               $set('amount', $amount);
+                                           }else{
+                                               $excessDays = ($totalDays + $days) - $this->insurance_coverage_member->number_of_days;
+                                               $remaining_days = $this->insurance_coverage_member->number_of_days - $totalDays;
+                                               $this->dialog()->info(
+                                               $title = 'Information',
+                                               $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_member->number_of_days.' days within this year.');
+                                               $amount = $remaining_days * $this->insurance_coverage_member->amount;
+                                               $set('amount', $amount);
+                                               $set('number_of_days', $days);
+                                           }
+
+                                        }elseif($get('enrollment_status') == 'dependent')
+                                        {
+
+                                           if ($this->date_of_confinement_to != null) {
+                                               $year = date('Y', strtotime($this->date_of_confinement_to));
+
+                                               $totalDays = Health::where('member_id', $this->darbc_id)
+                                                   ->where('enrollment_status', 'dependent')
+                                                   ->whereYear('confinement_date_from', $year)
+                                                   ->sum('number_of_days');
+                                           }
+
+                                           if(($totalDays + $days) < $this->insurance_coverage_dependent->number_of_days)
+                                           {
+                                               if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                               {
+                                                   $set('number_of_days', 1);
+                                               }else{
+                                                   $set('number_of_days', $days);
+                                               }
+                                               $amount = $get('number_of_days') * $this->insurance_coverage_dependent->amount;
+                                               $set('amount', $amount);
+                                           }else{
+                                               $excessDays = ($totalDays + $days) - $this->insurance_coverage_dependent->number_of_days;
+                                               $remaining_days = $this->insurance_coverage_dependent->number_of_days - $totalDays;
+                                               $this->dialog()->info(
+                                               $title = 'Information',
+                                               $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_dependent->number_of_days.' days within this year.');
+                                               $amount = $remaining_days * $this->insurance_coverage_dependent->amount;
+                                               $set('amount', $amount);
+                                               $set('number_of_days', $days);
+                                           }
+                                        }
+                                    }elseif($state > $get('date_of_confinement_to')){
+                                        $set('number_of_days', 0);
+                                        $set('amount', 0);
+                                    }else{
+                                        $set('number_of_days', 0);
+                                        $set('amount', 0);
+                                    }
+                                })
+                                ->required(),
+                                DatePicker::make('date_of_confinement_to')->label('To')
+                                ->reactive()
+                                ->afterStateUpdated(function ($set, $get, $state){
+                                    if(($get('date_of_confinement_from') != null && $state != null) && $get('date_of_confinement_from') <= $state)
+                                    {
+                                        $startDate = strtotime($get('date_of_confinement_from'));
+                                        $endDate = strtotime($state);
+
+                                        $days = ($endDate - $startDate) / (60 * 60 * 24);
+
+
+                                        //set amount computation
+                                         if($get('enrollment_status') == 'member')
+                                         {
+                                            if ($this->date_of_confinement_to != null) {
+                                                $year = date('Y', strtotime($this->date_of_confinement_to));
+
+                                                $totalDays = Health::where('member_id', $this->darbc_id)
+                                                    ->where('enrollment_status', 'member')
+                                                    ->whereYear('confinement_date_from', $year)
+                                                    ->sum('number_of_days');
+                                            }
+
+                                            if(($totalDays + $days) < $this->insurance_coverage_member->number_of_days)
+                                            {
+                                                if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                                {
+                                                    $set('number_of_days', 1);
+                                                }else{
+                                                    $set('number_of_days', $days);
+                                                }
+                                                $amount = $get('number_of_days') * $this->insurance_coverage_member->amount;
+                                                $set('amount', $amount);
+                                            }else{
+                                                $excessDays = ($totalDays + $days) - $this->insurance_coverage_member->number_of_days;
+                                                $remaining_days = $this->insurance_coverage_member->number_of_days - $totalDays;
+                                                $this->dialog()->info(
+                                                $title = 'Information',
+                                                $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_member->number_of_days.' days within this year.');
+                                                $amount = $remaining_days * $this->insurance_coverage_member->amount;
+                                                $set('amount', $amount);
+                                                $set('number_of_days', $days);
+                                            }
+
+                                         }elseif($get('enrollment_status') == 'dependent')
+                                         {
+
+                                            if ($this->date_of_confinement_to != null) {
+                                                $year = date('Y', strtotime($this->date_of_confinement_to));
+
+                                                $totalDays = Health::where('member_id', $this->darbc_id)
+                                                    ->where('enrollment_status', 'dependent')
+                                                    ->whereYear('confinement_date_from', $year)
+                                                    ->sum('number_of_days');
+                                            }
+
+                                            if(($totalDays + $days) < $this->insurance_coverage_dependent->number_of_days)
+                                            {
+                                                if($this->date_of_confinement_from === $this->date_of_confinement_to)
+                                                {
+                                                    $set('number_of_days', 1);
+                                                }else{
+                                                    $set('number_of_days', $days);
+                                                }
+                                                $amount = $get('number_of_days') * $this->insurance_coverage_dependent->amount;
+                                                $set('amount', $amount);
+                                            }else{
+                                                $excessDays = ($totalDays + $days) - $this->insurance_coverage_dependent->number_of_days;
+                                                $remaining_days = $this->insurance_coverage_dependent->number_of_days - $totalDays;
+                                                $this->dialog()->info(
+                                                $title = 'Information',
+                                                $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed '.$this->insurance_coverage_dependent->number_of_days.' days within this year.');
+                                                $amount = $remaining_days * $this->insurance_coverage_dependent->amount;
+                                                $set('amount', $amount);
+                                                $set('number_of_days', $days);
+                                            }
+                                         }
+                                    }elseif($get('date_of_confinement_from') > $state){
+                                        $set('number_of_days', 0);
+                                        $set('amount', 0);
+                                    }else{
+                                        $set('number_of_days', 0);
+                                        $set('amount', 0);
+                                    }
+                                })
+                                ->required(),
+                                Forms\Components\Select::make('hospital_id')->label('Hospital')->searchable()
+                                ->options(Hospital::all()->pluck('name', 'id'))
+                                ->required(),
+                                Forms\Components\TextInput::make('number_of_days')->label('Number Of Days')->default('0')->disabled()
+                                ->reactive()
+                                ->required(),
+                            ])->columns(2),
+                            Forms\Components\TextInput::make('amount')
+                            ->reactive()
+                            ->disabled()
+                            ->required(),
+                        ])->columns(1),
+                    ]),
+                Wizard\Step::make('Attachments')
+                    ->schema([
+                        FileUpload::make('attachment')
+                        ->enableOpen()
+                        ->multiple()
+                        ->disk('public')
+                        ->preserveFilenames()
+                        ->reactive()
+                    ])
             ])
-            ->columns(3),
-            Fieldset::make('Confinement Information')
-            ->schema([
-                Grid::make()
-                ->schema([
-                    DatePicker::make('date_of_confinement_from')->label('From')
-                    ->reactive()
-                    ->afterStateUpdated(function ($set, $get, $state){
-                        if(($state != null && $get('date_of_confinement_to') != null) && $state <= $get('date_of_confinement_to'))
-                        {
-                            $startDate = strtotime($state);
-                            $endDate = strtotime($get('date_of_confinement_to'));
-
-                            $days = ($endDate - $startDate) / (60 * 60 * 24);
-
-                            //set amount computation
-                            if($get('enrollment_status') == 'member')
-                            {
-                               if ($this->date_of_confinement_to != null) {
-                                   $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                                   $totalDays = Health::where('member_id', $this->darbc_id)
-                                       ->where('enrollment_status', 'member')
-                                       ->whereYear('confinement_date_from', $year)
-                                       ->sum('number_of_days');
-                               }
-
-                               if(($totalDays + $days) < 30)
-                               {
-                                   if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                   {
-                                       $set('number_of_days', 1);
-                                   }else{
-                                       $set('number_of_days', $days);
-                                   }
-                                   $amount = $get('number_of_days') * 1000;
-                                   $set('amount', $amount);
-                               }else{
-                                   $excessDays = ($totalDays + $days) - 30;
-                                   $remaining_days = 30 - $totalDays;
-                                   $this->dialog()->info(
-                                   $title = 'Information',
-                                   $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 30 days within this year.');
-                                   $amount = $remaining_days * 1000;
-                                   $set('amount', $amount);
-                                   $set('number_of_days', $days);
-                               }
-
-                            }elseif($get('enrollment_status') == 'dependent')
-                            {
-
-                               if ($this->date_of_confinement_to != null) {
-                                   $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                                   $totalDays = Health::where('member_id', $this->darbc_id)
-                                       ->where('enrollment_status', 'dependent')
-                                       ->whereYear('confinement_date_from', $year)
-                                       ->sum('number_of_days');
-                               }
-
-                               if(($totalDays + $days) < 15)
-                               {
-                                   if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                   {
-                                       $set('number_of_days', 1);
-                                   }else{
-                                       $set('number_of_days', $days);
-                                   }
-                                   $amount = $get('number_of_days') * 300;
-                                   $set('amount', $amount);
-                               }else{
-                                   $excessDays = ($totalDays + $days) - 15;
-                                   $remaining_days = 15 - $totalDays;
-                                   $this->dialog()->info(
-                                   $title = 'Information',
-                                   $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 15 days within this year.');
-                                   $amount = $remaining_days * 300;
-                                   $set('amount', $amount);
-                                   $set('number_of_days', $days);
-                               }
-                            }
-                        }elseif($state > $get('date_of_confinement_to')){
-                            $set('number_of_days', 0);
-                            $set('amount', 0);
-                        }else{
-                            $set('number_of_days', 0);
-                            $set('amount', 0);
-                        }
-                    })
-                    ->required(),
-                    DatePicker::make('date_of_confinement_to')->label('To')
-                    ->reactive()
-                    ->afterStateUpdated(function ($set, $get, $state){
-                        if(($get('date_of_confinement_from') != null && $state != null) && $get('date_of_confinement_from') <= $state)
-                        {
-                            $startDate = strtotime($get('date_of_confinement_from'));
-                            $endDate = strtotime($state);
-
-                            $days = ($endDate - $startDate) / (60 * 60 * 24);
-
-
-                            //set amount computation
-                             if($get('enrollment_status') == 'member')
-                             {
-                                if ($this->date_of_confinement_to != null) {
-                                    $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                                    $totalDays = Health::where('member_id', $this->darbc_id)
-                                        ->where('enrollment_status', 'member')
-                                        ->whereYear('confinement_date_from', $year)
-                                        ->sum('number_of_days');
-                                }
-
-                                if(($totalDays + $days) < 30)
-                                {
-                                    if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                    {
-                                        $set('number_of_days', 1);
-                                    }else{
-                                        $set('number_of_days', $days);
-                                    }
-                                    $amount = $get('number_of_days') * 1000;
-                                    $set('amount', $amount);
-                                }else{
-                                    $excessDays = ($totalDays + $days) - 30;
-                                    $remaining_days = 30 - $totalDays;
-                                    $this->dialog()->info(
-                                    $title = 'Information',
-                                    $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 30 days within this year.');
-                                    $amount = $remaining_days * 1000;
-                                    $set('amount', $amount);
-                                    $set('number_of_days', $days);
-                                }
-
-                             }elseif($get('enrollment_status') == 'dependent')
-                             {
-
-                                if ($this->date_of_confinement_to != null) {
-                                    $year = date('Y', strtotime($this->date_of_confinement_to));
-
-                                    $totalDays = Health::where('member_id', $this->darbc_id)
-                                        ->where('enrollment_status', 'dependent')
-                                        ->whereYear('confinement_date_from', $year)
-                                        ->sum('number_of_days');
-                                }
-
-                                if(($totalDays + $days) < 15)
-                                {
-                                    if($this->date_of_confinement_from === $this->date_of_confinement_to)
-                                    {
-                                        $set('number_of_days', 1);
-                                    }else{
-                                        $set('number_of_days', $days);
-                                    }
-                                    $amount = $get('number_of_days') * 300;
-                                    $set('amount', $amount);
-                                }else{
-                                    $excessDays = ($totalDays + $days) - 15;
-                                    $remaining_days = 15 - $totalDays;
-                                    $this->dialog()->info(
-                                    $title = 'Information',
-                                    $description = 'Only '. $remaining_days .' day(s) will be covered in your insurance because you already consumed 15 days within this year.');
-                                    $amount = $remaining_days * 300;
-                                    $set('amount', $amount);
-                                    $set('number_of_days', $days);
-                                }
-                             }
-                        }elseif($get('date_of_confinement_from') > $state){
-                            $set('number_of_days', 0);
-                            $set('amount', 0);
-                        }else{
-                            $set('number_of_days', 0);
-                            $set('amount', 0);
-                        }
-                    })
-                    ->required(),
-                    Forms\Components\Select::make('hospital_id')->label('Hospital')->searchable()
-                    ->options(Hospital::all()->pluck('name', 'id'))
-                    ->required(),
-                    Forms\Components\TextInput::make('number_of_days')->label('Number Of Days')->default('0')->disabled()
-                    ->reactive()
-                    ->required(),
-                ])->columns(2),
-                Forms\Components\TextInput::make('amount')
-                ->reactive()
-                ->disabled()
-                ->required(),
-            ])->columns(1),
-
-
 
         ];
     }
@@ -447,6 +482,9 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
         } else {
             $this->batch_number = 1;
         }
+
+        $this->insurance_coverage_member = InsuranceCoverage::where('category', 'MEMBER')->first();
+        $this->insurance_coverage_dependent = InsuranceCoverage::where('category', 'DEPENDENT')->first();
     }
 
     public function closeModal()
@@ -492,7 +530,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
         ]);
 
         DB::beginTransaction();
-        Health::create([
+        $health = Health::create([
             'member_id' => $this->darbc_id,
             'hospital_id' => $this->hospital_id,
             'batch_number' => $this->batch_number,
@@ -508,6 +546,15 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
             'amount' => $this->amount,
             'status' => 'ENCODED',
         ]);
+            //save Files from fileupload
+            foreach($this->attachment as $document){
+                $health->health_attachments()->create(
+                    [
+                         "path"=>$document->storeAs('public',now()->format("HismdY-").$document->getClientOriginalName()),
+                        "document_name"=>$document->getClientOriginalName(),
+                    ]
+                );
+            }
         DB::commit();
 
         $this->emit('close_modal');

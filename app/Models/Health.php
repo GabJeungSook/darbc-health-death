@@ -10,6 +10,11 @@ class Health extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function health_attachments()
+    {
+        return $this->morphMany(HealthAttachment::class, 'documentable');
+    }
+
     public function members()
     {
         return $this->belongsTo(Member::class, 'member_id', 'member_id');
@@ -22,12 +27,12 @@ class Health extends Model
 
     public function transmittals()
     {
-        return $this->hasMany(Transmittal::class);
+        return $this->hasOne(Transmittal::class);
     }
 
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasOne(Payment::class);
     }
 
 

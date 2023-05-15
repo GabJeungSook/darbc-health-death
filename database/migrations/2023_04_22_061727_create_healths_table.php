@@ -27,6 +27,7 @@ return new class extends Migration
             $table->integer('number_of_days');
             $table->integer('amount');
             $table->string('status')->nullable();
+            $table->integer('update_attempts')->default(0)->nullable();
             $table->timestamps();
         });
     }

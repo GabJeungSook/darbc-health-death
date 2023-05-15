@@ -3,7 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Log;
-
+use App\Models\Health;
+use App\Models\Death;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +31,28 @@ Route::get('/health', function () {
 })
     ->middleware(['auth', 'verified'])
     ->name('health');
+
+Route::get('/insurance-coverage', function () {
+    return view('insurance-coverage');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('insurance-coverage');
+
+Route::get('/health-information/{record}', function ($record) {
+    $healthRecord = Health::findOrFail($record);
+
+    return view('view-health-data', ['record' => $healthRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-health');
+
+Route::get('/death-information/{record}', function ($record) {
+    $deathRecord = Death::findOrFail($record);
+
+    return view('view-death-data', ['record' => $deathRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-death');
 
 Route::get('/death', function () {
     return view('death');
@@ -63,6 +86,12 @@ Route::get('/mortuary', function () {
     ->middleware(['auth', 'verified'])
     ->name('mortuary');
 
+Route::get('/mortuary-inquiry', function () {
+        return view('mortuary-inquiry');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('mortuary-inquiry');
+
 Route::get('/cash-advance', function () {
     return view('cash-advance');
 })
@@ -75,11 +104,11 @@ Route::get('/cash-advance-inquiry', function () {
     ->middleware(['auth', 'verified'])
     ->name('cash-advance-inquiry');
 
-Route::get('/hospital', function () {
-    return view('hospital');
+Route::get('/settings', function () {
+    return view('settings');
 })
     ->middleware(['auth', 'verified'])
-    ->name('hospital');
+    ->name('settings');
 
 Route::get('/inquiry', function () {
     return view('inquiry');
@@ -110,6 +139,12 @@ Route::get('/cash-advance-report', function () {
 })
     ->middleware(['auth', 'verified'])
     ->name('cash-advance-report');
+
+Route::get('/mortuary-report', function () {
+        return view('mortuary-report');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('mortuary-report');
 
 Route::get('/upload', function () {
     return view('upload');

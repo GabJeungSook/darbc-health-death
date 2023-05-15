@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Livewire;
+
+use Livewire\Component;
+use Filament\Tables;
+use App\Models\Mortuary;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\TextColumn;
+
+class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
+{
+    use Tables\Concerns\InteractsWithTable;
+
+    public $filters = [
+        'member_id' => null,
+        'contact_number' => null,
+        'amount' => null,
+        'hollographic' => null,
+        'claimants_first_name' => null,
+        'claimants_middle_name' => null,
+        'claimants_last_name' => null,
+        'claimants_contact_number' => null,
+        'status' => null,
+        'diamond_package' => null,
+        'vehicle' => null,
+    ];
+
+    public $search = '';
+
+    protected function getTableQuery(): Builder
+    {
+        return Mortuary::query();
+    }
+
+    protected function getTableColumns(): array
+    {
+        return [
+            TextColumn::make('memberName')
+            ->label('Member Name')
+            ->formatStateUsing(function ($record) {
+                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                $response = file_get_contents($url);
+                $member_data = json_decode($response, true);
+
+                $collection = collect($member_data['data']);
+
+                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+            })
+            ->searchable()
+            ->sortable(),
+            TextColumn::make('contact_number'),
+            TextColumn::make('amount'),
+            TextColumn::make('hollographic'),
+            TextColumn::make('claimants_first_name'),
+            TextColumn::make('claimants_middle_name'),
+            TextColumn::make('claimants_last_name'),
+            TextColumn::make('claimants_contact_number'),
+            TextColumn::make('status'),
+            TextColumn::make('diamond_package'),
+            TextColumn::make('vehicle')
+        ];
+    }
+
+    public function redirectToMortuary()
+    {
+        return redirect()->route('mortuary');
+    }
+
+    public function render()
+    {
+        return view('livewire.mortuary-inquiry', [
+            'records' => Mortuary::where(
+                'member_id',
+                'like',
+                '%' . $this->search . '%'
+            )
+            ->orWhere('contact_number', 'like', '%' . $this->search . '%')
+            ->orWhere('amount', 'like', '%' . $this->search . '%')
+            ->orWhere('hollographic', 'like', '%' . $this->search . '%')
+            ->orWhere('claimants_first_name', 'like', '%' . $this->search . '%')
+            ->orWhere('claimants_middle_name', 'like', '%' . $this->search . '%')
+            ->orWhere('claimants_last_name', 'like', '%' . $this->search . '%')
+            ->orWhere('status', 'like', '%' . $this->search . '%')
+            ->orWhere('diamond_package', 'like', '%' . $this->search . '%')
+            ->orWhere('vehicle', 'like', '%' . $this->search . '%')
+            ->get()
+        ]);
+    }
+}

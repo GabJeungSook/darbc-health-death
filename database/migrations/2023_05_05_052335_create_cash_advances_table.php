@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('member_id');
             $table->text('purpose');
+            $table->text('other_purpose')->nullable();
             $table->json('contact_numbers');
             $table->string('account');
             $table->string('amount_requested');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->date('date_approved')->nullable();
             $table->text('reason')->nullable();
             $table->string('status')->nullable();
+            $table->integer('update_attempts')->default(0)->nullable();
             $table->timestamps();
         });
     }

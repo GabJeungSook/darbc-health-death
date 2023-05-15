@@ -9,7 +9,14 @@ class Mortuary extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $casts = [
-        'contact_numbers' => 'array',
-    ];
+
+    public function mortuary_attachments()
+    {
+        return $this->morphMany(MortuaryAttachment::class, 'documentable');
+    }
+
+    public function death()
+    {
+        return $this->hasOne(Death::class);
+    }
 }

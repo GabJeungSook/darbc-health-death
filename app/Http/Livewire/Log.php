@@ -33,6 +33,7 @@ class Log extends Component implements Tables\Contracts\HasTable
     {
         return [
             ViewAction::make()
+            ->button()
             ->label('View Log')
             ->color('success')
             ->url(fn (LogModel $record): string => route('view-log', $record))
@@ -47,6 +48,15 @@ class Log extends Component implements Tables\Contracts\HasTable
             TextColumn::make('member_id')
             ->label('DARBC ID')
             ->searchable()
+            ->formatStateUsing(function ($record) {
+                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                $response = file_get_contents($url);
+                $member_data = json_decode($response, true);
+
+                $collection = collect($member_data['data']);
+
+                return $collection['darbc_id'];
+            })
             ->sortable(),
             TextColumn::make('memberName')
             ->formatStateUsing(function ($record) {

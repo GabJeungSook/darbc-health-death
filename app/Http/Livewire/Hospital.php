@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use Filament\Tables;
+use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use App\Models\Hospital as HospitalModel;
@@ -33,6 +34,8 @@ class Hospital extends Component implements Tables\Contracts\HasTable
         return [
             Action::make('edit')
             ->label('Edit')
+            ->button()
+            ->icon('heroicon-o-pencil')
             ->color('success')
             ->mountUsing(fn (Forms\ComponentContainer $form, HospitalModel $record) => $form->fill([
                 'name' => $record->name,
@@ -59,6 +62,8 @@ class Hospital extends Component implements Tables\Contracts\HasTable
             ]),
             Action::make('delete')
             ->label('Delete')
+            ->button()
+            ->icon('heroicon-o-trash')
             ->color('danger')
             ->action(fn ($record) => $record->delete())
             ->requiresConfirmation(),

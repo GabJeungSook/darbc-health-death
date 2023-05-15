@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('vehicle_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('death_id');
-            $table->date('date_requested');
-            $table->date('scheduled_date');
-            $table->string('vehicle_type');
-            $table->text('remarks');
+            $table->string('schedule_first_name')->nullable();
+            $table->string('schedule_middle_name')->nullable();
+            $table->string('schedule_last_name')->nullable();
+            $table->date('date_requested')->nullable();
+            $table->date('scheduled_date')->nullable();
+            $table->string('vehicle_type')->nullable();
+            $table->text('remarks')->nullable();
             $table->timestamps();
         });
     }

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('deaths', function (Blueprint $table) {
             $table->id();
-            $table->string('member_id');
+            $table->foreignId('member_id');
+            $table->foreignId('mortuary_id')->index();
             $table->integer('batch_number');
             $table->date('date');
             $table->string('enrollment_status');
@@ -24,15 +25,16 @@ return new class extends Migration
             $table->string('dependents_middle_name')->nullable();
             $table->string('dependents_last_name')->nullable();
             $table->string('dependent_type')->nullable();
-            $table->boolean('has_diamond_package');
+            $table->string('has_diamond_package');
             $table->date('birthday');
             $table->integer('age');
             $table->string('contact_number');
             $table->date('date_of_death');
             $table->string('place_of_death');
             $table->string('coverage_type');
-            $table->boolean('has_vehicle');
+            $table->string('has_vehicle');
             $table->string('amount');
+            $table->integer('update_attempts')->default(0)->nullable();
             $table->timestamps();
         });
     }

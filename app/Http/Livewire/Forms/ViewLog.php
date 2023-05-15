@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Forms;
 
 use Livewire\Component;
+use App\Models\ReportSignatory;
 
 class ViewLog extends Component
 {
@@ -12,6 +13,7 @@ class ViewLog extends Component
     {
         return view('livewire.forms.view-log', [
             'record' => $this->record,
+            'signatory' => ReportSignatory::where('report_id', 3)->first(),
         ]);
     }
 }

@@ -37,46 +37,64 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
 
                 $collection = collect($member_data['data']);
 
-                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) .'.' ;
+                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
             })
             ->searchable()
             ->sortable(),
-            TextColumn::make('purpose')
-            ->label('Purpose')
-            ->searchable()
-            ->sortable(),
-            TextColumn::make('account')
-            ->label('Account')
-            ->searchable()
-            ->sortable(),
-            TextColumn::make('amount_requested')
-            ->label('Amount Requested')
-            ->searchable()
-            ->sortable(),
-            TextColumn::make('date_received')
-            ->label('Date Received')
-            ->date('F d, Y')
+            TextColumn::make('claimantName')
+            ->label('Claimants Name')
+            ->formatStateUsing(function ($record) {
+                  return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
+            })
             ->searchable()
             ->sortable(),
             BadgeColumn::make('status')
             ->enum([
-                'On-going' => 'On-Going',
-                'Pending' => 'Pending',
                 'Approved' => 'Approved',
-                'Disapproved' => 'Disapproved',
+                'Pending' => 'Pending',
             ])
             ->colors([
-                'secondary' => 'On-going',
-                'primary' => 'Pending',
                 'success' => 'Approved',
-                'danger' => 'Disapproved',
+                'warning' => 'Pending',
             ]),
+            BadgeColumn::make('diamond_package')
+            ->enum([
+                'Yes' => 'Yes',
+                'No' => 'No',
+                'Islam' => 'Islam',
+                'Distant' => 'Distant',
+            ])
+            ->colors([
+                'success' => 'Yes',
+                'danger' => 'No',
+                'primary' => 'Islam',
+                'secondary' => 'Distant'
+            ]),
+            BadgeColumn::make('vehicle')
+            ->enum([
+                'Yes' => 'Yes',
+                'No' => 'No',
+            ])
+            ->colors([
+                'success' => 'Yes',
+                'danger' => 'No',
+            ])
         ];
     }
 
     public function closeModal()
     {
         $this->addMortuary = false;
+    }
+
+    public function redirectToInquiry()
+    {
+        return redirect()->route('mortuary-inquiry');
+    }
+
+    public function redirectToReport()
+    {
+        return redirect()->route('mortuary-report');
     }
 
 

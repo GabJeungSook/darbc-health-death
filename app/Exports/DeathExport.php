@@ -9,10 +9,13 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class DeathExport implements FromView
 {
+     /**
+    * @return \Illuminate\Support\Collection
+    */
     public function view(): View
     {
         return view('exports.death', [
-            'deaths' => Death::whereNotNull('date_of_death')->get(),
+            'deaths' => Death::get(),
         ]);
     }
 }

@@ -8,8 +8,9 @@
         <div class="select flex space-x-2 items-end">
             <x-native-select label="Report" wire:model="report_get">
               <option selected hidden>Select Report</option>
-              <option value="2">Cash Advances</option>
-              {{-- <option value="3">Masterlist</option> --}}
+              @foreach ($reports as $report)
+              <option value={{$report->id}}>{{$report->report_name}}</option>
+              @endforeach
             </x-native-select>
             <x-button.circle positive icon="refresh" spinner="report_get" />
           </div>
@@ -23,37 +24,19 @@
         <x-button label="EXPORT" sm positive wire:click="exportReport({{ $report_get }})"
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
-      {{-- @if ($report_get == 2)
+      @if ($report_get == 4)
         <div class="flex space-x-2">
           <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
-            <x-select label="Select Status" placeholder="Select one status" wire:model="status">
-                <x-select.option label="Encoded" value="ENCODED" />
-                <x-select.option label="Transmitted" value="TRANSMITTED" />
-                <x-select.option label="Paid" value="PAID" />
-            </x-select>
         </div>
-      @endif --}}
+      @endif
     </div>
   @endif
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
-      @case(1)
-        @include('reports.accounting')
-      @break
-
-      @case(2)
+      @case(4)
         @include('reports.cash-advance')
       @break
-
-      @case(3)
-        @include('reports.masterlist')
-      @break
-
-      @case(5)
-        @include('reports.death')
-      @break
-
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>
       @break

@@ -15,7 +15,7 @@ class Transmittal extends Model
         return $this->morphMany(Attachment::class, 'documentable');
     }
 
-    public function healths()
+    public function health()
     {
         return $this->belongsTo(Health::class, 'health_id');
     }
