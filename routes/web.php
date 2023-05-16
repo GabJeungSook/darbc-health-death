@@ -67,7 +67,7 @@ Route::get('/cash-advance-information/{record}', function ($record) {
 Route::get('/mortuary-information/{record}', function ($record) {
     $mortuaryRecord = Mortuary::findOrFail($record);
 
-    return view('mortuary-data', ['record' => $mortuaryRecord]);
+    return view('view-mortuary-data', ['record' => $mortuaryRecord]);
 })
     ->middleware(['auth', 'verified'])
     ->name('view-mortuary');

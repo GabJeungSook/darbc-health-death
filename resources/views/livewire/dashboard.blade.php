@@ -128,7 +128,7 @@
           data: {
             labels: ['ENCODED', 'TRANSMITTED', 'PAID', 'UNPAID'],
             datasets: [{
-              label: 'For the month of' + ' {{$month}}',
+              label: 'Records this month',
               data: [{{$encoded}}, {{$transmitted}}, {{$paid}}, {{$unpaid}}],
               borderWidth: 1
             }]
@@ -147,7 +147,7 @@
           data: {
             labels: ['Yes', 'No', 'Islam', 'Distant'],
             datasets: [{
-              label: 'Diamond Package',
+              label: 'Diamond Package (This Month)',
               data: [{{$yes}}, {{$no}}, {{$islam}}, {{$distant}}],
               borderWidth: 1
             }]
@@ -185,7 +185,7 @@
           data: {
             labels: ['Hospitalization', 'Burial', 'Maintenance', 'School Assistance', 'Others'],
             datasets: [{
-              label: 'Purpose',
+              label: 'Purpose (This Month)',
               data: [{{$Hospitalization}}, {{$Burial}}, {{$Maintenance}}, {{$School}}, {{$Others}}],
               borderWidth: 1
             }]

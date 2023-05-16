@@ -623,8 +623,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->colors([
                     'success' => 'Yes',
                     'danger' => 'No',
-                    'primary' => 'Islam',
-                    'secondary' => 'Distant'
+                    'warning' => 'Islam',
+                    'primary' => 'Distant'
                 ]),
             TextColumn::make('date_of_death')
                 ->label('Date of Death')

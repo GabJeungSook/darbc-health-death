@@ -64,6 +64,7 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                             $set('last_name', $collection['user']['surname']);
                             $set('contact_number', $collection['contact_number']);
                             $set('amount', 75000);
+                            $set('hollographic',  $collection['holographic'] == true ? 'Yes' : 'No');
                         }else{
                             $set('first_name', null);
                             $set('middle_name', null);
@@ -111,8 +112,6 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                         ])->columns(1),
                     ])
                     ->columns(3),
-                    // Forms\Components\TextInput::make('purpose')
-                    // ->required(),
                     Forms\Components\DatePicker::make('date_received')
                     ->required()
                 ]),
@@ -172,7 +171,7 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
         $this->reset([
             'darbc_id','contact_number','amount',
             'hollographic','claimant_first_name', 'claimant_middle_name',
-            'claimant_last_name', 'claimant_contact_number', 'status',
+            'claimant_last_name', 'claimant_contact_number', 'date_received', 'status',
             'diamond_package', 'vehicle'
         ]);
         $this->emit('close_mortuary_modal');
@@ -193,11 +192,12 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
             'member_name' => $collection['user']['full_name'],
             'contact_number' => $this->contact_number,
             'amount' => $this->amount,
-            'hollographic' => $this->hollographic,
+            'hollographic' => $this->hollographic == 'Yes' ? 1 : 0,
             'claimants_first_name' => $this->claimant_first_name,
             'claimants_middle_name' => $this->claimant_middle_name,
             'claimants_last_name' => $this->claimant_last_name,
             'claimants_contact_number' => $this->claimant_contact_number,
+            'date_received' => $this->date_received,
             'status' => $this->status,
             'diamond_package' => $this->diamond_package,
             'vehicle' => $this->vehicle

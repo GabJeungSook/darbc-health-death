@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('claimants_middle_name')->nullable();
             $table->string('claimants_last_name');
             $table->string('claimants_contact_number')->nullable();
+            $table->date('date_received')->nullable();
             $table->string('status');
             $table->string('diamond_package');
             $table->string('vehicle')->nullable();

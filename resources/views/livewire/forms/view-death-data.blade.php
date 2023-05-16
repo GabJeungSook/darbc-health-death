@@ -18,7 +18,7 @@
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$collection['darbc_id']}}</dd>
                 <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">BATCH NUMBER</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->batch_number}}</dd>
-              </div>
+            </div>
 
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">FULL NAME</dt>
