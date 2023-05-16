@@ -33,5 +33,9 @@ class ReportSeeder extends Seeder
          Report::create([
             'name' => 'cash advance',
         ]);
+        //COMMUNITY RELATIONS
+         Report::create([
+            'name' => 'community relations',
+        ]);
     }
 }

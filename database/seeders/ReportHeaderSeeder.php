@@ -42,5 +42,11 @@ class ReportHeaderSeeder extends Seeder
             'report_name' => 'Cash Advances',
             'header' => 'Cash Advances',
         ]);
+          //COMMUNITY RELATIONS
+          ReportHeader::create([
+            'report_id' => 6,
+            'report_name' => 'Community Relations',
+            'header' => 'Community Relations Report',
+        ]);
     }
 }

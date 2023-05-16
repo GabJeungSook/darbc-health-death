@@ -7,6 +7,7 @@ use App\Models\Health;
 use App\Models\Death;
 use App\Models\CashAdvance;
 use App\Models\Mortuary;
+use App\Models\CommunityRelation;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,6 +98,32 @@ Route::get('/view-log/{record}', function ($record) {
 })
     ->middleware(['auth', 'verified'])
     ->name('view-log');
+
+Route::get('/community-relations', function () {
+    return view('community-relations');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('community-relations');
+
+Route::get('/community-relation-inquiry', function () {
+    return view('community-relation-inquiry');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('community-relation-inquiry');
+
+Route::get('/community-relation-reports', function () {
+    return view('community-relation-report');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('community-relation-report');
+
+Route::get('/community-relation-information/{record}', function ($record) {
+    $communityRelationRecord = CommunityRelation::findOrFail($record);
+
+    return view('view-community-relation-data', ['record' => $communityRelationRecord]);
+})
+    ->middleware(['auth', 'verified'])
+    ->name('view-community-relation');
 
 Route::get('/mortuary', function () {
     return view('mortuary');

@@ -27,7 +27,7 @@ class CashAdvanceReport extends Component
     {
         return view('livewire.cash-advance-report', [
             'cashAdvance' =>
-            $this->report_get != 4 ? [] : CashAdvance::when($this->date_from && $this->date_to, function ($query) {
+            $this->report_get != 5 ? [] : CashAdvance::when($this->date_from && $this->date_to, function ($query) {
                 $query->where(function ($query) {
                     $query->whereBetween('date_received', [$this->date_from, $this->date_to]);
                 });
@@ -40,7 +40,7 @@ class CashAdvanceReport extends Component
     public function exportReport($id)
     {
         switch ($this->report_get) {
-            case 4:
+            case 5:
                 return \Excel::download(
                     new \App\Exports\MasterListExport(),
                     'CashAdvances.xlsx'

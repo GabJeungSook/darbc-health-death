@@ -2,7 +2,7 @@
     <div class="flex justify-between">
         <div>
             <div>
-                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToCashAdvance" />
+                <x-button label="Back" class="font-bold" icon="arrow-left" positive  wire:click="redirectToCommunityRelation" />
               </div>
           </div>
         <div class="select flex space-x-2 items-end">
@@ -24,7 +24,7 @@
         <x-button label="EXPORT" sm positive wire:click="exportReport({{ $report_get }})"
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
-      @if ($report_get == 5)
+      @if ($report_get == 6)
         <div class="flex space-x-2">
           <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
@@ -34,8 +34,8 @@
   @endif
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
-      @case(5)
-        @include('reports.cash-advance')
+      @case(6)
+        @include('reports.community-relations')
       @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>
