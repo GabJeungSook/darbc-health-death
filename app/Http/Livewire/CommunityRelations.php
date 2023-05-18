@@ -57,6 +57,7 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                 ->button()
                 ->color('primary')
                 ->mountUsing(fn (Forms\ComponentContainer $form, CommunityRelation $record) => $form->fill([
+                    'darbc_id' =>$record->member_id,
                     'reference_number' =>$record->reference_number,
                     'first_name' =>$record->first_name,
                     'middle_name' =>$record->middle_name,
@@ -70,10 +71,6 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                 ]))
                 ->action(function (CommunityRelation $record, array $data): void {
                     DB::beginTransaction();
-                    $record->reference_number = $data['reference_number'];
-                    $record->first_name = $data['first_name'];
-                    $record->middle_name = $data['middle_name'];
-                    $record->last_name = $data['last_name'];
                     $record->organization = $data['organization'];
                     $record->contact_number = $data['contact_number'];
                     $record->purpose = $data['purpose'];
@@ -89,17 +86,24 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                     );
                 })
                 ->form([
-                    Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
-                    ->disabled()
-                    ->reactive()
-                    ->required(),
+                    Grid::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
+                        ->disabled()
+                        ->reactive()
+                        ->required(),
+                        Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
+                        ->reactive()
+                        ->disabled()
+                        ->required(),
+                    ])->columns(2),
                     Card::make()
                     ->schema([
                         Grid::make()
                         ->schema([
-                            Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
-                            Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive(),
-                            Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->required(),
+                            Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->disabled()->required(),
+                            Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(),
+                            Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->disabled()->required(),
                         ])->columns(3),
                         Grid::make()
                         ->schema([
@@ -132,9 +136,14 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                         ->numeric()
                         ->reactive()
                         ->required(),
-                        Forms\Components\TextInput::make('status')->label('Status')
-                        ->reactive()
-                        ->required(),
+                        Forms\Components\Select::make('status')
+                        ->options([
+                            'On-going' => 'On-going',
+                            'Pending' => 'Pending',
+                            'Approved' => 'Approved',
+                            'Disapproved' => 'Disapproved',
+                        ])
+                        ->reactive(),
                     ])->columns(2)
                 ])->visible(fn ($record) => $record->update_attempts < 2),
                 Action::make('code')

@@ -20,6 +20,9 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
     use Forms\Concerns\InteractsWithForms;
     use Actions;
 
+
+    public $member_ids;
+    public $darbc_id;
     public $reference_number;
     public $first_name;
     public $middle_name;
@@ -34,17 +37,45 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
-            ->disabled()
-            ->reactive()
-            ->required(),
+            Grid::make()
+            ->schema([
+                Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
+                ->disabled()
+                ->reactive()
+                ->required(),
+                Forms\Components\Select::make('darbc_id')->label('DARBC ID')
+                ->reactive()
+                ->options($this->member_ids->pluck('darbc_id', 'id'))
+                ->afterStateUpdated(function ($set, $get, $state) {
+                    $url = 'https://darbc.org/api/member-information/'.$state;
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
+
+                    $collection = collect($member_data['data']);
+
+                    if($this->darbc_id != null)
+                    {
+                        $set('first_name', $collection['user']['first_name']);
+                        $set('middle_name',$collection['user']['middle_name']);
+                        $set('last_name', $collection['user']['surname']);
+                        $set('contact_number', $collection['contact_number']);
+                    }else{
+                        $set('first_name', null);
+                        $set('middle_name', null);
+                        $set('last_name', null);
+                        $set('contact_number', null);
+                    }
+                })
+                ->searchable()
+                ->required(),
+            ])->columns(2),
             Card::make()
             ->schema([
                 Grid::make()
                 ->schema([
-                    Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
-                    Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive(),
-                    Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->required(),
+                    Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->disabled()->required(),
+                    Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(),
+                    Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->disabled()->required(),
                 ])->columns(3),
                 Grid::make()
                 ->schema([
@@ -77,15 +108,26 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 ->numeric()
                 ->reactive()
                 ->required(),
-                Forms\Components\TextInput::make('status')->label('Status')
-                ->reactive()
-                ->required(),
+                Forms\Components\Select::make('status')
+                ->options([
+                    'On-going' => 'On-going',
+                    'Pending' => 'Pending',
+                    'Approved' => 'Approved',
+                    'Disapproved' => 'Disapproved',
+                ])
+                ->reactive(),
             ])->columns(2)
         ];
     }
 
     public function mount()
     {
+        $url = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $response = file_get_contents($url);
+        $member_data = json_decode($response, true);
+
+        $this->member_ids = collect($member_data);
+
         if (CommunityRelation::count() > 0) {
             // get the latest record
             $latestData = CommunityRelation::latest('created_at')->first();
@@ -111,6 +153,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
         $this->emit('close_community_modal');
         $this->reset(
             [
+            'darbc_id',
             'reference_number',
             'first_name',
             'middle_name',
@@ -125,11 +168,14 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
     );
     }
 
+
+
     public function save()
     {
         $this->validate();
         DB::beginTransaction();
         CommunityRelation::create([
+            'member_id' =>  $this->darbc_id,
             'reference_number' => $this->reference_number,
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,
