@@ -15,7 +15,7 @@ class ReportSignatorySeeder extends Seeder
     {
           //LOG
           ReportSignatory::create([
-            'report_id' => 1,
+            'report_id' => 3,
             'name' => 'VINCENT E. PALMA',
             'position' => 'DARBC Chairman',
         ]);
