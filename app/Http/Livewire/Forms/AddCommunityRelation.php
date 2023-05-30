@@ -52,6 +52,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 ->required(),
                 Forms\Components\Select::make('full_name')->label('DARBC Member')
                 ->reactive()
+                ->visible(false)
                 ->preload()
                 ->searchable()
                 ->options($this->member_full_names->pluck('full_name', 'id'))
@@ -77,6 +78,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 }),
                 Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
                 ->disabled()
+                ->visible(false)
                 ->reactive()
                 ->required(),
                 // Forms\Components\Select::make('darbc_id')->label('DARBC ID')
@@ -109,9 +111,9 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
             ->schema([
                 Grid::make()
                 ->schema([
-                    Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->disabled()->required(),
-                    Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(),
-                    Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->disabled()->required(),
+                    Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
+                    Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive(),
+                    Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->required(),
                 ])->columns(3),
                 Grid::make()
                 ->schema([
@@ -211,7 +213,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
         $this->validate();
         DB::beginTransaction();
         CommunityRelation::create([
-            'member_id' =>  $this->full_name,
+            // 'member_id' =>  $this->full_name,
             'reference_number' => 1,
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,

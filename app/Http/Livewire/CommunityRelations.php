@@ -59,7 +59,7 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                 ->button()
                 ->color('primary')
                 ->mountUsing(fn (Forms\ComponentContainer $form, CommunityRelation $record) => $form->fill([
-                    'darbc_id' => $this->getDarbcId($record->member_id),
+                   // 'darbc_id' => $this->getDarbcId($record->member_id),
                     'reference_number' =>$record->reference_number,
                     'first_name' =>$record->first_name,
                     'middle_name' =>$record->middle_name,
@@ -73,6 +73,9 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                 ]))
                 ->action(function (CommunityRelation $record, array $data): void {
                     DB::beginTransaction();
+                    $record->first_name = $data['first_name'];
+                    $record->middle_name = $data['middle_name'];
+                    $record->last_name = $data['last_name'];
                     $record->organization = $data['organization'];
                     $record->contact_number = $data['contact_number'];
                     $record->purpose_id = $data['purpose_id'];
@@ -97,6 +100,7 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                         ->required(),
                         Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
                         ->reactive()
+                        ->visible(false)
                         ->disabled()
                         ->required(),
                     ])->columns(1),
@@ -104,9 +108,9 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                     ->schema([
                         Grid::make()
                         ->schema([
-                            Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->disabled()->required(),
-                            Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(),
-                            Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->disabled()->required(),
+                            Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
+                            Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive(),
+                            Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->required(),
                         ])->columns(3),
                         Grid::make()
                         ->schema([
