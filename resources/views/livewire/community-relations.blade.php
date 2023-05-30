@@ -4,7 +4,7 @@
             <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addCommunityRelation', true)"/>
             <x-button label="INQUIRY" class="font-bold" indigo icon="document-search" wire:click="redirectToInquiry" />
             <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
-
+            <x-button label="MANAGE" class="font-bold" indigo icon="menu-alt-1" wire:click="redirectToManage"/>
           </div>
     </div>
     <div class="mt-4">

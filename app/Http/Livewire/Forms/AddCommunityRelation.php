@@ -5,6 +5,8 @@ namespace App\Http\Livewire\Forms;
 use Livewire\Component;
 use Filament\Forms;
 use App\Models\CommunityRelation;
+use App\Models\Purpose;
+use App\Models\Type;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
@@ -31,6 +33,8 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
     public $contact_number;
     public $purpose;
     public $type;
+    public $purpose_id;
+    public $type_id;
     public $number_of_participants;
     public $status;
 
@@ -42,6 +46,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
                 ->disabled()
                 ->reactive()
+                ->visible(false)
                 ->required(),
                 Forms\Components\Select::make('darbc_id')->label('DARBC ID')
                 ->reactive()
@@ -68,7 +73,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 })
                 ->searchable()
                 ->required(),
-            ])->columns(2),
+            ])->columns(1),
             Card::make()
             ->schema([
                 Grid::make()
@@ -84,22 +89,12 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 ])->columns(2)
 
             ]),
-            Forms\Components\Select::make('purpose')
-            ->options([
-                'Medical Assistance' => 'Medical Assistance',
-                'Community/Event Sponsorship' => 'Community/Event Sponsorship',
-                'School Assistance' => 'School Assistance',
-                'Church Assistance' => 'Church Assistance',
-                'General Assembly' => 'General Assembly',
-            ])
+            Forms\Components\Select::make('purpose_id')
+            ->options(Purpose::pluck('name', 'id'))
             ->required()
             ->reactive(),
-            Forms\Components\Select::make('type')
-            ->options([
-                'Cash' => 'Cash',
-                'Coupon' => 'Coupon',
-                'Item' => 'Item',
-            ])
+            Forms\Components\Select::make('type_id')
+            ->options(Type::pluck('name', 'id'))
             ->required()
             ->reactive(),
             Grid::make()
@@ -176,14 +171,14 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
         DB::beginTransaction();
         CommunityRelation::create([
             'member_id' =>  $this->darbc_id,
-            'reference_number' => $this->reference_number,
+            'reference_number' => 1,
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,
             'last_name' => $this->last_name,
             'organization' => $this->organization,
             'contact_number' => $this->contact_number,
-            'purpose' => $this->purpose,
-            'type' => $this->type,
+            'purpose_id' => $this->purpose_id,
+            'type_id' => $this->type_id,
             'number_of_participants' => $this->number_of_participants,
             'status' => $this->status,
         ]);

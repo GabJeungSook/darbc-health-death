@@ -3,9 +3,9 @@
       <div class="flex justify-between">
       </div>
       <div class="grid grid-cols-4 gap-2 mt-4">
-        <div class="border p-1 px-3 rounded">
+        {{-- <div class="border p-1 px-3 rounded">
           <x-checkbox label="REF. NO." wire:model="filters.reference_number" />
-        </div>
+        </div> --}}
         <div class="border p-1 px-3 rounded">
           <x-checkbox id="right-label" label="FIRST NAME" wire:model="filters.first_name" />
         </div>
@@ -57,10 +57,10 @@
                   <thead>
                     @if ($count < 1)
                       <tr class="divide-x divide-gray-200">
-                        <th
+                        {{-- <th
                           class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
                           REF. NO.
-                        </th>
+                        </th> --}}
                         <th
                           class="whitespace-nowrap border-t px-4 py-1 text-center text-sm font-semibold bg-indigo-500 text-white">
                           FIRST NAME
@@ -102,10 +102,10 @@
                       <tr class="divide-x divide-gray-200">
 
                         @if ($filters['reference_number'] != false && $filters['reference_number'] != null)
-                          <th
+                          {{-- <th
                             class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
                             REF. NO.
-                          </th>
+                          </th> --}}
                         @endif
                         @if ($filters['first_name'] != false && $filters['first_name'] != null)
                           <th
@@ -167,15 +167,16 @@
                   <tbody class="divide-y divide-gray-200 bg-white">
                     @foreach ($records as $record)
                       @if ($count < 1)
+                      {{-- @dump($records) --}}
                         <tr class="divide-x divide-gray-200">
-                          <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">{{ $record->reference_number }}</td>
+                          {{-- <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">{{ $record->reference_number }}</td> --}}
                           <td class="p-4 text-sm text-gray-700 text-left">{{ $record->first_name }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->middle_name }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->last_name }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->organization }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->contact_number }}</td>
-                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->purpose }}</td>
-                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->type }}</td>
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->community_purpose?->name }}</td>
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->community_type?->name }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->number_of_participants }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->status }}</td>
                         </tr>
@@ -183,7 +184,7 @@
                         <tr class="divide-x divide-gray-200">
 
                           @if ($filters['reference_number'] != false && $filters['reference_number'] != null)
-                            <td class=" py-4 pl-4 pr-4 text-sm font-medium text-gray-900 ">{{ $record->reference_number }}</td>
+                            {{-- <td class=" py-4 pl-4 pr-4 text-sm font-medium text-gray-900 ">{{ $record->reference_number }}</td> --}}
                           @endif
                           @if ($filters['first_name'] != false && $filters['first_name'] != null)
                             <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->first_name }}</td>
@@ -208,11 +209,11 @@
                           @endif
                           @if ($filters['purpose'] != false && $filters['purpose'] != null)
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
-                            {{ $record->purpose }}</td>
+                            {{ $record->community_purpose?->name }}</td>
                          @endif
                          @if ($filters['type'] != false && $filters['type'] != null)
                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
-                           {{ $record->type }}</td>
+                           {{ $record->community_type?->name }}</td>
                         @endif
                         @if ($filters['number_of_participants'] != false && $filters['number_of_participants'] != null)
                         <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">

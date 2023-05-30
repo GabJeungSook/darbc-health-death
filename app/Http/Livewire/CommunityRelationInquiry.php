@@ -54,11 +54,11 @@ class CommunityRelationInquiry extends Component implements Tables\Contracts\Has
             ->label('Contact Number')
             ->searchable()
             ->sortable(),
-            TextColumn::make('purpose')
+            TextColumn::make('community_purpose.name')
             ->label('Purpose')
             ->searchable()
             ->sortable(),
-            TextColumn::make('type')
+            TextColumn::make('community_type.name')
             ->label('Type')
             ->searchable()
             ->sortable(),
@@ -81,20 +81,7 @@ class CommunityRelationInquiry extends Component implements Tables\Contracts\Has
     public function render()
     {
         return view('livewire.community-relation-inquiry', [
-            'records' => CommunityRelation::where(
-                'reference_number',
-                'like',
-                '%' . $this->search . '%'
-            )
-            ->orWhere('first_name', 'like', '%' . $this->search . '%')
-            ->orWhere('middle_name', 'like', '%' . $this->search . '%')
-            ->orWhere('last_name', 'like', '%' . $this->search . '%')
-            ->orWhere('organization', 'like', '%' . $this->search . '%')
-            ->orWhere('contact_number', 'like', '%' . $this->search . '%')
-            ->orWhere('purpose', 'like', '%' . $this->search . '%')
-            ->orWhere('type', 'like', '%' . $this->search . '%')
-            ->orWhere('number_of_participants', 'like', '%' . $this->search . '%')
-            ->orWhere('status', 'like', '%' . $this->search . '%')
+            'records' => CommunityRelation::with('community_purpose')
             ->get()
         ]);
     }

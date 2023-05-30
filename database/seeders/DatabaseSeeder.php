@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             ReportSeeder::class,
             ReportHeaderSeeder::class,
             ReportSignatorySeeder::class,
+            PurposeSeeder::class,
+            TypeSeeder::class,
         ]);
     }
 }

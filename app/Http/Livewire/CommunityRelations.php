@@ -7,6 +7,8 @@ use Filament\Tables;
 use Filament\Forms;
 use App\Models\CommunityRelation;
 use App\Models\SupervisorCode;
+use App\Models\Purpose;
+use App\Models\Type;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Position;
 use Filament\Tables\Actions\ActionGroup;
@@ -64,8 +66,8 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                     'last_name' =>$record->last_name,
                     'organization' =>$record->organization,
                     'contact_number' =>$record->contact_number,
-                    'purpose' =>$record->purpose,
-                    'type' =>$record->type,
+                    'purpose_id' =>$record->purpose_id,
+                    'type_id' =>$record->type_id,
                     'number_of_participants' =>$record->number_of_participants,
                     'status' =>$record->status,
                 ]))
@@ -73,8 +75,8 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                     DB::beginTransaction();
                     $record->organization = $data['organization'];
                     $record->contact_number = $data['contact_number'];
-                    $record->purpose = $data['purpose'];
-                    $record->type = $data['type'];
+                    $record->purpose_id = $data['purpose_id'];
+                    $record->type_id = $data['type_id'];
                     $record->number_of_participants = $data['number_of_participants'];
                     $record->status = $data['status'];
                     $record->update_attempts = $record->update_attempts + 1;
@@ -90,13 +92,14 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                     ->schema([
                         Forms\Components\TextInput::make('reference_number')->label('Ref. No.')
                         ->disabled()
+                        ->visible(false)
                         ->reactive()
                         ->required(),
                         Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
                         ->reactive()
                         ->disabled()
                         ->required(),
-                    ])->columns(2),
+                    ])->columns(1),
                     Card::make()
                     ->schema([
                         Grid::make()
@@ -112,22 +115,14 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                         ])->columns(2)
 
                     ]),
-                    Forms\Components\Select::make('purpose')
-                    ->options([
-                        'Medical Assistance' => 'Medical Assistance',
-                        'Community/Event Sponsorship' => 'Community/Event Sponsorship',
-                        'School Assistance' => 'School Assistance',
-                        'Church Assistance' => 'Church Assistance',
-                        'General Assembly' => 'General Assembly',
-                    ])
+                    Forms\Components\Select::make('purpose_id')
+                    ->label('Purpose')
+                    ->options(Purpose::pluck('name', 'id'))
                     ->required()
                     ->reactive(),
-                    Forms\Components\Select::make('type')
-                    ->options([
-                        'Cash' => 'Cash',
-                        'Coupon' => 'Coupon',
-                        'Item' => 'Item',
-                    ])
+                    Forms\Components\Select::make('type_id')
+                    ->label('Type')
+                    ->options(Type::pluck('name', 'id'))
                     ->required()
                     ->reactive(),
                     Grid::make()
@@ -182,10 +177,10 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('reference_number')
-            ->label('Ref. No.')
-            ->searchable()
-            ->sortable(),
+            // TextColumn::make('reference_number')
+            // ->label('Ref. No.')
+            // ->searchable()
+            // ->sortable(),
             TextColumn::make('memberName')
             ->label('Name')
             ->formatStateUsing(function ($record) {
@@ -201,11 +196,11 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
             ->label('Contact Number')
             ->searchable()
             ->sortable(),
-            TextColumn::make('purpose')
+            TextColumn::make('community_purpose.name')
             ->label('Purpose')
             ->searchable()
             ->sortable(),
-            TextColumn::make('type')
+            TextColumn::make('community_type.name')
             ->label('Type')
             ->searchable()
             ->sortable(),
@@ -233,6 +228,11 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
     public function redirectToReport()
     {
         return redirect()->route('community-relation-report');
+    }
+
+    public function redirectToManage()
+    {
+        return redirect()->route('manage-community-relation');
     }
 
     public function render()

@@ -125,6 +125,12 @@ Route::get('/community-relation-information/{record}', function ($record) {
     ->middleware(['auth', 'verified'])
     ->name('view-community-relation');
 
+Route::get('/community-relation-settings', function () {
+    return view('manage-community-relation');
+})
+    ->middleware(['auth', 'verified'])
+    ->name('manage-community-relation');
+
 Route::get('/mortuary', function () {
     return view('mortuary');
 })
