@@ -310,9 +310,10 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
 
                                     Fieldset::make('Patient\'s Information')
                                     ->schema([
-                                        Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->required(),
-                                        Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->reactive(),
-                                        Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->reactive()->required(),
+                                        Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->required()
+                                        ->disabled(fn ($get) => $get('enrollment_status') == 'member'),
+                                        Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->reactive()->disabled(fn ($get) => $get('enrollment_status') == 'member'),
+                                        Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->reactive()->required()->disabled(fn ($get) => $get('enrollment_status') == 'member'),
                                         Grid::make()
                                         ->schema([
                                             Forms\Components\TextInput::make('contact_number')->label('Contact Number')->reactive()->required(),

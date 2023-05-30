@@ -24,6 +24,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     use Actions;
 
     public $member_ids;
+    public $member_full_names;
+    public $full_name;
     public $batch_number;
     public $darbc_id;
     public $enrollment_status;
@@ -50,69 +52,129 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                     ->schema([
                         Card::make()
                         ->schema([
+                            Grid::make(1)
+                            ->schema([
+                                Forms\Components\Select::make('full_name')->label('DARBC Member')
+                                ->reactive()
+                                ->preload()
+                                ->searchable()
+                                ->options($this->member_full_names->pluck('full_name', 'id'))
+                                ->afterStateUpdated(function ($set, $get, $state) {
+                                    if($state == null)
+                                        {
+                                            $set('darbc_id', null);
+                                            $set('emrollment_status', null);
+                                            $set('patients_first_name', null);
+                                            $set('patients_middle_name', null);
+                                            $set('patients_last_name', null);
+                                            $set('contact_number', null);
+                                            $set('age', null);
+                                            $set('date_of_confinement_from', null);
+                                            $set('date_of_confinement_to', null);
+                                            $set('hospital_id', null);
+                                            $set('number_of_days', null);
+                                            $set('amount', null);
+
+                                        }else{
+                                            $url = 'https://darbc.org/api/member-information/'.$state;
+                                            $response = file_get_contents($url);
+                                            $member_data = json_decode($response, true);
+
+                                            $collection = collect($member_data['data']);
+                                            $set('darbc_id', $collection['darbc_id']);
+                                            //$member = Member::where('member_id', $state)->first();
+                                            if($get('enrollment_status') == 'member')
+                                            {
+
+                                                $set('patients_first_name', $collection['user']['first_name']);
+                                                $set('patients_middle_name',$collection['user']['middle_name']);
+                                                $set('patients_last_name', $collection['user']['surname']);
+                                                $set('contact_number', $collection['contact_number']);
+                                                if($collection['date_of_birth'] != null)
+                                                {
+                                                    $date_of_birth = $collection['date_of_birth'];
+                                                    $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                                                    $set('age', $age);
+                                                }else{
+                                                    $set('age', null);
+                                                }
+                                            }else{
+                                                $set('patients_first_name', null);
+                                                $set('patients_middle_name', null);
+                                                $set('patients_last_name', null);
+                                                $set('contact_number', null);
+                                                $set('age', null);
+                                            }
+                                        }
+                                })
+                            ]),
                             Forms\Components\TextInput::make('batch_number')->label('Batch No.')
                             ->disabled()
                             ->required(),
-                            Forms\Components\Select::make('darbc_id')->label('DARBC ID')
+                            Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
+                            ->disabled()
                             ->reactive()
-                            ->options($this->member_ids->pluck('darbc_id', 'id'))
-                            ->afterStateUpdated(function ($set, $get, $state) {
-                                if($state == null)
-                                {
-                                    $set('emrollment_status', null);
-                                    $set('patients_first_name', null);
-                                    $set('patients_middle_name', null);
-                                    $set('patients_last_name', null);
-                                    $set('contact_number', null);
-                                    $set('age', null);
-                                    $set('date_of_confinement_from', null);
-                                    $set('date_of_confinement_to', null);
-                                    $set('hospital_id', null);
-                                    $set('number_of_days', null);
-                                    $set('amount', null);
+                            ->required(),
+                            // Forms\Components\Select::make('darbc_id')->label('DARBC ID')
+                            // ->reactive()
+                            // ->options($this->member_ids->pluck('darbc_id', 'id'))
+                            // ->afterStateUpdated(function ($set, $get, $state) {
+                            //     if($state == null)
+                            //     {
+                            //         $set('emrollment_status', null);
+                            //         $set('patients_first_name', null);
+                            //         $set('patients_middle_name', null);
+                            //         $set('patients_last_name', null);
+                            //         $set('contact_number', null);
+                            //         $set('age', null);
+                            //         $set('date_of_confinement_from', null);
+                            //         $set('date_of_confinement_to', null);
+                            //         $set('hospital_id', null);
+                            //         $set('number_of_days', null);
+                            //         $set('amount', null);
 
-                                }else{
-                                    $url = 'https://darbc.org/api/member-information/'.$state;
-                                    $response = file_get_contents($url);
-                                    $member_data = json_decode($response, true);
+                            //     }else{
+                            //         $url = 'https://darbc.org/api/member-information/'.$state;
+                            //         $response = file_get_contents($url);
+                            //         $member_data = json_decode($response, true);
 
-                                    $collection = collect($member_data['data']);
+                            //         $collection = collect($member_data['data']);
 
-                                    //$member = Member::where('member_id', $state)->first();
-                                    if($get('enrollment_status') == 'member')
-                                    {
-                                        $set('patients_first_name', $collection['user']['first_name']);
-                                        $set('patients_middle_name',$collection['user']['middle_name']);
-                                        $set('patients_last_name', $collection['user']['surname']);
-                                        $set('contact_number', $collection['contact_number']);
-                                        if($collection['date_of_birth'] != null)
-                                        {
-                                            $date_of_birth = $collection['date_of_birth'];
-                                            $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
-                                            $set('age', $age);
-                                        }else{
-                                            $set('age', null);
-                                        }
-                                    }else{
-                                        $set('patients_first_name', null);
-                                        $set('patients_middle_name', null);
-                                        $set('patients_last_name', null);
-                                        $set('contact_number', null);
-                                        $set('age', null);
-                                    }
-                                }
+                            //         //$member = Member::where('member_id', $state)->first();
+                            //         if($get('enrollment_status') == 'member')
+                            //         {
+                            //             $set('patients_first_name', $collection['user']['first_name']);
+                            //             $set('patients_middle_name',$collection['user']['middle_name']);
+                            //             $set('patients_last_name', $collection['user']['surname']);
+                            //             $set('contact_number', $collection['contact_number']);
+                            //             if($collection['date_of_birth'] != null)
+                            //             {
+                            //                 $date_of_birth = $collection['date_of_birth'];
+                            //                 $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                            //                 $set('age', $age);
+                            //             }else{
+                            //                 $set('age', null);
+                            //             }
+                            //         }else{
+                            //             $set('patients_first_name', null);
+                            //             $set('patients_middle_name', null);
+                            //             $set('patients_last_name', null);
+                            //             $set('contact_number', null);
+                            //             $set('age', null);
+                            //         }
+                            //     }
 
-                            })
-                            ->searchable(),
+                            // })
+                            // ->searchable(),
                             // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
-                            Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->darbc_id == null)
+                            Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->full_name == null)
                             ->options([
                                 'member' => 'M',
                                 'dependent' => 'D',
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
-                                $url = 'https://darbc.org/api/member-information/'.$get('darbc_id');
+                                $url = 'https://darbc.org/api/member-information/'.$get('full_name');
                                 $response = file_get_contents($url);
                                 $member_data = json_decode($response, true);
 
@@ -458,11 +520,18 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
-        $url = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $url = 'https://darbc.org/api/member-darbc-names?status=1';
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 
-        $this->member_ids = collect($member_data);
+        // $this->member_ids = collect($member_data);
+
+        // $url1 = 'https://darbc.org/api/member-darbc-ids?status=1';
+        // $response1 = file_get_contents($url1);
+        // $member_data1 = json_decode($response1, true);
+
+        // $this->member_ids = collect($member_data1);
+       $this->member_full_names = collect($member_data);
 
         if (Health::count() > 0) {
             // get the latest record
@@ -490,7 +559,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     public function closeModal()
     {
         $this->reset([
-            'darbc_id','enrollment_status','patients_first_name',
+            'full_name','darbc_id','enrollment_status','patients_first_name',
             'patients_middle_name','patients_last_name', 'contact_number',
             'age', 'date_of_confinement_from', 'date_of_confinement_to',
             'hospital_id', 'number_of_days', 'amount'
@@ -501,6 +570,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     public function save()
     {
         $this->validate([
+            'full_name' => 'required',
             'darbc_id' => 'required',
             'enrollment_status' => 'required',
             'patients_first_name' => 'required',
@@ -513,6 +583,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
             'number_of_days' => 'required',
             'amount' => 'required',
         ], [
+            'full_name.required' => 'Please select a DARBC Member',
             'darbc_id.required' => 'Please select a DARBC ID!',
             'enrollment_status.required' => 'Please select an enrollment status!',
             'patients_first_name.required' => 'Please provide the patient\'s first name!',
@@ -531,7 +602,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
         DB::beginTransaction();
         $health = Health::create([
-            'member_id' => $this->darbc_id,
+            'member_id' => $this->full_name,
             'hospital_id' => $this->hospital_id,
             'batch_number' => $this->batch_number,
             'enrollment_status' => $this->enrollment_status,

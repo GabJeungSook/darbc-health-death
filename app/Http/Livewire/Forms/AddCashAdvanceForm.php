@@ -21,11 +21,14 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     use Actions;
 
     public $member_ids;
+    public $member_full_names;
+    public $full_name;
     public $darbc_id;
     public $first_name;
     public $middle_name;
     public $last_name;
     public $purpose;
+    public $illness;
     public $other_purpose;
     public $contact_numbers = [];
     public $contact_number;
@@ -40,32 +43,66 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Forms\Components\Select::make('darbc_id')->label('DARBC ID')
-            ->reactive()
-            ->options($this->member_ids->pluck('darbc_id', 'id'))
-            ->afterStateUpdated(function ($set, $get, $state) {
-                $url = 'https://darbc.org/api/member-information/'.$state;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+            Grid::make(2)
+            ->schema([
+                Forms\Components\Select::make('full_name')->label('DARBC Member')
+                ->reactive()
+                ->preload()
+                ->searchable()
+                ->options($this->member_full_names->pluck('full_name', 'id'))
+                ->afterStateUpdated(function ($set, $get, $state) {
+                    $url = 'https://darbc.org/api/member-information/'.$state;
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
 
-                $collection = collect($member_data['data']);
+                    $collection = collect($member_data['data']);
+                    $set('darbc_id', $collection['darbc_id']);
 
-                if($this->darbc_id != null)
-                {
-                    $set('first_name', $collection['user']['first_name']);
-                    $set('middle_name',$collection['user']['middle_name']);
-                    $set('last_name', $collection['user']['surname']);
-                    $set('contact_number', $collection['contact_number']);
-                }else{
-                    $set('first_name', null);
-                    $set('middle_name', null);
-                    $set('last_name', null);
-                    $set('contact_number', null);
-                }
+                    if($this->darbc_id != null)
+                    {
+                        $set('first_name', $collection['user']['first_name']);
+                        $set('middle_name',$collection['user']['middle_name']);
+                        $set('last_name', $collection['user']['surname']);
+                        $set('contact_number', $collection['contact_number']);
+                    }else{
+                        $set('first_name', null);
+                        $set('middle_name', null);
+                        $set('last_name', null);
+                        $set('contact_number', null);
+                    }
 
-            })
-            ->searchable()
-            ->required(),
+                }),
+                Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
+                ->disabled()
+                ->reactive()
+                ->required(),
+            ]),
+            // Forms\Components\Select::make('darbc_id')->label('DARBC ID')
+            // ->reactive()
+            // ->options($this->member_ids->pluck('darbc_id', 'id'))
+            // ->afterStateUpdated(function ($set, $get, $state) {
+            //     $url = 'https://darbc.org/api/member-information/'.$state;
+            //     $response = file_get_contents($url);
+            //     $member_data = json_decode($response, true);
+
+            //     $collection = collect($member_data['data']);
+
+            //     if($this->darbc_id != null)
+            //     {
+            //         $set('first_name', $collection['user']['first_name']);
+            //         $set('middle_name',$collection['user']['middle_name']);
+            //         $set('last_name', $collection['user']['surname']);
+            //         $set('contact_number', $collection['contact_number']);
+            //     }else{
+            //         $set('first_name', null);
+            //         $set('middle_name', null);
+            //         $set('last_name', null);
+            //         $set('contact_number', null);
+            //     }
+
+            // })
+            // ->searchable()
+            // ->required(),
             Fieldset::make('Member\'s Information')
             ->schema([
                 Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
@@ -82,6 +119,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
                         'Others' => 'Others',
                     ])
                     ->reactive(),
+                    Forms\Components\TextInput::make('illness')->label('Illness')->reactive(),
                     Forms\Components\Textarea::make('other_purpose')->label('State purpose')
                     ->reactive()
                     ->required()->visible(fn ($get) => $get('purpose') == "Others"),
@@ -145,18 +183,24 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
-        $url = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $url = 'https://darbc.org/api/member-darbc-names?status=1';
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 
-        $this->member_ids = collect($member_data);
+        $this->member_full_names = collect($member_data);
+
+        $url1 = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $response1 = file_get_contents($url1);
+        $member_data1 = json_decode($response1, true);
+
+        $this->member_ids = collect($member_data1);
         $this->form->fill();
     }
 
     public function closeModal()
     {
         $this->emit('close_cash_advance_modal');
-        $this->reset(['darbc_id', 'purpose', 'contact_number', 'account', 'amount_requested', 'amount_approved', 'date_received', 'date_approved', 'reason', 'status']);
+        $this->reset(['full_name','darbc_id', 'purpose', 'contact_number', 'account', 'amount_requested', 'amount_approved', 'date_received', 'date_approved', 'reason', 'status']);
     }
 
     public function save()
@@ -164,8 +208,9 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
         $this->validate();
         DB::beginTransaction();
         CashAdvance::create([
-            'member_id' => $this->darbc_id,
+            'member_id' => $this->full_name,
             'purpose' => $this->purpose,
+            'illness' => $this->illness,
             'other_purpose' => $this->other_purpose,
             'contact_numbers' => collect($this->contact_numbers)->values(),
             'account' => $this->account,

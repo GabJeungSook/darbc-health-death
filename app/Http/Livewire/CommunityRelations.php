@@ -59,7 +59,7 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
                 ->button()
                 ->color('primary')
                 ->mountUsing(fn (Forms\ComponentContainer $form, CommunityRelation $record) => $form->fill([
-                    'darbc_id' =>$record->member_id,
+                    'darbc_id' => $this->getDarbcId($record->member_id),
                     'reference_number' =>$record->reference_number,
                     'first_name' =>$record->first_name,
                     'middle_name' =>$record->middle_name,
@@ -213,6 +213,16 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
             ->searchable()
             ->sortable(),
         ];
+    }
+
+    public function getDarbcId($member_id)
+    {
+        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $response = file_get_contents($url);
+        $member_data = json_decode($response, true);
+
+        $collection = collect($member_data['data']);
+        return $collection['darbc_id'];
     }
 
     public function closeModal()

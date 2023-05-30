@@ -24,6 +24,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
 
     // public $data;
     public $member_ids;
+    public $global_member_id;
     public $mortuary_ids;
     public $mortuary_id;
     public $date;
@@ -80,13 +81,14 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 ->searchable()
                                 ->options(Mortuary::whereDoesntHave('death')->pluck('member_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
-                                    $url = 'https://darbc.org/api/member-information/'.$state;
+                                    $mortuary = Mortuary::where('id', $state)->first();
+                                    $url = 'https://darbc.org/api/member-information/'.$mortuary->member_id;
                                     $response = file_get_contents($url);
                                     $member_data = json_decode($response, true);
-
                                     $collection = collect($member_data['data']);
-                                    $mortuary = Mortuary::where('id', $state)->first();
-                                    $set('member_id', $mortuary->member_id);
+
+                                    $set('member_id', $collection['darbc_id']);
+                                    $this->global_member_id = $collection['id'];
                                     $set('has_diamond_package', $mortuary->diamond_package);
                                     $set('has_vehicle', $mortuary->vehicle);
                                     $set('birthday', $collection['date_of_birth']);
@@ -112,37 +114,37 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             Forms\Components\TextInput::make('member_id')->label('DARBC ID')
                             ->reactive()
                             ->disabled()
-                            ->afterStateUpdated(function ($set, $get, $state) {
-                                $url = 'https://darbc.org/api/member-information/'.$state;
-                                $response = file_get_contents($url);
-                                $member_data = json_decode($response, true);
+                            // ->afterStateUpdated(function ($set, $get, $state) {
+                            //     $url = 'https://darbc.org/api/member-information/'.$get('full_name');
+                            //     $response = file_get_contents($url);
+                            //     $member_data = json_decode($response, true);
 
-                                $collection = collect($member_data['data']);
-                                //$member = Member::where('member_id', $state)->first();
-                                if($get('enrollment_status') == 'member')
-                                {
-                                    $set('first_name', $collection['user']['first_name']);
-                                    $set('middle_name',$collection['user']['middle_name']);
-                                    $set('last_name', $collection['user']['surname']);
-                                    $set('contact_number', $collection['contact_number']);
-                                    $set('birthday', $collection['date_of_birth']);
-                                    if($collection['date_of_birth'] != null)
-                                    {
-                                        $date_of_birth = $collection['date_of_birth'];
-                                        $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
-                                        $set('age', $age);
-                                    }else{
-                                        $set('age', null);
-                                    }
-                                }else{
-                                    $set('first_name', null);
-                                    $set('middle_name', null);
-                                    $set('last_name', null);
-                                    $set('contact_number', null);
-                                    $set('birthday', null);
-                                    $set('age', null);
-                                }
-                            })
+                            //     $collection = collect($member_data['data']);
+                            //     //$member = Member::where('member_id', $state)->first();
+                            //     if($get('enrollment_status') == 'member')
+                            //     {
+                            //         $set('first_name', $collection['user']['first_name']);
+                            //         $set('middle_name',$collection['user']['middle_name']);
+                            //         $set('last_name', $collection['user']['surname']);
+                            //         $set('contact_number', $collection['contact_number']);
+                            //         $set('birthday', $collection['date_of_birth']);
+                            //         if($collection['date_of_birth'] != null)
+                            //         {
+                            //             $date_of_birth = $collection['date_of_birth'];
+                            //             $age = date_diff(date_create($date_of_birth), date_create('today'))->y;
+                            //             $set('age', $age);
+                            //         }else{
+                            //             $set('age', null);
+                            //         }
+                            //     }else{
+                            //         $set('first_name', null);
+                            //         $set('middle_name', null);
+                            //         $set('last_name', null);
+                            //         $set('contact_number', null);
+                            //         $set('birthday', null);
+                            //         $set('age', null);
+                            //     }
+                            // })
                             // ->searchable()
                             // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
 
@@ -154,7 +156,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         ])
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
-                            $url = 'https://darbc.org/api/member-information/'.$get('member_id');
+                            $url = 'https://darbc.org/api/member-information/'.$this->global_member_id;
                             $response = file_get_contents($url);
                             $member_data = json_decode($response, true);
 
@@ -499,7 +501,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
             // $this->emit('show_vehicle_schedule');
             DB::beginTransaction();
             $death = Death::create([
-                'member_id' => $this->member_id,
+                'member_id' => $this->global_member_id,
                 'mortuary_id' => $this->mortuary_id,
                 'batch_number' => $this->batch_number,
                 'date' => $this->date,
@@ -547,7 +549,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
         }else{
             DB::beginTransaction();
             $death = Death::create([
-                'member_id' => $this->member_id,
+                'member_id' => $this->global_member_id,
                 'mortuary_id' => $this->mortuary_id,
                 'batch_number' => $this->batch_number,
                 'date' => $this->date,
