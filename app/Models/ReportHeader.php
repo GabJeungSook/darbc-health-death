@@ -14,4 +14,9 @@ class ReportHeader extends Model
     {
         return $this->belongsTo(Report::class, 'report_id');
     }
+
+    public function signatories()
+    {
+        return $this->HasMany(Signatory::class);
+    }
 }

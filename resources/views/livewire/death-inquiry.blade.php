@@ -335,7 +335,7 @@
                           </td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->dependent_type }}
                           </td>
-                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->has_diamond_package }}
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->mortuary->diamond_package }}
                           </td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->birthday }}
                           </td>
@@ -344,7 +344,7 @@
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ \Carbon\Carbon::parse($record->date_of_death)->format('F d, Y') }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{  $record->place_of_death }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->coverage_type }}</td>
-                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->has_vehicle }}</td>
+                          <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->mortuary->vehicle }}</td>
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->amount }}
                           </td>
                         </tr>
@@ -399,7 +399,7 @@
                         </td>
                         @endif
                         @if ($filters['has_diamond_package'] != false && $filters['has_diamond_package'] != null)
-                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->has_diamond_package }}
+                        <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">{{ $record->mortuary->diamond_package }}
                         </td>
                         @endif
                         @if ($filters['birthday'] != false && $filters['birthday'] != null)
@@ -428,7 +428,7 @@
                           @endif
                           @if ($filters['has_vehicle'] != false && $filters['has_vehicle'] != null)
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
-                            {{ $record->has_vehicle }}</td>
+                            {{ $record->mortuary->vehicle }}</td>
                           @endif
                           @if ($filters['amount'] != false && $filters['amount'] != null)
                             <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">

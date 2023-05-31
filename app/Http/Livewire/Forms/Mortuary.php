@@ -31,6 +31,8 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
     public $last_name;
     public $contact_number;
     public $amount;
+    public $date_of_death;
+    public $place_of_death;
     public $hollographic;
     public $claimant_first_name;
     public $claimant_middle_name;
@@ -69,7 +71,7 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                                 $set('middle_name',$collection['user']['middle_name']);
                                 $set('last_name', $collection['user']['surname']);
                                 $set('contact_number', $collection['contact_number']);
-                                $set('amount', 75000);
+                                $set('amount', 75640);
                                 $set('hollographic',  $collection['holographic'] == true ? 'Yes' : 'No');
                             }else{
                                 $set('first_name', null);
@@ -158,6 +160,15 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                 ->schema([
                     Card::make()
                     ->schema([
+                        Grid::make(2)
+                        ->schema([
+                            DatePicker::make('date_of_death')->label('Date Of Death')
+                            ->reactive()
+                            ->required(),
+                            Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')
+                            ->reactive()
+                            ->required(),
+                        ]),
                         Forms\Components\Select::make('status')
                         ->options([
                             'Approved' => 'Approved',
@@ -216,7 +227,7 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
         $this->reset([
             'darbc_id','contact_number','amount',
             'hollographic','claimant_first_name', 'claimant_middle_name',
-            'claimant_last_name', 'claimant_contact_number', 'date_received', 'status',
+            'claimant_last_name', 'claimant_contact_number', 'date_received', 'date_of_death', 'place_of_death', 'status',
             'diamond_package', 'vehicle'
         ]);
         $this->emit('close_mortuary_modal');
@@ -237,6 +248,8 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
             'member_name' => $collection['user']['full_name'],
             'contact_number' => $this->contact_number,
             'amount' => $this->amount,
+            'date_of_death' => $this->date_of_death,
+            'place_of_death' => $this->place_of_death,
             'hollographic' => $this->hollographic == 'Yes' ? 1 : 0,
             'claimants_first_name' => $this->claimant_first_name,
             'claimants_middle_name' => $this->claimant_middle_name,

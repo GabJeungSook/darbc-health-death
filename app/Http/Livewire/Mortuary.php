@@ -63,6 +63,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     'claimant_last_name' => $record->claimants_last_name,
                     'claimant_contact_number' => $record->claimants_contact_number,
                     'date_received' => $record->date_received,
+                    'date_of_death' => $record->date_of_death,
+                    'place_of_death' => $record->place_of_death,
                     'status' => $record->status,
                     'diamond_package' => $record->diamond_package,
                     'vehicle' => $record->vehicle,
@@ -74,6 +76,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     $record->claimants_last_name = $data['claimant_last_name'];
                     $record->claimants_contact_number = $data['claimant_contact_number'];
                     $record->date_received = $data['date_received'];
+                    $record->date_of_death = $data['date_of_death'];
+                    $record->place_of_death = $data['place_of_death'];
                     $record->status = $data['status'];
                     $record->diamond_package = $data['diamond_package'];
                     $record->vehicle = $data['vehicle'];
@@ -103,6 +107,15 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     ->required(),
                     Card::make()
                     ->schema([
+                        Grid::make(2)
+                        ->schema([
+                            DatePicker::make('date_of_death')->label('Date Of Death')
+                            ->reactive()
+                            ->required(),
+                            Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')
+                            ->reactive()
+                            ->required(),
+                        ]),
                         Forms\Components\Select::make('status')
                         ->options([
                             'Approved' => 'Approved',
@@ -176,19 +189,17 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
 
                 return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
             })
-            ->searchable()
             ->sortable(),
             TextColumn::make('claimantName')
             ->label('Claimants Name')
             ->formatStateUsing(function ($record) {
                   return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
-            ->searchable()
             ->sortable(),
             BadgeColumn::make('status')
             ->enum([
-                'Approved' => 'Approved',
-                'Pending' => 'Pending',
+                'Approved' => 'APPROVED',
+                'Pending' => 'PENDING',
             ])
             ->colors([
                 'success' => 'Approved',
@@ -196,10 +207,10 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             ]),
             BadgeColumn::make('diamond_package')
             ->enum([
-                'Yes' => 'Yes',
-                'No' => 'No',
-                'Islam' => 'Islam',
-                'Distant' => 'Distant',
+                'Yes' => 'YES',
+                'No' => 'NO',
+                'Islam' => 'ISLAM',
+                'Distant' => 'DISTANT',
             ])
             ->colors([
                 'success' => 'Yes',
@@ -209,8 +220,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             ]),
             BadgeColumn::make('vehicle')
             ->enum([
-                'Yes' => 'Yes',
-                'No' => 'No',
+                'Yes' => 'YES',
+                'No' => 'NO',
             ])
             ->colors([
                 'success' => 'Yes',

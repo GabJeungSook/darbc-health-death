@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             ReportSignatorySeeder::class,
             PurposeSeeder::class,
             TypeSeeder::class,
+            AdditionalSeeder::class,
         ]);
     }
 }

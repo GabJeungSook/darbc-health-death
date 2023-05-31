@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\ReportHeader;
 use Livewire\WithPagination;
 use App\Models\CommunityRelation;
+use App\Models\Signatory;
 
 class CommunityRelationReport extends Component
 {
@@ -32,6 +33,7 @@ class CommunityRelationReport extends Component
             })->paginate(100),
             'reports' => ReportHeader::where('report_id', 6)->get(),
             'first_report' => ReportHeader::where('report_id', 6)->where('report_name', 'Community Relations')->first(),
+            'first_signatories' => Signatory::where('report_header_id', 6)->get(),
         ]);
     }
 

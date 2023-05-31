@@ -57,10 +57,10 @@
             <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_diamond_package == 'Yes' ? 'Yes' : 'No'}}</td>
             <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_vehicle}}</td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
-              {{ \Carbon\Carbon::parse($item->date_of_death)->format('F d, Y') }}
+                {{ $item->mortuary->date_of_death != null ? \Carbon\Carbon::parse($item->mortuary->date_of_death)->format('F d, Y') : '' }}
             </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
-              {{ $item->place_of_death }}
+              {{ $item->mortuary->place_of_death }}
             </td>
             @switch($item->coverage_type)
                 @case(1)
@@ -100,5 +100,14 @@
         @endforeach
       </tbody>
     </table>
+    <div class="mt-10 flex justify-around">
+        @foreach ($first_signatories as $item)
+            <div class="mt-5">
+                <h1>{{$item->description}}:</h1>
+                <span class="font-bold">{{$item->name}}</span>
+                <h1 class="text-sm">{{$item->position}}</h1>
+            </div>
+        @endforeach
+    </div>
   </div>
 </div>

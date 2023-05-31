@@ -16,16 +16,16 @@
             <div class="border-t border-gray-100 px-4 p-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">DARBC ID</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$collection['darbc_id']}}</dd>
-                <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">AMOUNT</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{number_format($record->amount, 2, '.', ',')}}</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">DATE OF DEATH</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{\Carbon\Carbon::parse($record->date_of_death)->format('F d, Y')}}</dd>
             </div>
 
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">FULL NAME</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->member_name)}}</dd>
 
-              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4"></dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2"></dd>
+              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">PLACE OF DEATH</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->place_of_death)}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">CONTACT NUMBER</dt>
@@ -58,6 +58,10 @@
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">VEHICLE</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->vehicle}}</dd>
+            </div>
+            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+                <dt class="text-sm font-medium leading-6 text-gray-900">AMOUNT</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{number_format($record->amount, 2, '.', ',')}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-3 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">Attachments</dt>

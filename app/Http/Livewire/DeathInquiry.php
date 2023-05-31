@@ -84,7 +84,7 @@ class DeathInquiry extends Component implements Tables\Contracts\HasTable
             TextColumn::make('dependents_type')
                 ->label('DEPENDENT TYPE')
                 ->searchable(),
-            TextColumn::make('has_diamond_package')
+            TextColumn::make('mortuary.diamond_package')
                 ->label('HAS DIAMOND PACKAGE')
                 ->searchable(),
             TextColumn::make('birthday')
@@ -107,7 +107,7 @@ class DeathInquiry extends Component implements Tables\Contracts\HasTable
             TextColumn::make('coverage_type')
                 ->label('COVERAGE TYPE')
                 ->searchable(),
-            TextColumn::make('has_vehicle')
+            TextColumn::make('mortuary.vehicle')
                 ->label('HAS VEHICLE')
                 ->searchable(),
             TextColumn::make('amount')

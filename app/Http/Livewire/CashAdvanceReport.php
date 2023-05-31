@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\ReportHeader;
 use Livewire\WithPagination;
 use App\Models\CashAdvance;
+use App\Models\Signatory;
 
 
 class CashAdvanceReport extends Component
@@ -34,6 +35,7 @@ class CashAdvanceReport extends Component
             })->paginate(100),
             'reports' => ReportHeader::where('report_id', 5)->get(),
             'first_report' => ReportHeader::where('report_id', 5)->where('report_name', 'Cash Advances')->first(),
+            'first_signatories' => Signatory::where('report_header_id', 5)->get(),
         ]);
     }
 

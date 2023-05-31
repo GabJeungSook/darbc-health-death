@@ -9,6 +9,7 @@ use App\Models\Member;
 use Livewire\WithPagination;
 use App\Models\Death;
 use App\Models\ReportHeader;
+use App\Models\Signatory;
 
 class DeathReport extends Component
 {
@@ -61,6 +62,7 @@ class DeathReport extends Component
             $this->report_get != 3 ? [] : ($this->death == null ? [] : $this->death),
             'reports' => ReportHeader::where('report_id', 2)->get(),
             'first_report' => ReportHeader::where('report_id', 2)->where('report_name', 'Death - Members & Dependent')->first(),
+            'first_signatories' => Signatory::where('report_header_id', 3)->get(),
         ]);
     }
 

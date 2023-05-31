@@ -21,7 +21,7 @@
           <div class="mt-16">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
-          <div class="mt-16">
+          <div class="mt-4">
             <h3 class="text-lg font-bold ml-4">THE ADMINISTRATOR</h3>
           </div>
           <div class="mt-1">
@@ -96,15 +96,15 @@
 }
              $amountInWords = strtoupper(convertNumberToWords($record->amount));
             @endphp
-          to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span> only.</p>
+          up to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span>.</p>
           </div>
-          <div class="mt-1">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Kindly submit your billing to our cashier for payment processing.</p>
           </div>
-          <div class="mt-1">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Thank you and more power</p>
           </div>
-          <div class="mt-1">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Very truly yours,</p>
           </div>
           <div class="mt-16">

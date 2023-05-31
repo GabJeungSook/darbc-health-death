@@ -73,10 +73,11 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                 ->button()
                 ->color('primary')
                 ->mountUsing(fn (Forms\ComponentContainer $form, CashAdvanceModel $record) => $form->fill([
+                    'enrollment_status' => $record->enrollment_status,
                     'darbc_id' => $this->getDarbcId($record->member_id),
-                    'first_name' => $this->getDarbcFirstName($record->member_id),
-                    'middle_name' => $this->getDarbcMiddleName($record->member_id),
-                    'last_name' => $this->getDarbcLastName($record->member_id),
+                    'first_name' => $record->first_name,
+                    'middle_name' => $record->middle_name,
+                    'last_name' => $record->last_name,
                     'purpose' => $record->purpose,
                     'other_purpose' => $record->other_purpose,
                     'contact_numbers' => $record->contact_numbers,
@@ -92,6 +93,10 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                 ->action(function (CashAdvanceModel $record, array $data): void {
                     DB::beginTransaction();
                         $record->member_id = $data['darbc_id'];
+                        $record->enrollment_status = $data['enrollment_status'];
+                        $record->first_name = $data['first_name'];
+                        $record->middle_name = $data['middle_name'];
+                        $record->last_name = $data['last_name'];
                         $record->purpose = $data['purpose'];
                         if($data['purpose'] != 'Others')
                         {
@@ -128,15 +133,46 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                     );
                 })
                 ->form([
-                    Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
-                    ->reactive()
-                    ->disabled()
-                    ->required(),
+                    Grid::make(2)
+                    ->schema([
+                        Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')
+                        ->options([
+                            'member' => 'Member',
+                            'dependent' => 'Dependent',
+                        ])
+                        ->reactive()
+                        ->preload()
+                        ->afterStateUpdated(function ($set, $get, $state, $record) {
+                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $response = file_get_contents($url);
+                            $member_data = json_decode($response, true);
+
+                            $collection = collect($member_data['data']);
+
+                            if($state == 'member')
+                            {
+                                $set('first_name', $collection['user']['first_name']);
+                                $set('middle_name',$collection['user']['middle_name']);
+                                $set('last_name', $collection['user']['surname']);
+                            }else{
+                                $set('first_name', $record->first_name);
+                                $set('middle_name', $record->middle_name);
+                                $set('last_name', $record->last_name);
+                            }
+
+                        })
+                        ->required(),
+                        Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
+                        ->reactive()
+                        ->disabled()
+                        ->required(),
+                    ]),
+
                     Fieldset::make('Member\'s Information')
                     ->schema([
-                        Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required()->disabled(),
-                        Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(),
-                        Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->required()->disabled(),
+                        Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->disabled(fn ($get) => $get('enrollment_status') == 'member')->required(),
+                        Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive()->disabled(fn ($get) => $get('enrollment_status') == 'member'),
+                        Forms\Components\TextInput::make('last_name')->label('Last Name')->reactive()->disabled(fn ($get) => $get('enrollment_status') == 'member')->required(),
                         Grid::make()
                         ->schema([
                             Forms\Components\Select::make('purpose')->label('Purpose')
@@ -239,8 +275,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('memberName')
-            ->label('Member Name')
+            TextColumn::make('member_id')
+            ->label('MEMBER NAME')
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbc.org/api/member-information/'.$record->member_id;
                 $response = file_get_contents($url);
@@ -248,33 +284,50 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
                 $collection = collect($member_data['data']);
 
-                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) .'.' ;
+                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+            })
+            ->searchable()
+            ->sortable(),
+            TextColumn::make('first_name')
+            ->label('DEPENDENTS NAME')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
             })
             ->searchable()
             ->sortable(),
             TextColumn::make('purpose')
-            ->label('Purpose')
+            ->label('PURPOSE')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->purpose);
+            })
             ->searchable()
             ->sortable(),
             TextColumn::make('account')
-            ->label('Account')
+            ->label('ACCOUNT')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->account);
+            })
             ->searchable()
             ->sortable(),
             TextColumn::make('amount_requested')
-            ->label('Amount Requested')
+            ->label('AMOUNT REQUESTED')
             ->searchable()
+            ->formatStateUsing(function ($record) {
+                return   number_format($record->amount_requested, 2, '.', ',');
+            })
             ->sortable(),
             TextColumn::make('date_received')
-            ->label('Date Received')
+            ->label('DATE RECEIVED')
             ->date('F d, Y')
             ->searchable()
             ->sortable(),
             BadgeColumn::make('status')
+            ->label('STATUS')
             ->enum([
-                'On-going' => 'On-Going',
-                'Pending' => 'Pending',
-                'Approved' => 'Approved',
-                'Disapproved' => 'Disapproved',
+                'On-going' => 'ON-GOING',
+                'Pending' => 'PENDING',
+                'Approved' => 'APPROVED',
+                'Disapproved' => 'DISAPPROVED',
             ])
             ->colors([
                 'secondary' => 'On-going',

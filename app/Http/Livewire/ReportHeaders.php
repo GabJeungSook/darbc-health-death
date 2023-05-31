@@ -22,7 +22,7 @@ class ReportHeaders extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return ReportHeader::query();
+        return ReportHeader::query()->orderBy('report_id');
     }
 
     protected function getTableActions(): array

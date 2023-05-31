@@ -8,6 +8,7 @@ use App\Models\Member;
 use App\Models\ReportHeader;
 use Livewire\WithPagination;
 use App\Models\Mortuary;
+use App\Models\Signatory;
 
 class MortuaryReport extends Component
 {
@@ -74,6 +75,7 @@ class MortuaryReport extends Component
             $this->report_get != 4 ? [] : ($this->mortuary == null ? [] : $this->mortuary),
             'reports' => ReportHeader::where('report_id', 4)->get(),
             'first_report' => ReportHeader::where('report_id', 4)->where('report_name', 'Mortuary Benefits')->first(),
+            'first_signatories' => Signatory::where('report_header_id', 4)->get(),
         ]);
     }
 }

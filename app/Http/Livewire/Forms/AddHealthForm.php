@@ -63,7 +63,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                                     if($state == null)
                                         {
                                             $set('darbc_id', null);
-                                            $set('emrollment_status', null);
+                                            $set('enrollment_status', null);
                                             $set('patients_first_name', null);
                                             $set('patients_middle_name', null);
                                             $set('patients_last_name', null);
@@ -169,8 +169,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             // ->getOptionLabelUsing(fn ($value): ?string => Member::find($value)?->member_id)->required(),
                             Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->full_name == null)
                             ->options([
-                                'member' => 'M',
-                                'dependent' => 'D',
+                                'member' => 'Member',
+                                'dependent' => 'Dependent',
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {

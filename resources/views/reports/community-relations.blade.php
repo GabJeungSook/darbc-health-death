@@ -43,5 +43,14 @@
           @endforeach
         </tbody>
       </table>
+      <div class="mt-10 flex justify-around">
+        @foreach ($first_signatories as $item)
+            <div class="mt-5">
+                <h1>{{$item->description}}:</h1>
+                <span class="font-bold">{{$item->name}}</span>
+                <h1 class="text-sm">{{$item->position}}</h1>
+            </div>
+        @endforeach
+    </div>
     </div>
   </div>

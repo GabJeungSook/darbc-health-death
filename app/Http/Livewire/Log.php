@@ -8,6 +8,7 @@ use Filament\Forms;
 use Filament\Forms\Components;
 use Filament\Tables\Actions\Position;
 use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\Action;
 use App\Models\Log as LogModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,7 +50,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     protected function getTableActionsPosition(): ?string
     {
-        return Position::BeforeCells;
+        return Position::AfterCells;
     }
 
     public function getTableActions()
@@ -61,116 +62,115 @@ class Log extends Component implements Tables\Contracts\HasTable
             ->color('success')
             ->url(fn (LogModel $record): string => route('view-log', $record))
             ->openUrlInNewTab(),
-            Action::make('edit')
-            ->label('Edit')
-            ->button()
-            ->color('warning')
-            ->icon('heroicon-o-pencil')
-            ->mountUsing(fn (Forms\ComponentContainer $form, LogModel $record) => $form->fill([
-                'member_id' => $this->getDarbcId($record->member_id),
-                'enrollment_status' => $record->enrollment_status,
-                'patients_first_name' => $record->first_name,
-                'patients_middle_name' => $record->middle_name,
-                'patients_last_name' => $record->last_name,
-                'dependents_first_name' => $record->dependents_first_name,
-                'dependents_middle_name' => $record->dependents_middle_name,
-                'dependents_last_name' => $record->dependents_last_name,
-                'hospital_id' => $record->hospital_id,
-                'amount' => $record->amount,
-                'date_received' => $record->date_received,
-            ]))
-            ->action(function (LogModel $record, array $data): void {
-                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
-                $collection = collect($member_data['data']);
+            ActionGroup::make([
+                Action::make('edit')
+                ->label('Edit')
+                ->color('warning')
+                ->icon('heroicon-o-pencil')
+                ->mountUsing(fn (Forms\ComponentContainer $form, LogModel $record) => $form->fill([
+                    'member_id' => $this->getDarbcId($record->member_id),
+                    'enrollment_status' => $record->enrollment_status,
+                    'patients_first_name' => $record->first_name,
+                    'patients_middle_name' => $record->middle_name,
+                    'patients_last_name' => $record->last_name,
+                    'dependents_first_name' => $record->dependents_first_name,
+                    'dependents_middle_name' => $record->dependents_middle_name,
+                    'dependents_last_name' => $record->dependents_last_name,
+                    'hospital_id' => $record->hospital_id,
+                    'amount' => $record->amount,
+                    'date_received' => $record->date_received,
+                ]))
+                ->action(function (LogModel $record, array $data): void {
+                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                    $response = file_get_contents($url);
+                    $member_data = json_decode($response, true);
+                    $collection = collect($member_data['data']);
 
-                $record->enrollment_status = $data['enrollment_status'];
-                $record->first_name = $collection['user']['first_name'];
-                $record->middle_name = $collection['user']['middle_name'];
-                $record->last_name = $collection['user']['surname'];
-                $record->dependents_first_name = $data['dependents_first_name'];
-                $record->dependents_middle_name = $data['dependents_middle_name'];
-                $record->dependents_last_name = $data['dependents_last_name'];
-                $record->hospital_id = $data['hospital_id'];
-                $record->amount = $data['amount'];
-                $record->date_received = $data['date_received'];
-                $record->save();
+                    $record->enrollment_status = $data['enrollment_status'];
+                    $record->first_name = $collection['user']['first_name'];
+                    $record->middle_name = $collection['user']['middle_name'];
+                    $record->last_name = $collection['user']['surname'];
+                    $record->dependents_first_name = $data['dependents_first_name'];
+                    $record->dependents_middle_name = $data['dependents_middle_name'];
+                    $record->dependents_last_name = $data['dependents_last_name'];
+                    $record->hospital_id = $data['hospital_id'];
+                    $record->amount = $data['amount'];
+                    $record->date_received = $data['date_received'];
+                    $record->save();
 
-                    $this->dialog()->success(
-                        $title = 'Success',
-                        $description = 'Data successfully updated'
-                    );
+                        $this->dialog()->success(
+                            $title = 'Success',
+                            $description = 'Data successfully updated'
+                        );
+                })
+                ->form([
+                    Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('member_id')->label('DARBC ID')
+                        ->disabled()
+                        ->reactive()
+                        ->required(),
+                        Forms\Components\Select::make('enrollment_status')->label('Are you a')
+                        ->options([
+                            'member' => 'Member',
+                            'dependent' => 'Dependent',
+                        ])
+                        ->reactive()
+                        ->afterStateUpdated(function ($set, $get, $state, $record) {
+                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $response = file_get_contents($url);
+                            $member_data = json_decode($response, true);
 
-                                // $record->name = $data['name'];
-                // $record->address = $data['address'];
-
-                // $this->dialog()->success(
-                //     $title = 'Success',
-                //     $description = 'Data successfully updated'
-                // );
-
-                // $record->save();
-            })
-            ->form([
-                Card::make()
-                ->schema([
-                    Forms\Components\TextInput::make('member_id')->label('DARBC ID')
-                    ->disabled()
-                    ->reactive()
-                    ->required(),
-                    Forms\Components\Select::make('enrollment_status')->label('Are you a')
-                    ->options([
-                        'member' => 'Member',
-                        'dependent' => 'Dependent',
+                            $collection = collect($member_data['data']);
+                            //$member = Member::where('member_id', $get('member_id'))->first();
+                            if($state == 'member')
+                            {
+                                $set('patients_first_name', $collection['user']['first_name']);
+                                $set('patients_middle_name',$collection['user']['middle_name']);
+                                $set('patients_last_name', $collection['user']['surname']);
+                            }elseif($state == 'dependent'){
+                                $set('patients_first_name', null);
+                                $set('patients_middle_name', null);
+                                $set('patients_last_name', null);
+                            }
+                        })
+                        ->required(),
+                    ])->columns(2),
+                    Fieldset::make('Member\'s Name')
+                    ->schema([
+                        Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->disabled(fn ($get) => $get('member_id') == null)->reactive()->required(),
+                        Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive(),
+                        Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
+                    ])->visible(fn ($get) => $get('enrollment_status') == 'member')->columns(3),
+                    Fieldset::make('Dependent\'s Name')
+                    ->schema([
+                        Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
+                        Forms\Components\TextInput::make('dependents_middle_name')->label('Middle Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive(),
+                        Forms\Components\TextInput::make('dependents_last_name')->label('Last Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
+                    ])->visible(fn ($get) => $get('enrollment_status') == 'dependent')->columns(3),
+                    Card::make()
+                    ->schema([
+                        Forms\Components\Select::make('hospital_id')->label('Hospital')
+                        ->options(Hospital::all()->pluck('name', 'id'))
+                        ->required(),
+                        Forms\Components\TextInput::make('amount')
+                        ->numeric()
+                        ->reactive()
+                        ->required(),
+                        DatePicker::make('date_received')->label('Date Received')
+                        ->reactive()
+                        ->required()
+                    ])->columns(3)
+                    ]),
+                    Action::make('delete')
+                    ->label('Delete')
+                    ->button()
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->action(fn ($record) => $record->delete())
+                    ->requiresConfirmation(),
                     ])
-                    ->reactive()
-                    ->afterStateUpdated(function ($set, $get, $state, $record) {
-                        $url = 'https://darbc.org/api/member-information/'.$record->member_id;
-                        $response = file_get_contents($url);
-                        $member_data = json_decode($response, true);
 
-                        $collection = collect($member_data['data']);
-                        //$member = Member::where('member_id', $get('member_id'))->first();
-                        if($state == 'member')
-                        {
-                            $set('patients_first_name', $collection['user']['first_name']);
-                            $set('patients_middle_name',$collection['user']['middle_name']);
-                            $set('patients_last_name', $collection['user']['surname']);
-                        }elseif($state == 'dependent'){
-                            $set('patients_first_name', null);
-                            $set('patients_middle_name', null);
-                            $set('patients_last_name', null);
-                        }
-                    })
-                    ->required(),
-                ])->columns(2),
-                Fieldset::make('Member\'s Name')
-                ->schema([
-                    Forms\Components\TextInput::make('patients_first_name')->label('First Name')->reactive()->disabled(fn ($get) => $get('member_id') == null)->reactive()->required(),
-                    Forms\Components\TextInput::make('patients_middle_name')->label('Middle Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive(),
-                    Forms\Components\TextInput::make('patients_last_name')->label('Last Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
-                ])->visible(fn ($get) => $get('enrollment_status') == 'member')->columns(3),
-                Fieldset::make('Dependent\'s Name')
-                ->schema([
-                    Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
-                    Forms\Components\TextInput::make('dependents_middle_name')->label('Middle Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive(),
-                    Forms\Components\TextInput::make('dependents_last_name')->label('Last Name')->disabled(fn ($get) =>  $get('member_id') == null)->reactive()->required(),
-                ])->visible(fn ($get) => $get('enrollment_status') == 'dependent')->columns(3),
-                Card::make()
-                ->schema([
-                    Forms\Components\Select::make('hospital_id')->label('Hospital')
-                    ->options(Hospital::all()->pluck('name', 'id'))
-                    ->required(),
-                    Forms\Components\TextInput::make('amount')
-                    ->numeric()
-                    ->reactive()
-                    ->required(),
-                    DatePicker::make('date_received')->label('Date Received')
-                    ->reactive()
-                    ->required()
-                ])->columns(3)
-            ])
         ];
 
     }
@@ -220,6 +220,9 @@ class Log extends Component implements Tables\Contracts\HasTable
             ->sortable(),
             TextColumn::make('hospitals.name')
             ->label('HOSPITAL')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->hospitals->name);
+            })
             ->searchable()
             ->sortable(),
             // TextColumn::make('enrollment_status')
@@ -229,6 +232,9 @@ class Log extends Component implements Tables\Contracts\HasTable
             TextColumn::make('amount')
             ->label('AMOUNT')
             ->searchable()
+            ->formatStateUsing(function ($record) {
+                return   number_format($record->amount, 2, '.', ',');
+            })
             ->sortable(),
             TextColumn::make('date_received')
             ->label('DATE RECEIVED')

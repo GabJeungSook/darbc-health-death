@@ -16,34 +16,34 @@
         <x-checkbox id="right-label" label="BATCH NUMBER" wire:model="filters.batch_number" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="ENROLLMENT STATUS" wire:model="filters.enrollment_status" />
+        <x-checkbox id="right-label1" label="ENROLLMENT STATUS" wire:model="filters.enrollment_status" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="FIRST NAME" wire:model="filters.first_name" />
+        <x-checkbox id="right-labe2" label="FIRST NAME" wire:model="filters.first_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="MIDDLE NAME" wire:model="filters.middle_name" />
+        <x-checkbox id="right-labe3" label="MIDDLE NAME" wire:model="filters.middle_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="LAST NAME" wire:model="filters.last_name" />
+        <x-checkbox id="right-labe4" label="LAST NAME" wire:model="filters.last_name" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="CONTACT NUMBER" wire:model="filters.contact_number" />
+        <x-checkbox id="right-labe5" label="CONTACT NUMBER" wire:model="filters.contact_number" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="AGE" wire:model="filters.age" />
+        <x-checkbox id="right-labe6" label="AGE" wire:model="filters.age" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="CONFINEMENT DATE FROM" wire:model="filters.confinement_date_from" />
+        <x-checkbox id="right-labe7" label="CONFINEMENT DATE FROM" wire:model="filters.confinement_date_from" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="CONFINEMENT DATE TO" wire:model="filters.confinement_date_to" />
+        <x-checkbox id="right-labe8" label="CONFINEMENT DATE TO" wire:model="filters.confinement_date_to" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="NUMBER OF DAYS" wire:model="filters.number_of_days" />
+        <x-checkbox id="right-label9" label="NUMBER OF DAYS" wire:model="filters.number_of_days" />
       </div>
       <div class="border p-1 px-3 rounded">
-        <x-checkbox id="right-label" label="AMOUNT" wire:model="filters.amount" />
+        <x-checkbox id="right-label10" label="AMOUNT" wire:model="filters.amount" />
       </div>
     </div>
 
@@ -237,7 +237,7 @@
                             $member_data = json_decode($response, true);
 
                             $collection = collect($member_data['data']);
-                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']).'.';
+                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']);
                             @endphp
                           {{ $record->member_id }}</td>
                         <td class=" p-4 text-sm text-gray-700 text-left"> {{ $member_name }}</td>
@@ -277,7 +277,7 @@
                             $member_data = json_decode($response, true);
 
                             $collection = collect($member_data['data']);
-                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']).'.';
+                            $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']);
                             @endphp
                           <td class=" p-4 text-sm text-gray-700 text-left"> {{  $member_name }}</td>
                         @endif

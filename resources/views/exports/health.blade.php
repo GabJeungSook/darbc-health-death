@@ -39,7 +39,7 @@
               @if ($item->enrollment_status == "member")
               <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $member_name ?? '' }}
               @else
-              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '.' ?? '' }}
+              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
               @endif
               <td class="border text-gray-600 uppercase  px-3  py-1">
                 {{ \Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}

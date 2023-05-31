@@ -15,7 +15,9 @@
         <thead class="font-normal">
           <tr>
               <tr>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">ENROLLMENT STATUS</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER NAME</th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT NAME</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">PURPOSE</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">ACCOUNT
                   </th>
@@ -36,11 +38,15 @@
 
                   $collection = collect($member_data['data']);
                   $darbc_id = $collection['darbc_id'];
-                  $member_name = strtoupper($collection['user']['surname']) . ' '
+                  $member_name = strtoupper($collection['user']['surname']) . ', '
                   .strtoupper($collection['user']['first_name']) . ' '
-                  . strtoupper($collection['user']['middle_name']).'.';
+                  . strtoupper($collection['user']['middle_name']);
                   @endphp
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $member_name }}
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}
+              </td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
+              </td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}
               </td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}
              </td>
@@ -53,5 +59,14 @@
           @endforeach
         </tbody>
       </table>
+      <div class="mt-10 flex justify-around">
+        @foreach ($first_signatories as $item)
+            <div class="mt-5">
+                <h1>{{$item->description}}:</h1>
+                <span class="font-bold">{{$item->name}}</span>
+                <h1 class="text-sm">{{$item->position}}</h1>
+            </div>
+        @endforeach
+    </div>
     </div>
   </div>

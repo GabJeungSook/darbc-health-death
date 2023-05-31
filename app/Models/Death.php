@@ -20,9 +20,9 @@ class Death extends Model
         return $this->belongsTo(Member::class, 'member_id', 'member_id');
     }
 
-    public function mortuaries()
+    public function mortuary()
     {
-        return $this->belongsTo(Mortuary::class, 'death_id', 'death_id');
+        return $this->belongsTo(Mortuary::class);
     }
 
     public function schedules()

@@ -29,7 +29,7 @@
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) . ' ' . strtoupper($record->dependents_last_name)}}</dd>
               @endif
               <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">DIAMOND PACKAGE</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->has_diamond_package}}</dd>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->mortuary->diamond_package}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">ENROLLMENT STATUS</dt>
@@ -38,7 +38,7 @@
                 : strtoupper($record->enrollment_status) }}
               </dd>
               <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">HAS VEHICLE</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->has_vehicle}}</dd>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->mortuary->vehicle}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">CONTACT NUMBER</dt>
@@ -54,11 +54,11 @@
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">DATE OF DEATH</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{\Carbon\Carbon::parse($record->date_of_death)->format('F d, Y')}}</dd>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->mortuary->date_of_death != null ? \Carbon\Carbon::parse($record->mortuary->date_of_death)->format('F d, Y') : '---'}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">PLACE OF DEATH</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->place_of_death}}</dd>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->mortuary->place_of_death != null ? strtoupper($record->mortuary->place_of_death) : '---'}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">COVERAGE TYPE</dt>

@@ -1,17 +1,5 @@
 <div>
-    <div class="flex space-x-1">
-      <div class="grid place-content-center">
-        <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="">
-      </div>
-      <div>
-        <h1 class="text-xl font-bold text-gray-700"> DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
-        <h1>DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
-      </div>
-    </div>
-
-    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($second_report->header)}}</h1>
-    <div class="mt-5 overflow-x-auto">
-      <table id="example" class="table-auto mt-5" style="width:100%">
+    <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
           <tr>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER NAME
@@ -26,13 +14,15 @@
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">NUMBER OF DAYS
             </th>
+            <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF PAYMENT
+            </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">STATUS
             </th>
 
           </tr>
         </thead>
         <tbody class="">
-          @foreach ($transmittals as $item)
+          @foreach ($payments as $item)
             <tr>
                 @php
                     $url = 'https://darbc.org/api/member-information/'.$item->member_id;
@@ -55,19 +45,10 @@
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->hospitals->name }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->number_of_days }}</td>
+              <td class="border text-gray-600  px-3  py-1">{{  Carbon\Carbon::parse($item->payments->date_of_payment)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->status }}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
-      <div class="mt-10 flex justify-around">
-        @foreach ($second_signatories as $item)
-            <div class="mt-5">
-                <h1>{{$item->description}}:</h1>
-                <span class="font-bold">{{$item->name}}</span>
-                <h1 class="text-sm">{{$item->position}}</h1>
-            </div>
-        @endforeach
-    </div>
-    </div>
-  </div>
+</div>

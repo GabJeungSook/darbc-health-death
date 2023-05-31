@@ -17,40 +17,44 @@
             <div class="border-t border-gray-100 px-4 p-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">DARBC ID</dt>
                 <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$collection['darbc_id']}}</dd>
-                <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">MEMBER NAME</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$member_name}}</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">DEPENDENT NAME</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->first_name.' '.$record->middle_name.' '.$record->last_name)}}</dd>
               </div>
 
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">FULL NAME</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900">MEMBER NAME</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$member_name}}</dd>
-              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">ACCOUNT</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->account}}</dd>
-            </div>
-            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">PURPOSE</dt>
+              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">PURPOSE</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->purpose}}</dd>
               @if ($record->purpose == "Others")
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->other_purpose}}</dd>
               @endif
-              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">AMOUNT REQUESTED</dt>
+            </div>
+            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">ENROLLMENT STATUS</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->enrollment_status)}}</dd>
+              <dt class="text-sm font-medium leading-6 text-gray-900 border-t border-gray-100 mt-3 pt-4">ACCOUNT</dt>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->account}}</dd>
+            </div>
+            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-gray-900">AMOUNT REQUESTED</dt>
               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{number_format($record->amount_requested, 2, '.', ',')}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
               <dt class="text-sm font-medium leading-6 text-gray-900">DATE RECEIVED</dt>
-               <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{\Carbon\Carbon::parse($record->date_received)->format('F d, Y')}}</dd>
+              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{\Carbon\Carbon::parse($record->date_received)->format('F d, Y')}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">STATUS</dt>
-              <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{ $record->status }}</dd>
+                <dt class="text-sm font-medium leading-6 text-gray-900">STATUS</dt>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->status}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">REASON</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->reason ?? '---'}}</dd>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{strtoupper($record->reason)}}</dd>
             </div>
-            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+            <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">AMOUNT APPROVED</dt>
-                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{$record->amount_approved != null ? number_format($record->amount_approved, 2, '.', ',') : '---'}}</dd>
+                <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{$record->amount_approved != null ? number_format($record->amount_approved, 2, '.', ',') : ' ---'}}</dd>
             </div>
             <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                 <dt class="text-sm font-medium leading-6 text-gray-900">DATE APPROVED</dt>

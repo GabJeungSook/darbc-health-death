@@ -45,10 +45,10 @@
             <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_diamond_package == 'Yes' ? 'Yes' : 'No'}}</td>
             <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_vehicle}}</td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
-              {{ \Carbon\Carbon::parse($item->date_of_death)->format('F d, Y') }}
+            {{ $item->mortuary->date_of_death != null ? \Carbon\Carbon::parse($item->mortuary->date_of_death)->format('F d, Y') : '' }}
             </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
-                {{ $item->place_of_death }}
+                {{ $item->mortuary->place_of_death }}
               </td>
               @switch($item->coverage_type)
                 @case(1)

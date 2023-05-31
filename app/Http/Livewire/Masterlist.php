@@ -666,7 +666,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
         return [
             TextColumn::make('memberName')
                 ->formatStateUsing(function ($record) {
-                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) .'.' ;
+                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
                 ->label('MEMBERS NAME')
                 ->formatStateUsing(function ($record) {
@@ -676,7 +676,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
 
                     $collection = collect($member_data['data']);
 
-                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) .'.' ;
+                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 }),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
@@ -688,12 +688,11 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                     $collection = collect($member_data['data']);
                     if($record->enrollment_status == 'member')
                     {
-                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) .'.' ;
+                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                     }else{
-                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) .'.' ;
+                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                     }
                 })
-                ->searchable()
                 ->sortable(),
             // TextColumn::make('contact_number')
             //     ->label('CONTACT NUMBER')
@@ -727,6 +726,9 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             //     ->sortable(),
             TextColumn::make('hospitals.name')
                 ->label('HOSPITAL NAME')
+                ->formatStateUsing(function ($record) {
+                    return strtoupper($record->hospitals->name);
+                })
                 ->searchable()
                 ->sortable(),
             // TextColumn::make('number_of_days')
@@ -735,14 +737,18 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             //     ->sortable(),
             TextColumn::make('amount')
                 ->label('AMOUNT')
+                ->formatStateUsing(function ($record) {
+                    return   number_format($record->amount, 2, '.', ',');
+                })
                 ->searchable()
                 ->sortable(),
                 BadgeColumn::make('status')
+                ->label('STATUS')
                 ->enum([
-                    'ENCODED' => 'Encoded',
-                    'TRANSMITTED' => 'Transmitted',
-                    'PAID' => 'Paid',
-                    'UNPAID' => 'Unpaid',
+                    'ENCODED' => 'ENCODED',
+                    'TRANSMITTED' => 'TRANSMITTED',
+                    'PAID' => 'PAID',
+                    'UNPAID' => 'UNPAID',
                 ])
                 ->colors([
                     'primary' => 'ENCODED',

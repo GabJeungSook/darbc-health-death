@@ -24,6 +24,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     public $member_full_names;
     public $full_name;
     public $darbc_id;
+    public $enrollment_status;
     public $first_name;
     public $middle_name;
     public $last_name;
@@ -43,35 +44,76 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     protected function getFormSchema(): array
     {
         return [
-            Grid::make(2)
-            ->schema([
-                Forms\Components\Select::make('full_name')->label('DARBC Member')
+            Forms\Components\Select::make('full_name')->label('DARBC Member')
                 ->reactive()
                 ->preload()
                 ->searchable()
                 ->options($this->member_full_names->pluck('full_name', 'id'))
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$state;
+                    if($state == null)
+                    {
+                        $set('darbc_id', null);
+                        $set('enrollment_status', null);
+                        $set('first_name', null);
+                        $set('middle_name', null);
+                        $set('last_name', null);
+                        $set('purpose', null);
+                        $set('illness', null);
+                        $set('account', null);
+                        $set('amount_requested', null);
+                        $set('date_received', null);
+                        $set('status', null);
+                    }else{
+                        $url = 'https://darbc.org/api/member-information/'.$state;
+                        $response = file_get_contents($url);
+                        $member_data = json_decode($response, true);
+
+                        $collection = collect($member_data['data']);
+                        $set('darbc_id', $collection['darbc_id']);
+
+                        if($get('enrollment_status') == 'member')
+                        {
+                            $set('first_name', $collection['user']['first_name']);
+                            $set('middle_name',$collection['user']['middle_name']);
+                            $set('last_name', $collection['user']['surname']);
+                        }else{
+                            $set('first_name', null);
+                            $set('middle_name', null);
+                            $set('last_name', null);
+                        }
+                    }
+
+
+                }),
+            Grid::make(2)
+            ->schema([
+                Forms\Components\Select::make('enrollment_status')->label('Enrollment Status')->disabled(fn ($get) => $this->full_name == null)
+                ->options([
+                    'member' => 'Member',
+                    'dependent' => 'Dependent',
+                ])
+                ->reactive()
+                ->preload()
+                ->afterStateUpdated(function ($set, $get, $state) {
+                    $url = 'https://darbc.org/api/member-information/'.$get('full_name');
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
                     $collection = collect($member_data['data']);
-                    $set('darbc_id', $collection['darbc_id']);
 
-                    if($this->darbc_id != null)
+                    if($state == 'member')
                     {
                         $set('first_name', $collection['user']['first_name']);
                         $set('middle_name',$collection['user']['middle_name']);
                         $set('last_name', $collection['user']['surname']);
-                        $set('contact_number', $collection['contact_number']);
                     }else{
                         $set('first_name', null);
                         $set('middle_name', null);
                         $set('last_name', null);
-                        $set('contact_number', null);
                     }
 
-                }),
+                })
+                ->required(),
                 Forms\Components\TextInput::make('darbc_id')->label('DARBC ID')
                 ->disabled()
                 ->reactive()
@@ -103,7 +145,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
             // })
             // ->searchable()
             // ->required(),
-            Fieldset::make('Member\'s Information')
+            Fieldset::make('Member\'s / Dependent\'s Information')
             ->schema([
                 Forms\Components\TextInput::make('first_name')->label('First Name')->reactive()->required(),
                 Forms\Components\TextInput::make('middle_name')->label('Middle Name')->reactive(),
@@ -200,7 +242,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
     public function closeModal()
     {
         $this->emit('close_cash_advance_modal');
-        $this->reset(['full_name','darbc_id', 'purpose', 'contact_number', 'account', 'amount_requested', 'amount_approved', 'date_received', 'date_approved', 'reason', 'status']);
+        $this->reset(['full_name','darbc_id', 'enrollment_status', 'purpose', 'contact_number', 'account', 'amount_requested', 'amount_approved', 'date_received', 'date_approved', 'reason', 'status']);
     }
 
     public function save()
@@ -209,6 +251,10 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
         DB::beginTransaction();
         CashAdvance::create([
             'member_id' => $this->full_name,
+            'enrollment_status' => $this->enrollment_status,
+            'first_name' => $this->first_name,
+            'middle_name' => $this->middle_name,
+            'last_name' => $this->last_name,
             'purpose' => $this->purpose,
             'illness' => $this->illness,
             'other_purpose' => $this->other_purpose,

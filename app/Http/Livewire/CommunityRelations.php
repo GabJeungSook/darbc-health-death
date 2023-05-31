@@ -186,34 +186,46 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
             // ->searchable()
             // ->sortable(),
             TextColumn::make('memberName')
-            ->label('Name')
+            ->label('NAME')
             ->formatStateUsing(function ($record) {
                 return strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) . ' ' . strtoupper($record->last_name) ;
             })
             ->searchable()
             ->sortable(),
             TextColumn::make('organization')
-            ->label('Organization / Address')
+            ->label('ORGANIZATION / ADDRESS')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->organization);
+            })
             ->searchable()
             ->sortable(),
             TextColumn::make('contact_number')
-            ->label('Contact Number')
+            ->label('CONTACT NUMBER')
             ->searchable()
             ->sortable(),
             TextColumn::make('community_purpose.name')
-            ->label('Purpose')
+            ->label('PURPOSE')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->community_purpose->name);
+            })
             ->searchable()
             ->sortable(),
             TextColumn::make('community_type.name')
-            ->label('Type')
+            ->label('TYPE')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->community_type->name);
+            })
             ->searchable()
             ->sortable(),
             TextColumn::make('number_of_participants')
-            ->label('Participants')
+            ->label('PARTICIPANTS')
             ->searchable()
             ->sortable(),
             TextColumn::make('status')
-            ->label('Status')
+            ->label('STATUS')
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->status);
+            })
             ->searchable()
             ->sortable(),
         ];

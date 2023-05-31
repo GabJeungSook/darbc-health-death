@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($second_report->header)}}</h1>
+    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($fourth_report->header)}}</h1>
     <div class="mt-5 overflow-x-auto">
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody class="">
-          @foreach ($transmittals as $item)
+          @foreach ($encoded as $item)
             <tr>
                 @php
                     $url = 'https://darbc.org/api/member-information/'.$item->member_id;
@@ -61,13 +61,14 @@
         </tbody>
       </table>
       <div class="mt-10 flex justify-around">
-        @foreach ($second_signatories as $item)
+        @foreach ($fourth_signatories as $item)
             <div class="mt-5">
                 <h1>{{$item->description}}:</h1>
                 <span class="font-bold">{{$item->name}}</span>
                 <h1 class="text-sm">{{$item->position}}</h1>
             </div>
         @endforeach
+
     </div>
     </div>
   </div>

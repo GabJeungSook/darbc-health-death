@@ -1,4 +1,11 @@
 <div>
+    <style>
+        @media print {
+          @page {
+            size: auto;
+          }
+        }
+    </style>
   <div class="flex space-x-1">
     <div class="grid place-content-center">
       <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="">
@@ -48,9 +55,9 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
             @if ($item->enrollment_status == "member")
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $member_name ?? '' }}
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name ?? '' }}
             @else
-            <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name . '.' ?? '' }}
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
             @endif
             <td class="border text-gray-600 uppercase  px-3  py-1">
               {{ \Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}
@@ -68,5 +75,15 @@
         @endforeach
       </tbody>
     </table>
+    <div class="mt-10 flex justify-around">
+            @foreach ($first_signatories as $item)
+            <div class="mt-5">
+                <h1>{{$item->description}}:</h1>
+                <span class="font-bold">{{$item->name}}</span>
+                <h1 class="text-sm">{{$item->position}}</h1>
+            </div>
+            @endforeach
+    </div>
+
   </div>
 </div>

@@ -116,7 +116,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 'dependents_middle_name' => $record->dependents_middle_name,
                 'dependents_last_name' => $record->dependents_last_name,
                 'dependent_type' => $record->dependent_type,
-                'has_diamond_package' => $record->has_diamond_package,
+                'has_diamond_package' => $record->mortuary->diamond_package,
                 'islam_cash' => $record->has_diamond_package == 'Islam' ? '30000' : '0',
                 'cash' => $record->has_diamond_package == 'Distant' || $record->has_diamond_package == 'No' ? '20000' : '0',
                 'grocery' => $record->has_diamond_package == 'Distant' || $record->has_diamond_package == 'No' ? '2000' : '0',
@@ -124,16 +124,16 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 'birthday' => $record->birthday,
                 'age' => $record->age,
                 'contact_number' => $record->contact_number,
-                'date_of_death' => Carbon::parse($record->date_of_death)->format('F d, Y'),
-                'place_of_death' => $record->place_of_death,
-                'has_vehicle' => $record->has_vehicle,
-                'schedule_first_name' => $record->schedules->first()->schedule_first_name,
-                'schedule_middle_name' => $record->schedules->first()->schedule_middle_name,
-                'schedule_last_name' => $record->schedules->first()->schedule_last_name,
-                'date_requested' => $record->schedules->first()->date_requested != null ? Carbon::parse($record->schedules->first()->date_requested)->format('F d, Y') : null,
-                'scheduled_date' => $record->schedules->first()->date_requested != null ? Carbon::parse($record->schedules->first()->scheduled_date)->format('F d, Y') : null,
-                'vehicle_type' => $record->schedules->first()->vehicle_type,
-                'remarks' => $record->schedules->first()->remarks,
+                'date_of_death' => Carbon::parse($record->mortuary->date_of_death)->format('F d, Y'),
+                'place_of_death' => $record->mortuary->place_of_death,
+                'has_vehicle' => $record->mortuary->vehicle,
+                'schedule_first_name' => $record->schedules->first()?->schedule_first_name,
+                'schedule_middle_name' => $record->schedules->first()?->schedule_middle_name,
+                'schedule_last_name' => $record->schedules->first()?->schedule_last_name,
+                'date_requested' => $record->schedules->first()?->date_requested != null ? Carbon::parse($record->schedules->first()->date_requested)->format('F d, Y') : null,
+                'scheduled_date' => $record->schedules->first()?->date_requested != null ? Carbon::parse($record->schedules->first()->scheduled_date)->format('F d, Y') : null,
+                'vehicle_type' => $record->schedules->first()?->vehicle_type,
+                'remarks' => $record->schedules->first()?->remarks,
                 'coverage_type' => $record->coverage_type,
                 'amount' => $record->amount,
             ]))
@@ -180,7 +180,17 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
                     if($data['has_vehicle'] == "Yes")
                     {
-                        $schedule = VehicleSchedule::where('death_id', $record->id)->first();
+                        // $record->schedules->create([
+                        //     'schedule_first_name' => $data['schedule_first_name'],
+                        //     'schedule_middle_name' => $data['schedule_middle_name'],
+                        //     'schedule_last_name' => $data['schedule_last_name'],
+                        //     'date_requested' => $data['date_requested'],
+                        //     'scheduled_date' => $data['scheduled_date'],
+                        //     'vehicle_type' => $data['vehicle_type'],
+                        //     'remarks' => $data['remarks'],
+                        // ]);
+                        $schedule = VehicleSchedule::firstOrNew(['id' => $record->id]);
+                        $schedule->death_id = $record->id;
                         $schedule->schedule_first_name = $data['schedule_first_name'];
                         $schedule->schedule_middle_name = $data['schedule_middle_name'];
                         $schedule->schedule_last_name = $data['schedule_last_name'];
@@ -349,9 +359,11 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             Card::make()
                             ->schema([
                                 DatePicker::make('date_of_death')->label('Date Of Death')
+                                ->disabled()
                                 ->reactive()
                                 ->required(),
                                 Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')
+                                ->disabled()
                                 ->reactive()
                                 ->required(),
                                 Forms\Components\Select::make('has_vehicle')->label('Vehicle')
@@ -581,7 +593,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('date')
-                ->label('Date')
+                ->label('DATE')
                 ->date('F d, Y')
                 ->searchable(),
             TextColumn::make('memberName')
@@ -594,10 +606,9 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
                     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 })
-                ->label('Member Name')
-                ->searchable(),
+                ->label('MEMBER NAME'),
             TextColumn::make('dependents_name')
-                ->label('Dependent\'s Name')
+                ->label('DEPENDENT\'S NAME')
                 ->formatStateUsing(function ($record) {
                     $url = 'https://darbc.org/api/member-information/'.$record->member_id;
                     $response = file_get_contents($url);
@@ -612,8 +623,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     }
                 })
                 ->searchable(),
-                BadgeColumn::make('has_diamond_package')
-                ->label('Diamond Package')
+                BadgeColumn::make('mortuary.diamond_package')
+                ->label('DIAMOND PACKAGE')
                 ->enum([
                     'Yes' => 'Yes',
                     'No' => 'No',
@@ -625,15 +636,24 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     'danger' => 'No',
                     'warning' => 'Islam',
                     'primary' => 'Distant'
-                ]),
-            TextColumn::make('date_of_death')
-                ->label('Date of Death')
+                ])
+                ->formatStateUsing(function ($record) {
+                    return strtoupper($record->has_diamond_package);
+                }),
+            TextColumn::make('mortuary.date_of_death')
+                ->label('DATE OF DEATH')
                 ->date('F d, Y'),
-            TextColumn::make('place_of_death')
-                ->label('Place Of Death')
+            TextColumn::make('mortuary.place_of_death')
+                ->label('PLACE OF DEATH')
+                ->formatStateUsing(function ($record) {
+                    return strtoupper($record->mortuary->place_of_death);
+                })
                 ->searchable(),
             TextColumn::make('amount')
-                ->label('Amount')
+                ->label('AMOUNT')
+                ->formatStateUsing(function ($record) {
+                    return   number_format($record->amount, 2, '.', ',');
+                })
                 ->searchable(),
         ];
     }

@@ -30,10 +30,10 @@
                     $collection = collect($member_data['data']);
                 @endphp
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
-              strtoupper($collection['user']['middle_name']).'. '.strtoupper($collection['user']['surname']) }}</td>
+              strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td>
               @if ($item->enrollment_status == 'member')
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
-                strtoupper($collection['user']['middle_name']).'. '.strtoupper($collection['user']['surname']) }}</td>
+                strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td>
               @else
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($item->first_name).' '.
                 strtoupper($item->middle_name).'. '.strtoupper($item->last_name) }}</td>

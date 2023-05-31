@@ -53,7 +53,12 @@
             <div class="flex justify-center items-center">
                 <div class="relative block mt-3 w-full rounded-lg text-center focus:outline-none">
                     <span class="mt-2 block text-gray-600">
-                          <livewire:report-signatory />
+                        <div class="">
+                            <livewire:report-signatory />
+                        </div>
+                        <div class="mt-10">
+                            <livewire:signatories />
+                        </div>
                     </span>
                 </div>
             </div>

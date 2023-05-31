@@ -164,11 +164,14 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             //$member = Member::where('member_id', $get('member_id'))->first();
                             if($state == 'member')
                             {
+                                $record = Mortuary::find($get('mortuary_id'));
                                 $set('first_name', $collection['user']['first_name']);
                                 $set('middle_name',$collection['user']['middle_name']);
                                 $set('last_name', $collection['user']['surname']);
                                 $set('contact_number', $collection['contact_number']);
                                 $set('birthday', $collection['date_of_birth']);
+                                $set('date_of_death', $record->date_of_death);
+                                $set('place_of_death', $record->place_of_death);
                                 if($collection['date_of_birth'] != null)
                                 {
                                     $date_of_birth = $collection['date_of_birth'];
@@ -184,6 +187,8 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 $set('contact_number', null);
                                 $set('birthday', null);
                                 $set('age', null);
+                                $set('date_of_death', null);
+                                $set('place_of_death', null);
                             }
                             $set('dependents_first_name', null);
                             $set('dependents_middle_name', null);
@@ -279,9 +284,11 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         Card::make()
                         ->schema([
                             DatePicker::make('date_of_death')->label('Date Of Death')->disabled(fn ($get) => $this->member_id == null)
+                            ->disabled()
                             ->reactive()
                             ->required(),
                             Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')->disabled(fn ($get) => $this->member_id == null)
+                            ->disabled()
                             ->reactive()
                             ->required(),
                             Forms\Components\TextInput::make('has_vehicle')->label('Vehicle')
