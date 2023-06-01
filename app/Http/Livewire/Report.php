@@ -105,8 +105,6 @@ class Report extends Component
             'third_signatories' => Signatory::where('report_header_id', 7)->get(),
             'fourth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Encoded')->first(),
             'fourth_signatories' => Signatory::where('report_header_id', 8)->get(),
-            'fifth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Daily Claims')->first(),
-            'fifth_signatories' => Signatory::where('report_header_id', 9)->get(),
             'sixth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Below 10k')->first(),
             'sixth_signatories' => Signatory::where('report_header_id', 10)->get(),
             'total' => Health::where('amount', '<', 10000)->sum('amount'),

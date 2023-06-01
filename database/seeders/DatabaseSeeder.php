@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             PurposeSeeder::class,
             TypeSeeder::class,
             AdditionalSeeder::class,
+            SignatorySeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

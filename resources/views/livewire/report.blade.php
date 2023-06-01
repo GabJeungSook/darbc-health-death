@@ -66,9 +66,6 @@
       @case(8)
       @include('reports.encoded')
       @break
-      @case(9)
-      @include('reports.encoded')
-      @break
       @case(10)
       @include('reports.belowten')
       @break

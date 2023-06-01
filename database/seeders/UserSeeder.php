@@ -18,6 +18,13 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@darbc.com',
             'password' => Hash::make('password'),
+            'role_id' => 1,
+        ]);
+        User::create([
+            'name' => 'Community Relations',
+            'email' => 'community@darbc.com',
+            'password' => Hash::make('community'),
+            'role_id' => 2,
         ]);
     }
 }

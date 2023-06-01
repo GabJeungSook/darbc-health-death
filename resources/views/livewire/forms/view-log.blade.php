@@ -7,16 +7,21 @@
         </div>
     </div>
     <div class="p-3 mt-3 border-2" x-ref="printContainer">
-        <div class="mt-4 flex space-x-1">
-            <div class="grid place-content-center">
-              <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="" media="print">
+        <div class="mt-4 flex justify-center text-center space-x-1">
+            <div class="grid ">
+              <img src="{{ asset('images/darbc.png') }}" class="h-10 mt-1" alt="" media="print">
             </div>
             <div>
               <h1 class="text-xl font-bold text-gray-700"> DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
               <h1>DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
+              <div class="mx-auto">
+                <h1>CDA REG. #: 9520-12006162</h1>
+                <h1>FAX NO. (083) 500-2411</h1>
+              </div>
             </div>
           </div>
-
+          <div class="mt-2 h-0.5 bg-gray-700"></div>
+          <div class="mt-0.5 h-0.5 bg-gray-700"></div>
           {{-- <h1 class="text-xl mt-5 text-center font-bold text-gray-700">MASTERLIST</h1> --}}
           <div class="mt-16">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>

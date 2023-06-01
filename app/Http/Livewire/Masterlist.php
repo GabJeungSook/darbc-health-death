@@ -86,14 +86,21 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
     public function getTableActions()
     {
         return [
-                Action::make('view')
-                ->icon('heroicon-o-eye')
+                Action::make('print_claim')
+                ->label('Print Claim')
+                ->icon('heroicon-o-printer')
                 ->button()
                 ->color('success')
-                ->url(fn (Health $record): string => route('view-health', $record))
+                ->url(fn (Health $record): string => route('daily-claims-health', $record))
                 ->openUrlInNewTab(),
                 ActionGroup::make([
+                    Action::make('view_data')
+                    ->icon('heroicon-o-eye')
+                    ->color('primary')
+                    ->url(fn (Health $record): string => route('view-health', $record))
+                    ->openUrlInNewTab(),
                      Action::make('edit')
+                     ->color('success')
                     ->icon('heroicon-o-pencil')
                     ->mountUsing(fn (Forms\ComponentContainer $form, Health $record) => $form->fill([
                          'batch_number' => $record->batch_number,
