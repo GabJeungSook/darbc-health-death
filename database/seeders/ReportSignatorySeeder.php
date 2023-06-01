@@ -17,7 +17,7 @@ class ReportSignatorySeeder extends Seeder
           ReportSignatory::create([
             'report_id' => 3,
             'name' => 'VINCENT E. PALMA',
-            'position' => 'DARBC Chairman',
+            'position' => 'Chairman of the Board',
         ]);
     }
 }
