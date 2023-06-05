@@ -30,6 +30,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     public $addLog = false;
     public $member_id;
+    public $member_full_names;
     public $enrollment_status;
     public $patients_first_name;
     public $patients_middle_name;
@@ -68,6 +69,7 @@ class Log extends Component implements Tables\Contracts\HasTable
                 ->color('warning')
                 ->icon('heroicon-o-pencil')
                 ->mountUsing(fn (Forms\ComponentContainer $form, LogModel $record) => $form->fill([
+                    'full_name' => $record->member_id,
                     'member_id' => $this->getDarbcId($record->member_id),
                     'enrollment_status' => $record->enrollment_status,
                     'patients_first_name' => $record->first_name,
@@ -86,13 +88,26 @@ class Log extends Component implements Tables\Contracts\HasTable
                     $member_data = json_decode($response, true);
                     $collection = collect($member_data['data']);
 
+                    $record->member_id = $data['full_name'];
                     $record->enrollment_status = $data['enrollment_status'];
-                    $record->first_name = $collection['user']['first_name'];
-                    $record->middle_name = $collection['user']['middle_name'];
-                    $record->last_name = $collection['user']['surname'];
-                    $record->dependents_first_name = $data['dependents_first_name'];
-                    $record->dependents_middle_name = $data['dependents_middle_name'];
-                    $record->dependents_last_name = $data['dependents_last_name'];
+
+                    if($data['enrollment_status'] == 'member')
+                    {
+                        // dd($collection['user']['first_name']);
+                        $record->first_name = $data['patients_first_name'];
+                        $record->middle_name = $data['patients_middle_name'];
+                        $record->last_name = $data['patients_last_name'];
+                        $record->dependents_first_name = $data['patients_first_name'];
+                        $record->dependents_middle_name = $data['patients_middle_name'];
+                        $record->dependents_last_name = $data['patients_last_name'];
+                    }else{
+                        $record->first_name = $data['patients_first_name'];
+                        $record->middle_name = $data['patients_middle_name'];
+                        $record->last_name = $data['patients_last_name'];
+                        $record->dependents_first_name = $data['dependents_first_name'];
+                        $record->dependents_middle_name = $data['dependents_middle_name'];
+                        $record->dependents_last_name = $data['dependents_last_name'];
+                    }
                     $record->hospital_id = $data['hospital_id'];
                     $record->amount = $data['amount'];
                     $record->date_received = $data['date_received'];
@@ -104,6 +119,30 @@ class Log extends Component implements Tables\Contracts\HasTable
                         );
                 })
                 ->form([
+                    Forms\Components\Select::make('full_name')->label('DARBC Member')
+                    ->reactive()
+                    ->preload()
+                    ->searchable()
+                    ->options($this->member_full_names->pluck('full_name', 'id'))
+                    ->afterStateUpdated(function ($set, $get, $state) {
+                        $url = 'https://darbc.org/api/member-information/'.$state;
+                        $response = file_get_contents($url);
+                        $member_data = json_decode($response, true);
+
+                        $collection = collect($member_data['data']);
+                        $set('member_id', $collection['darbc_id']);
+                            //$member = Member::where('member_id', $state)->first();
+                        if($get('enrollment_status') == 'member')
+                        {
+                            $set('patients_first_name', $collection['user']['first_name']);
+                            $set('patients_middle_name',$collection['user']['middle_name']);
+                            $set('patients_last_name', $collection['user']['surname']);
+                        }elseif($state == 'dependent'){
+                            $set('patients_first_name', null);
+                            $set('patients_middle_name', null);
+                            $set('patients_last_name', null);
+                        }
+                        }),
                     Card::make()
                     ->schema([
                         Forms\Components\TextInput::make('member_id')->label('DARBC ID')
@@ -203,7 +242,7 @@ class Log extends Component implements Tables\Contracts\HasTable
             ->sortable(),
             TextColumn::make('memberName')
             ->formatStateUsing(function ($record) {
-                return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) .'.' ;
+                return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) ;
             })
             ->label('MEMBERS NAME')
             ->searchable(query: function (Builder $query, string $search): Builder {
@@ -214,7 +253,7 @@ class Log extends Component implements Tables\Contracts\HasTable
             TextColumn::make('patientName')
             ->label('DEPENDENT')
             ->formatStateUsing(function ($record) {
-                return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) .'.' ;
+                return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
             })
             ->searchable()
             ->sortable(),
@@ -247,6 +286,15 @@ class Log extends Component implements Tables\Contracts\HasTable
     public function closeModal()
     {
         $this->addLog = false;
+    }
+
+    public function mount()
+    {
+        $url = 'https://darbc.org/api/member-darbc-names?status=1';
+        $response = file_get_contents($url);
+        $member_data = json_decode($response, true);
+
+        $this->member_full_names = collect($member_data);
     }
 
     public function render()
