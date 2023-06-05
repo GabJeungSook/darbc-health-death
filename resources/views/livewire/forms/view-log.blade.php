@@ -119,7 +119,7 @@
             <p class="text-lg font-bold ml-4">{{$signatory->position}}</p>
           </div>
           <div class="mt-16">
-            <p class="text-lg font-bold ml-4">CHARGABLE TO: <span class="font-normal">{{$record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name}}</span></p>
+            <p class="text-lg font-bold ml-4">CHARGEABLE TO: <span class="font-normal">{{$record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name}}</span></p>
           </div>
 
 
