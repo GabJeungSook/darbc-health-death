@@ -2,6 +2,15 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="bg-gray-100">
 
 <head>
+    <style>
+    @media print {
+        /* Hide the header and footer */
+        header,
+        footer {
+          display: none !important;
+        }
+      }
+      </style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="csrf-token" content="{{ csrf_token() }}">
