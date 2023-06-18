@@ -22,7 +22,7 @@ class Signatories extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return Signatory::query()->orderBy('report_header_id');
+        return Signatory::query()->whereHas('report_headers')->orderBy('report_header_id');
     }
 
     protected function getTableActions(): array
@@ -72,7 +72,7 @@ class Signatories extends Component implements Tables\Contracts\HasTable
             ->label('REPORT NAME')
             ->searchable()
             ->formatStateUsing(function ($record) {
-                return strtoupper($record->report_headers->report_name);
+                return strtoupper($record->report_headers?->report_name);
             })
             ->sortable(),
             TextColumn::make('name')
