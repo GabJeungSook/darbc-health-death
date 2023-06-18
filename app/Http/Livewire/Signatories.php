@@ -53,11 +53,9 @@ class Signatories extends Component implements Tables\Contracts\HasTable
                 Grid::make(3)
                 ->schema([
                     TextInput::make('name')
-                    ->label('Name')
-                    ->required(),
+                    ->label('Name'),
                     TextInput::make('position')
-                    ->label('Position')
-                    ->required(),
+                    ->label('Position'),
                     TextInput::make('description')
                     ->label('Description')
                     ->required()

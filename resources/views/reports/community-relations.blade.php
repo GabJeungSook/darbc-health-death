@@ -47,8 +47,13 @@
         @foreach ($first_signatories as $item)
             <div class="mt-5">
                 <h1>{{$item->description}}:</h1>
+                @if ($item->name == null || $item->name == '')
+                <div class="mt-6 w-36 h-0.5 bg-gray-600">
+                </div>
+                @else
                 <span class="font-bold">{{$item->name}}</span>
-                <h1 class="text-sm">{{$item->position}}</h1>
+                @endif
+                <h1 class="text-sm">{{$item->position ?? ''}}</h1>
             </div>
         @endforeach
     </div>
