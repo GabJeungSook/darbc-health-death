@@ -93,6 +93,14 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->color('success')
                 ->url(fn (Health $record): string => route('daily-claims-health', $record))
                 ->openUrlInNewTab(),
+                Action::make('delete')
+                ->label('Delete')
+                ->icon('heroicon-o-trash')
+                ->button()
+                ->color('danger')
+                ->action(fn ($record) => $record->delete())
+                ->requiresConfirmation()
+                ->visible(fn ($record) => $record->status == 'ENCODED'),
                 ActionGroup::make([
                     Action::make('view_data')
                     ->icon('heroicon-o-eye')
