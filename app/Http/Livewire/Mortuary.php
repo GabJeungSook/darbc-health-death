@@ -181,13 +181,14 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             TextColumn::make('memberName')
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
-                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                // $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                // $response = file_get_contents($url);
+                // $member_data = json_decode($response, true);
 
-                $collection = collect($member_data['data']);
+                // $collection = collect($member_data['data']);
 
-                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+                // return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+                return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
             ->sortable(),
             TextColumn::make('claimantName')

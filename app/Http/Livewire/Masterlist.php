@@ -683,62 +683,34 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->formatStateUsing(function ($record) {
                     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
-                ->label('MEMBERS NAME')
-                ->formatStateUsing(function ($record) {
-                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                ->label('MEMBERS NAME'),
+                // ->formatStateUsing(function ($record) {
+                //     $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                //     $response = file_get_contents($url);
+                //     $member_data = json_decode($response, true);
 
-                    $collection = collect($member_data['data']);
+                //     $collection = collect($member_data['data']);
 
-                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                }),
+                //     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                // }),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
                 ->formatStateUsing(function ($record) {
-                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    // $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                    // $response = file_get_contents($url);
+                    // $member_data = json_decode($response, true);
 
-                    $collection = collect($member_data['data']);
-                    if($record->enrollment_status == 'member')
-                    {
-                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                    }else{
-                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
-                    }
+                    // $collection = collect($member_data['data']);
+                    // if($record->enrollment_status == 'member')
+                    // {
+                    //     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                    // }else{
+                    //     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
+                    // }
+                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
                 ->sortable(),
-            // TextColumn::make('contact_number')
-            //     ->label('CONTACT NUMBER')
-            //     ->searchable()
-            //     ->sortable(),
-            // TextColumn::make('age')
-            //     ->label('AGE')
-            //     ->searchable()
-            //     ->sortable(),
-            // TextColumn::make('enrollment_status')
-            //     ->label('ENROLLMENT STATUS')
-            //     ->formatStateUsing(function ($record) {
-            //         if($record == 'member')
-            //         {
-            //             return 'M';
-            //         }else{
-            //             return 'D';
-            //         }
-            //     })
-            //     ->searchable()
-            //     ->sortable(),
-            // TextColumn::make('confinement_date_from')
-            //     ->label('DATE OF CONFINEMENT FROM')
-            //     ->date('F d, Y')
-            //     ->searchable()
-            //     ->sortable(),
-            // TextColumn::make('confinement_date_to')
-            //     ->label('DATE OF CONFINEMENT TO')
-            //     ->searchable()
-            //     ->date('F d, Y')
-            //     ->sortable(),
+
             TextColumn::make('hospitals.name')
                 ->label('HOSPITAL NAME')
                 ->formatStateUsing(function ($record) {
