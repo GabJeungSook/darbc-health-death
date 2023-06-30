@@ -36,6 +36,9 @@
          <div class="border p-1 px-3 rounded">
             <x-checkbox id="right-label" label="VEHICLE" wire:model="filters.vehicle" />
          </div>
+         <div class="border p-1 px-3 rounded">
+            <x-checkbox id="right-label" label="COVERAGE TYPE" wire:model="filters.coverage_type" />
+         </div>
       </div>
 
       <div class="mt-4 relative">
@@ -113,6 +116,10 @@
                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
                        VEHICLE
                        </th>
+                       <th
+                       class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white ">
+                       COVERAGE TYPE
+                       </th>
                       </tr>
                     @elseif($count > 0)
                       <tr class="divide-x divide-gray-200">
@@ -183,6 +190,12 @@
                         VEHICLE
                       </th>
                       @endif
+                      @if ($filters['coverage_type'] != false && $filters['coverage_type'] != null)
+                      <th
+                        class="whitespace-nowrap border-t py-1 pl-4 pr-4 text-center text-sm font-semibold bg-indigo-500 text-white">
+                        COVERAGE TYPE
+                      </th>
+                      @endif
                       </tr>
                     @endif
                   </thead>
@@ -232,6 +245,38 @@
                                 NO
                             @endif
                            </td>
+                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            @if ($record->vehicle == 1)
+                                YES
+                            @else
+                                NO
+                            @endif
+                           </td>
+                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                            @switch($record->coverage_type)
+                                    @case(1)
+                                        Accidental Death/ Disablement
+                                        @break
+                                    @case(2)
+                                        Accident Burial Benefit
+                                        @break
+                                    @case(3)
+                                        Unprovoked Murder & Assault
+                                        @break
+                                    @case(4)
+                                        Burial Benefit due to Natural Death
+                                        @break
+                                    @case(5)
+                                        Motorcycling Coverage
+                                        @break
+                                    @case(6)
+                                        Daily Hospital Income Benefit, due to accident and/or illness
+                                        @break
+                                    @case(7)
+                                        Premium inclusive of taxes
+                                        @break
+                                    @default
+                                @endswitch
                            </td>
                         </tr>
                       @elseif($count > 0)
@@ -295,6 +340,34 @@
                         @else
                             NO
                         @endif
+                    </td>
+                      @endif
+                      @if ($filters['coverage_type'] != false && $filters['coverage_type'] != null)
+                      <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
+                        @switch($record->coverage_type)
+                        @case(1)
+                            Accidental Death/ Disablement
+                            @break
+                        @case(2)
+                            Accident Burial Benefit
+                            @break
+                        @case(3)
+                            Unprovoked Murder & Assault
+                            @break
+                        @case(4)
+                            Burial Benefit due to Natural Death
+                            @break
+                        @case(5)
+                            Motorcycling Coverage
+                            @break
+                        @case(6)
+                            Daily Hospital Income Benefit, due to accident and/or illness
+                            @break
+                        @case(7)
+                            Premium inclusive of taxes
+                            @break
+                        @default
+                    @endswitch
                     </td>
                       @endif
                         </tr>

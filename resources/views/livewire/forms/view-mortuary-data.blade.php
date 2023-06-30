@@ -68,6 +68,35 @@
                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">{{$record->vehicle}}</dd>
                 </div>
                 <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+                    <dt class="text-sm font-medium leading-6 text-gray-900">COVERAGE TYPE</dt>
+                    <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+                        @switch($record->coverage_type)
+                        @case(1)
+                            Accidental Death/ Disablement
+                            @break
+                        @case(2)
+                            Accident Burial Benefit
+                            @break
+                        @case(3)
+                            Unprovoked Murder & Assault
+                            @break
+                        @case(4)
+                            Burial Benefit due to Natural Death
+                            @break
+                        @case(5)
+                            Motorcycling Coverage
+                            @break
+                        @case(6)
+                            Daily Hospital Income Benefit, due to accident and/or illness
+                            @break
+                        @case(7)
+                            Premium inclusive of taxes
+                            @break
+                        @default
+                    @endswitch
+                    </dd>
+                </div>
+                <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
                     <dt class="text-sm font-medium leading-6 text-gray-900">AMOUNT</dt>
                     <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">₱{{number_format($record->amount, 2, '.', ',')}}</dd>
                 </div>

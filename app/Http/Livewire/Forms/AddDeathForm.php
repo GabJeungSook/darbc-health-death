@@ -91,6 +91,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                     $this->global_member_id = $collection['id'];
                                     $set('has_diamond_package', $mortuary->diamond_package);
                                     $set('has_vehicle', $mortuary->vehicle);
+                                    $set('coverage_type', $mortuary->coverage_type);
                                     $set('birthday', $collection['date_of_birth']);
                                     $set('contact_number', $collection['contact_number']);
 
@@ -193,6 +194,146 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             $set('dependents_first_name', null);
                             $set('dependents_middle_name', null);
                             $set('dependents_last_name', null);
+
+
+                            if($get('has_vehicle') == 'No')
+                            {
+                                $amount = 1000;
+                            }else{
+                                $amount = 0;
+                            }
+                            if($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'spouse')
+                            {
+                                if($get('age') >= 18 && $get('age') <= 86)
+                                {
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 20000);
+                                          break;
+                                        case '2':
+                                            $set('amount', $amount + 2000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 15000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 15000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 10000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 300);
+                                          break;
+                                        default:
+                                        $set('amount', $amount + 0);
+                                      }
+                                }else{
+                                    $this->dialog()->error(
+                                        $title = 'Invalid Age!',
+                                        $description = 'Spouse must be 18 - 86 years old.'
+                                    );
+                                    $set('birthday', null);
+                                    $set('age', null);
+                                }
+                            }elseif($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'child'){
+                                if($get('age') >= 1 && $get('age') <= 19)
+                                {
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 20000);
+                                          break;
+                                        case '2':
+                                            $set('amount', $amount + 2000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 15000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 15000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 10000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 300);
+                                          break;
+                                        default:
+                                        $set('amount', $amount + 0);
+                                      }
+                                }else{
+                                    $this->dialog()->error(
+                                        $title = 'Invalid Age!',
+                                        $description = 'Child must be 1 - 19 years old.'
+                                    );
+                                    $set('birthday', null);
+                                    $set('age', null);
+                                }
+                            }elseif($get('enrollment_status') == 'member'){
+                                if($get('age') >= 18 && $get('age') <= 60)
+                                {
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 100000);
+                                          break;
+                                        case '2':
+                                            $set('amount', $amount + 10000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 55000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 1000);
+                                          break;
+                                        case '7':
+                                            $set('amount', $amount + 2900);
+                                          break;
+                                        default:
+                                        $set('amount', 0);
+                                      }
+                                }elseif($get('age') >= 61 && $get('age') <= 86){
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 100000);
+                                          break;
+                                        case '2':
+                                            $set('amount',$amount +  10000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 55000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 1000);
+                                          break;
+                                        case '7':
+                                            $set('amount', $amount + 4200);
+                                          break;
+                                        default:
+                                        $set('amount', $amount + 0);
+                                      }
+                                }else{
+                                    $this->dialog()->error(
+                                        $title = 'Invalid Age!',
+                                        $description = 'Member must be 18 - 86 years old.'
+                                    );
+                                    $set('birthday', null);
+                                    $set('age', null);
+                                }
+                            }
+
+
                             // $set('birthday', null);
                             // $set('age', null);
                             // $set('contact_number', null);
@@ -314,6 +455,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 '6' => 'Daily Hospital Income Benefit, due to accident and/or illness',
                                 '7' => 'Premium inclusive of taxes',
                             ])
+                            ->disabled()
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state){
                                 if($get('has_vehicle') == 'No')

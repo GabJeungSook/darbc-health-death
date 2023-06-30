@@ -424,7 +424,31 @@
                           @endif
                           @if ($filters['coverage_type'] != false && $filters['coverage_type'] != null)
                             <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">
-                              {{ $record->coverage_type }}</td>
+                                @switch($record->coverage_type)
+                                    @case(1)
+                                        Accidental Death/ Disablement
+                                        @break
+                                    @case(2)
+                                        Accident Burial Benefit
+                                        @break
+                                    @case(3)
+                                        Unprovoked Murder & Assault
+                                        @break
+                                    @case(4)
+                                        Burial Benefit due to Natural Death
+                                        @break
+                                    @case(5)
+                                        Motorcycling Coverage
+                                        @break
+                                    @case(6)
+                                        Daily Hospital Income Benefit, due to accident and/or illness
+                                        @break
+                                    @case(7)
+                                        Premium inclusive of taxes
+                                        @break
+                                    @default
+                                @endswitch
+                              </td>
                           @endif
                           @if ($filters['has_vehicle'] != false && $filters['has_vehicle'] != null)
                           <td class=" py-4 pl-4 pr-4 text-sm text-gray-700 text-left uppercase ">

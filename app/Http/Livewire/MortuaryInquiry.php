@@ -24,6 +24,7 @@ class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
         'status' => null,
         'diamond_package' => null,
         'vehicle' => null,
+        'coverage_type' => null,
     ];
 
     public $search = '';
@@ -58,7 +59,8 @@ class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
             TextColumn::make('claimants_contact_number'),
             TextColumn::make('status'),
             TextColumn::make('diamond_package'),
-            TextColumn::make('vehicle')
+            TextColumn::make('vehicle'),
+            TextColumn::make('coverage_type')
         ];
     }
 
@@ -84,6 +86,7 @@ class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
             ->orWhere('status', 'like', '%' . $this->search . '%')
             ->orWhere('diamond_package', 'like', '%' . $this->search . '%')
             ->orWhere('vehicle', 'like', '%' . $this->search . '%')
+            ->orWhere('coverage_type', 'like', '%' . $this->search . '%')
             ->get()
         ]);
     }

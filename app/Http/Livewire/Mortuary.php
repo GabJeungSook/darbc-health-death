@@ -68,6 +68,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     'status' => $record->status,
                     'diamond_package' => $record->diamond_package,
                     'vehicle' => $record->vehicle,
+                    'coverage_type' => $record->coverage_type,
                 ]))
                 ->action(function (MortuaryModel $record, array $data): void {
                     DB::beginTransaction();
@@ -81,6 +82,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     $record->status = $data['status'];
                     $record->diamond_package = $data['diamond_package'];
                     $record->vehicle = $data['vehicle'];
+                    $record->coverage_type = $data['coverage_type'];
                     $record->update_attempts = $record->update_attempts + 1;
                     $record->save();
                     DB::commit();
@@ -140,6 +142,21 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                         ])
                         ->required()
                         ->reactive(),
+                        Grid::make(1)
+                        ->schema([
+                            Forms\Components\Select::make('coverage_type')->label('Type Of Coverage')
+                            ->options([
+                                '1' => 'Accidental Death/ Disablement',
+                                '2' => 'Accident Burial Benefit',
+                                '3' => 'Unprovoked Murder & Assault',
+                                '4' => 'Burial Benefit due to Natural Death',
+                                '5' => 'Motorcycling Coverage',
+                                '6' => 'Daily Hospital Income Benefit, due to accident and/or illness',
+                                '7' => 'Premium inclusive of taxes',
+                            ])
+                            ->reactive()
+                            ->required()
+                        ])
                     ])->columns(3),
                 ])->visible(fn ($record) => $record->update_attempts < 2),
                 Action::make('code')

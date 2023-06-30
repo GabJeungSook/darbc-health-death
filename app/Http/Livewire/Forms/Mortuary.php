@@ -42,6 +42,7 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
     public $status;
     public $diamond_package;
     public $vehicle;
+    public $coverage_type;
     public $attachment = [];
 
     protected function getFormSchema(): array
@@ -193,6 +194,21 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                         ])
                         ->required()
                         ->reactive(),
+                        Grid::make(1)
+                        ->schema([
+                            Forms\Components\Select::make('coverage_type')->label('Type Of Coverage')
+                            ->options([
+                                '1' => 'Accidental Death/ Disablement',
+                                '2' => 'Accident Burial Benefit',
+                                '3' => 'Unprovoked Murder & Assault',
+                                '4' => 'Burial Benefit due to Natural Death',
+                                '5' => 'Motorcycling Coverage',
+                                '6' => 'Daily Hospital Income Benefit, due to accident and/or illness',
+                                '7' => 'Premium inclusive of taxes',
+                            ])
+                            ->reactive()
+                            ->required()
+                        ])
                     ])->columns(3),
                     FileUpload::make('attachment')
                     ->enableOpen()
@@ -258,7 +274,8 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
             'date_received' => $this->date_received,
             'status' => $this->status,
             'diamond_package' => $this->diamond_package,
-            'vehicle' => $this->vehicle
+            'vehicle' => $this->vehicle,
+            'coverage_type' => $this->coverage_type
         ]);
           //save Files from fileupload
           foreach($this->attachment as $document){
