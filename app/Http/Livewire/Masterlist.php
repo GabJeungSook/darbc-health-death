@@ -34,6 +34,7 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Wizard;
 use WireUi\Traits\Actions;
+use Filament\Tables\Actions\BulkAction;
 use Carbon\Carbon;
 use DB;
 
@@ -82,6 +83,35 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             ])
         ];
     }
+
+    // protected function getTableBulkActions(): array
+    // {
+    //     return [
+    //         BulkAction::make('transmit_multiple')
+    //         ->label('Transmitted (Multiple)')
+    //         ->icon('heroicon-o-arrow-right')
+    //         ->color('warning')
+    //         ->action(function (Collection $records): void {
+    //             foreach($records as $record)
+    //             {
+    //                 DB::beginTransaction();
+    //                 $health = Transmittal::create([
+    //                     'health_id' => $record->id,
+    //                     'batch_number' => $this->batch_number,
+    //                     'date_transmitted' => now(),
+    //                 ]);
+    //                 $record->status = 'TRANSMITTED';
+    //                 $record->save();
+    //                 DB::commit();
+    //             }
+
+    //             $this->dialog()->success(
+    //                 $title = 'Success',
+    //                 $description = 'Data successfully saved'
+    //             );
+    //         })->deselectRecordsAfterCompletion()
+    //     ];
+    // }
 
     public function getTableActions()
     {
@@ -575,6 +605,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                     ->color('warning')
                     ->mountUsing(fn (Forms\ComponentContainer $form, Health $record) => $form->fill([
                         'batch_number' => $this->batch_number,
+                        'date_transmitted' =>now()
                     ]))
                     ->action(function (Health $record, array $data): void {
                         DB::beginTransaction();
