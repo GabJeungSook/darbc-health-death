@@ -286,7 +286,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
                 return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
             })
-            ->searchable()
+            ->searchable(['first_name', 'last_name'])
             ->sortable(),
             TextColumn::make('first_name')
             ->label('DEPENDENTS NAME')

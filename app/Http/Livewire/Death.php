@@ -606,7 +606,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
                     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 })
-                ->label('MEMBER NAME'),
+                ->label('MEMBER NAME')
+                ->searchable(['first_name', 'last_name']),
             TextColumn::make('dependents_name')
                 ->label('DEPENDENT\'S NAME')
                 ->formatStateUsing(function ($record) {

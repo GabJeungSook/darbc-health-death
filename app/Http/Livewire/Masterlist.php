@@ -714,7 +714,9 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->formatStateUsing(function ($record) {
                     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
-                ->label('MEMBERS NAME'),
+                ->label('MEMBERS NAME')
+                ->searchable(['first_name', 'last_name'])
+                ,
                 // ->formatStateUsing(function ($record) {
                 //     $url = 'https://darbc.org/api/member-information/'.$record->member_id;
                 //     $response = file_get_contents($url);
@@ -726,6 +728,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 // }),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
+                ->searchable(['first_name', 'last_name'])
                 ->formatStateUsing(function ($record) {
                     // $url = 'https://darbc.org/api/member-information/'.$record->member_id;
                     // $response = file_get_contents($url);
