@@ -307,8 +307,13 @@ class Death extends Component  implements Tables\Contracts\HasTable
                         ]),
                     Wizard\Step::make('Second Step')
                         ->schema([
-                            Forms\Components\TextInput::make('has_diamond_package')->label('Avail Diamond Package?')
-                            ->disabled()
+                            Forms\Components\Select::make('has_diamond_package')->label('Avail Diamond Package?')
+                            ->options([
+                                'Yes' => 'Yes',
+                                'No' => 'No',
+                                'Islam' => 'Islam',
+                                'Distant' => 'Distant',
+                            ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
                                 if($state == "Islam")
@@ -548,6 +553,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                 Forms\Components\TextInput::make('remarks')->label('Remarks')->reactive(),
                             ])->visible(fn ($get) => $get('has_vehicle') == 'Yes')
                         ]),
+
                     ]),
                 Forms\Components\TextInput::make('amount')->label('Amount')->disabled(fn ($get) => $this->member_id == null)
                 ->reactive()
@@ -584,7 +590,13 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->password()
                 ->required(),
             ]),
-            ])
+            Action::make('delete')
+            ->color('danger')
+            ->icon('heroicon-o-trash')
+            ->action(fn ($record) => $record->delete())
+            ->requiresConfirmation()
+        ])
+
         ];
 
     }

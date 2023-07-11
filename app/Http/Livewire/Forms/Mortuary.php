@@ -178,13 +178,13 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                         ->required()
                         ->reactive(),
                         Forms\Components\Select::make('diamond_package')
+                        ->label('Diamond Package (optional)')
                         ->options([
                             'Yes' => 'Yes',
                             'No' => 'No',
                             'Islam' => 'Islam',
                             'Distant' => 'Distant',
                         ])
-                        ->required()
                         ->reactive(),
                         Forms\Components\Select::make('vehicle')
                         ->label('Avail Vehicle')

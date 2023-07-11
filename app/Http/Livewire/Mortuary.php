@@ -126,13 +126,13 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                         ->required()
                         ->reactive(),
                         Forms\Components\Select::make('diamond_package')
+                        ->label('Diamond Package (optional)')
                         ->options([
                             'Yes' => 'Yes',
                             'No' => 'No',
                             'Islam' => 'Islam',
                             'Distant' => 'Distant',
                         ])
-                        ->required()
                         ->reactive(),
                         Forms\Components\Select::make('vehicle')
                         ->label('Avail Vehicle')
@@ -187,7 +187,13 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                     ->label('Supervisor Code')
                     ->password()
                     ->required(),
-                ])->visible(fn ($record) => $record->update_attempts == 2)
+                ])->visible(fn ($record) => $record->update_attempts == 2),
+                Action::make('delete')
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->action(fn ($record) => $record->delete())
+                ->requiresConfirmation()
+                ->visible(fn ($record) => $record->death === null)
             ])
         ];
     }

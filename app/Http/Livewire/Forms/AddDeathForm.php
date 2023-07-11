@@ -371,8 +371,13 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                     ]),
                 Wizard\Step::make('Step 2')
                     ->schema([
-                        Forms\Components\TextInput::make('has_diamond_package')->label('Avail Diamond Package?')
-                        ->disabled()
+                        Forms\Components\Select::make('has_diamond_package')->label('Avail Diamond Package?')
+                        ->options([
+                            'Yes' => 'Yes',
+                            'No' => 'No',
+                            'Islam' => 'Islam',
+                            'Distant' => 'Distant',
+                        ])
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
                             if($state == "Islam")
