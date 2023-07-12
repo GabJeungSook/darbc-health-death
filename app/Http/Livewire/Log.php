@@ -245,17 +245,13 @@ class Log extends Component implements Tables\Contracts\HasTable
                 return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) ;
             })
             ->label('MEMBERS NAME')
-            ->searchable(query: function (Builder $query, string $search): Builder {
-            return $query->whereHas('members', function($k) use ($search){
-                $k->where('name', 'like', "%{$search}%");
-            });
-            }),
+            ->searchable(['first_name', 'last_name']),
             TextColumn::make('patientName')
             ->label('DEPENDENT')
             ->formatStateUsing(function ($record) {
                 return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
             })
-            ->searchable()
+            ->searchable(['dependents_last_name', 'dependents_first_name'])
             ->sortable(),
             TextColumn::make('hospitals.name')
             ->label('HOSPITAL')
