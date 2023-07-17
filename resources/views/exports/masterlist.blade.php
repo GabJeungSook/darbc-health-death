@@ -19,9 +19,9 @@
           @foreach ($cashAdvance as $item)
             <tr>
               @php
+               $darbc_id = '';
+               $member_name = '';
                $response = Http::get('https://darbc.org/api/member-information/'.$item->member_id);
-               $darbc_id;
-               $member_name;
 
                 if ($response->successful()) {
                     $member_data = $response->json();
@@ -45,7 +45,7 @@
                 //   .strtoupper($collection['user']['first_name']) . ' '
                 //   . strtoupper($collection['user']['middle_name']).'.';
                   @endphp
-               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}
+               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}
                </td>
                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}
                 </td>

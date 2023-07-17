@@ -33,9 +33,9 @@
           @foreach ($cashAdvance as $item)
             <tr>
               @php
+              $darbc_id = '';
+              $member_name = '';
               $response = Http::get('https://darbc.org/api/member-information/'.$item->member_id);
-              $darbc_id;
-              $member_name;
 
                 if ($response->successful()) {
                     $member_data = $response->json();
