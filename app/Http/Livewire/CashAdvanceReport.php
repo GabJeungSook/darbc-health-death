@@ -9,6 +9,7 @@ use App\Models\ReportHeader;
 use Livewire\WithPagination;
 use App\Models\CashAdvance;
 use App\Models\Signatory;
+use Illuminate\Support\Facades\Http;
 
 
 class CashAdvanceReport extends Component
