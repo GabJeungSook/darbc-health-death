@@ -196,7 +196,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
             ]);
             DB::commit();
         }else{
-            $url = 'https://darbc.org/api/member-information/'.$this->member_id;
+            $url = 'https://darbc.org/api/member-information/'.$this->full_name;
             $response = file_get_contents($url);
             $member_data = json_decode($response, true);
 
