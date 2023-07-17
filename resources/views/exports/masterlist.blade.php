@@ -19,20 +19,21 @@
           @foreach ($cashAdvance as $item)
             <tr>
               @php
-            //    $darbc_id = '';
-            //    $member_name = '';
+               $darbc_id = '';
+               $member_name = '';
                $response = Http::get('https://darbc.org/api/member-information/'.$item->member_id);
 
-                // if ($response->successful()) {
+                if ($response->successful()) {
                     $member_data = $response->json();
                     $collection = collect($member_data['data']);
                     $darbc_id = $collection['darbc_id'];
                     $member_name = strtoupper($collection['user']['surname']) . ', '
                 .strtoupper($collection['user']['first_name']) . ' '
                 . strtoupper($collection['user']['middle_name']);
-                // } else {
-                //     $errorMessage = $response->status() . ' ' . $response->reason();
-                // }
+                } else {
+                    $errorMessage = $response->status() . ' ' . $response->reason();
+                    dd( $errorMessage);
+                }
                 //   $url = 'https://darbc.org/api/member-information/'.$item->member_id;
                 //   $response = file_get_contents($url);
                 //   $member_data = json_decode($response, true);
