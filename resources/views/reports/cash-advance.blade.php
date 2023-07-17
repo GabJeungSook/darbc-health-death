@@ -34,6 +34,8 @@
             <tr>
               @php
               $response = Http::get('https://darbc.org/api/member-information/'.$item->member_id);
+              $darbc_id;
+              $member_name;
 
                 if ($response->successful()) {
                     $member_data = $response->json();
