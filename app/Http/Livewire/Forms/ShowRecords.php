@@ -70,7 +70,7 @@ class ShowRecords extends Component implements Tables\Contracts\HasTable
             TextColumn::make('memberName')
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
-                $url = 'https://darbc.org/api/member-information/'.$record->deaths->member_id;
+                $url = 'https://darbcrelease.org/api/member-information/'.$record->deaths->member_id;
                 $response = file_get_contents($url);
                 $member_data = json_decode($response, true);
 

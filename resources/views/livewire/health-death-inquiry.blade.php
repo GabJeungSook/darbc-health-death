@@ -232,7 +232,7 @@
 
                         <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
                             @php
-                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                             $response = file_get_contents($url);
                             $member_data = json_decode($response, true);
 
@@ -272,7 +272,7 @@
 
                         @if ($filters['member'] != false && $filters['member'] != null)
                             @php
-                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                             $response = file_get_contents($url);
                             $member_data = json_decode($response, true);
 

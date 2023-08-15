@@ -34,7 +34,7 @@
           @foreach ($mortuary as $item)
             <tr>
               @php
-                  $url = 'https://darbc.org/api/member-information/'.$item->member_id;
+                  $url = 'https://darbcrelease.org/api/member-information/'.$item->member_id;
                   $response = file_get_contents($url);
                   $member_data = json_decode($response, true);
 

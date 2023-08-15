@@ -15,7 +15,7 @@
             <div class="mt-6">
               <dl class="grid grid-cols-1 sm:grid-cols-3">
                 @php
-                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                   $response = file_get_contents($url);
                   $member_data = json_decode($response, true);
 

@@ -82,7 +82,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 ->options(Mortuary::whereDoesntHave('death')->pluck('member_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
-                                    $url = 'https://darbc.org/api/member-information/'.$mortuary->member_id;
+                                    $url = 'https://darbcrelease.org/api/member-information/'.$mortuary->member_id;
                                     $response = file_get_contents($url);
                                     $member_data = json_decode($response, true);
                                     $collection = collect($member_data['data']);
@@ -116,7 +116,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             ->reactive()
                             ->disabled()
                             // ->afterStateUpdated(function ($set, $get, $state) {
-                            //     $url = 'https://darbc.org/api/member-information/'.$get('full_name');
+                            //     $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
                             //     $response = file_get_contents($url);
                             //     $member_data = json_decode($response, true);
 
@@ -157,7 +157,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         ])
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
-                            $url = 'https://darbc.org/api/member-information/'.$this->global_member_id;
+                            $url = 'https://darbcrelease.org/api/member-information/'.$this->global_member_id;
                             $response = file_get_contents($url);
                             $member_data = json_decode($response, true);
 

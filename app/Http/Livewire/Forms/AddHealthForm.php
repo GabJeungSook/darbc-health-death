@@ -76,7 +76,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                                             $set('amount', null);
 
                                         }else{
-                                            $url = 'https://darbc.org/api/member-information/'.$state;
+                                            $url = 'https://darbcrelease.org/api/member-information/'.$state;
                                             $response = file_get_contents($url);
                                             $member_data = json_decode($response, true);
 
@@ -134,7 +134,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             //         $set('amount', null);
 
                             //     }else{
-                            //         $url = 'https://darbc.org/api/member-information/'.$state;
+                            //         $url = 'https://darbcrelease.org/api/member-information/'.$state;
                             //         $response = file_get_contents($url);
                             //         $member_data = json_decode($response, true);
 
@@ -174,7 +174,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
-                                $url = 'https://darbc.org/api/member-information/'.$get('full_name');
+                                $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
                                 $response = file_get_contents($url);
                                 $member_data = json_decode($response, true);
 

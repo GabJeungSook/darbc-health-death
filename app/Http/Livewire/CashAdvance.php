@@ -143,7 +143,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                         ->reactive()
                         ->preload()
                         ->afterStateUpdated(function ($set, $get, $state, $record) {
-                            $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                            $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                             $response = file_get_contents($url);
                             $member_data = json_decode($response, true);
 
@@ -278,7 +278,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
             TextColumn::make('member_id')
             ->label('MEMBER NAME')
             ->formatStateUsing(function ($record) {
-                $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                 $response = file_get_contents($url);
                 $member_data = json_decode($response, true);
 
@@ -355,7 +355,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcId($member_id)
     {
-        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 
@@ -365,7 +365,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcFirstName($member_id)
     {
-        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 
@@ -375,7 +375,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcMiddleName($member_id)
     {
-        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 
@@ -385,7 +385,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcLastName($member_id)
     {
-        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 

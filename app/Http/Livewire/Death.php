@@ -238,7 +238,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
-                                $url = 'https://darbc.org/api/member-information/'.$get('member_id');
+                                $url = 'https://darbcrelease.org/api/member-information/'.$get('member_id');
                                 $response = file_get_contents($url);
                                 $member_data = json_decode($response, true);
 
@@ -610,7 +610,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->searchable(),
             TextColumn::make('memberName')
                 ->formatStateUsing(function ($record) {
-                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
@@ -623,7 +623,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             TextColumn::make('dependents_name')
                 ->label('DEPENDENT\'S NAME')
                 ->formatStateUsing(function ($record) {
-                    $url = 'https://darbc.org/api/member-information/'.$record->member_id;
+                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
@@ -712,7 +712,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     public function getDarbcId($member_id)
     {
-        $url = 'https://darbc.org/api/member-information/'.$member_id;
+        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);
 

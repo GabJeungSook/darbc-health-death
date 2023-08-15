@@ -64,7 +64,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
                         $set('date_received', null);
                         $set('status', null);
                     }else{
-                        $url = 'https://darbc.org/api/member-information/'.$state;
+                        $url = 'https://darbcrelease.org/api/member-information/'.$state;
                         $response = file_get_contents($url);
                         $member_data = json_decode($response, true);
 
@@ -95,7 +95,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
                 ->reactive()
                 ->preload()
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$get('full_name');
+                    $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
@@ -123,7 +123,7 @@ class AddCashAdvanceForm extends Component implements Forms\Contracts\HasForms
             // ->reactive()
             // ->options($this->member_ids->pluck('darbc_id', 'id'))
             // ->afterStateUpdated(function ($set, $get, $state) {
-            //     $url = 'https://darbc.org/api/member-information/'.$state;
+            //     $url = 'https://darbcrelease.org/api/member-information/'.$state;
             //     $response = file_get_contents($url);
             //     $member_data = json_decode($response, true);
 

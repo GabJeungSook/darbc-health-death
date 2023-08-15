@@ -2,20 +2,21 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
+use Carbon\Carbon;
 use Filament\Forms;
-use App\Models\CommunityRelation;
-use App\Models\Purpose;
 use App\Models\Type;
-use Filament\Forms\Components\Fieldset;
+use App\Models\Purpose;
+use Livewire\Component;
+use WireUi\Traits\Actions;
+use App\Models\CommunityRelation;
+use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\DatePicker;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+
 
 class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
 {
@@ -57,7 +58,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 ->searchable()
                 ->options($this->member_full_names->pluck('full_name', 'id'))
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$state;
+                    $url = 'https://darbcrelease.org/api/member-information/'.$state;
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
@@ -85,7 +86,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 // ->reactive()
                 // ->options($this->member_ids->pluck('darbc_id', 'id'))
                 // ->afterStateUpdated(function ($set, $get, $state) {
-                //     $url = 'https://darbc.org/api/member-information/'.$state;
+                //     $url = 'https://darbcrelease.org/api/member-information/'.$state;
                 //     $response = file_get_contents($url);
                 //     $member_data = json_decode($response, true);
 

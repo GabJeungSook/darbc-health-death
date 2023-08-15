@@ -2,18 +2,19 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
+use Carbon\Carbon;
+use App\Models\Log;
 use Filament\Forms;
 use App\Models\Member;
-use App\Models\Log;
+use Livewire\Component;
 use App\Models\Hospital;
-use Filament\Forms\Components\Fieldset;
+use WireUi\Traits\Actions;
+use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\DatePicker;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+
 
 class AddLog extends Component implements Forms\Contracts\HasForms
 {
@@ -45,7 +46,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
             ->searchable()
             ->options($this->member_full_names->pluck('full_name', 'id'))
             ->afterStateUpdated(function ($set, $get, $state) {
-                $url = 'https://darbc.org/api/member-information/'.$state;
+                $url = 'https://darbcrelease.org/api/member-information/'.$state;
                 $response = file_get_contents($url);
                 $member_data = json_decode($response, true);
 
@@ -73,7 +74,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
                 // ->reactive()
                 // ->options($this->member_ids->pluck('darbc_id', 'id'))
                 // ->afterStateUpdated(function ($set, $get, $state) {
-                //     $url = 'https://darbc.org/api/member-information/'.$state;
+                //     $url = 'https://darbcrelease.org/api/member-information/'.$state;
                 //     $response = file_get_contents($url);
                 //     $member_data = json_decode($response, true);
 
@@ -99,7 +100,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
                 ])
                 ->reactive()
                 ->afterStateUpdated(function ($set, $get, $state) {
-                    $url = 'https://darbc.org/api/member-information/'.$get('full_name');
+                    $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
                     $response = file_get_contents($url);
                     $member_data = json_decode($response, true);
 
@@ -196,7 +197,7 @@ class AddLog extends Component implements Forms\Contracts\HasForms
             ]);
             DB::commit();
         }else{
-            $url = 'https://darbc.org/api/member-information/'.$this->full_name;
+            $url = 'https://darbcrelease.org/api/member-information/'.$this->full_name;
             $response = file_get_contents($url);
             $member_data = json_decode($response, true);
 
