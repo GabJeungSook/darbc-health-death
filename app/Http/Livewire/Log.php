@@ -292,17 +292,20 @@ class Log extends Component implements Tables\Contracts\HasTable
             $response = Http::get($url);
             if ($response->successful()) {
                 $member_data = $response->json();
+
+                $this->member_full_names = collect($member_data);
             }else {
                 dd('error');
              }
         } catch (\Throwable $th) {
+            dd($th);
         }
 
         // $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
         // $response = file_get_contents($url);
         // $member_data = json_decode($response, true);
 
-        $this->member_full_names = collect($member_data);
+
     }
 
     public function render()
