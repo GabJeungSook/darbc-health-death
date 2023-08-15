@@ -289,9 +289,7 @@ class Log extends Component implements Tables\Contracts\HasTable
     {
         try {
             $url = Http::get('https://darbcrelease.org/api/member-darbc-names?status=1')->json();
-            $response = Http::get($url, [
-                'verify' => false,
-            ]);
+            $response = Http::get($url);
             if ($response->successful()) {
                 $member_data = $response->json();
 
@@ -300,7 +298,6 @@ class Log extends Component implements Tables\Contracts\HasTable
                 dd('error');
              }
         } catch (\Throwable $th) {
-            dd($th);
         }
 
         // $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
