@@ -288,7 +288,9 @@ class Log extends Component implements Tables\Contracts\HasTable
     public function mount()
     {
         $url = Http::get('https://darbcrelease.org/api/member-darbc-names?status=1')->json();
-        $response =  Http::withoutVerifying()->get($url);
+        $response = Http::withOptions([
+            'verify' => '/etc/ssl/certs/nginx-selfsigned.crt', // Update this path
+        ])->get($url);
         if ($response->successful()) {
             $member_data = $response->json();
 
