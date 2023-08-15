@@ -20,6 +20,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\DatePicker;
 use WireUi\Traits\Actions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 use Closure;
 use DB;
 
@@ -287,8 +288,16 @@ class Log extends Component implements Tables\Contracts\HasTable
     public function mount()
     {
         $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::get($url);
+
+        if ($response->successful()) {
+            $member_data = $response->json();
+        } else {
+           dd('error');
+        }
+        // $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
+        // $response = file_get_contents($url);
+        // $member_data = json_decode($response, true);
 
         $this->member_full_names = collect($member_data);
     }
