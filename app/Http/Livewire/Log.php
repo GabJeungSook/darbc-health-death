@@ -287,16 +287,17 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     public function mount()
     {
-        try {
-            $url = Http::get('https://darbcrelease.org/api/member-darbc-names?status=1')->json();
-            $response = Http::get($url);
-            if ($response->successful()) {
-                $member_data = $response->json();
+        $url = Http::get('https://darbcrelease.org/api/member-darbc-names?status=1')->json();
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $member_data = $response->json();
 
-                $this->member_full_names = collect($member_data);
-            }else {
-                dd('error');
-             }
+            $this->member_full_names = collect($member_data);
+        }else {
+            dd('error');
+         }
+        try {
+
         } catch (\Throwable $th) {
         }
 
