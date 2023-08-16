@@ -12,6 +12,7 @@ use App\Models\CommunityRelation;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -59,8 +60,8 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
                 ->options($this->member_full_names->pluck('full_name', 'id'))
                 ->afterStateUpdated(function ($set, $get, $state) {
                     $url = 'https://darbcrelease.org/api/member-information/'.$state;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
                     $collection = collect($member_data['data']);
                     $set('darbc_id', $collection['darbc_id']);
@@ -154,14 +155,14 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
     public function mount()
     {
         $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $this->member_full_names = collect($member_data);
 
         $url1 = 'https://darbc.org/api/member-darbc-ids?status=1';
-        $response1 = file_get_contents($url1);
-        $member_data1 = json_decode($response1, true);
+        $response1 = Http::withOptions(['verify' => false])->get($url1);
+        $member_data1 = $response1->json();
 
         $this->member_ids = collect($member_data1);
 

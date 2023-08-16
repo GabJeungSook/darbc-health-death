@@ -2,20 +2,21 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
 use App\Models\Death;
-use App\Models\VehicleSchedule;
+use Livewire\Component;
 use App\Models\Mortuary;
-use Filament\Forms\Components\Fieldset;
+use WireUi\Traits\Actions;
+use App\Models\VehicleSchedule;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
 
 class AddDeathForm extends Component implements Forms\Contracts\HasForms
 {
@@ -83,8 +84,8 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
                                     $url = 'https://darbcrelease.org/api/member-information/'.$mortuary->member_id;
-                                    $response = file_get_contents($url);
-                                    $member_data = json_decode($response, true);
+                                    $response = Http::withOptions(['verify' => false])->get($url);
+                                    $member_data = $response->json();
                                     $collection = collect($member_data['data']);
 
                                     $set('member_id', $collection['darbc_id']);
@@ -158,8 +159,8 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
                             $url = 'https://darbcrelease.org/api/member-information/'.$this->global_member_id;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
                             //$member = Member::where('member_id', $get('member_id'))->first();

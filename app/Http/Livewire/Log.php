@@ -85,8 +85,9 @@ class Log extends Component implements Tables\Contracts\HasTable
                 ]))
                 ->action(function (LogModel $record, array $data): void {
                     $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
+
                     $collection = collect($member_data['data']);
 
                     $record->member_id = $data['full_name'];
@@ -127,8 +128,8 @@ class Log extends Component implements Tables\Contracts\HasTable
                     ->options($this->member_full_names->pluck('full_name', 'id'))
                     ->afterStateUpdated(function ($set, $get, $state) {
                         $url = 'https://darbcrelease.org/api/member-information/'.$state;
-                        $response = file_get_contents($url);
-                        $member_data = json_decode($response, true);
+                        $response = Http::withOptions(['verify' => false])->get($url);
+                        $member_data = $response->json();
 
                         $collection = collect($member_data['data']);
                         $set('member_id', $collection['darbc_id']);
@@ -158,8 +159,8 @@ class Log extends Component implements Tables\Contracts\HasTable
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state, $record) {
                             $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
                             //$member = Member::where('member_id', $get('member_id'))->first();
@@ -218,8 +219,8 @@ class Log extends Component implements Tables\Contracts\HasTable
     public function getDarbcId($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['darbc_id'];
@@ -233,8 +234,8 @@ class Log extends Component implements Tables\Contracts\HasTable
             ->searchable()
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
 
@@ -287,25 +288,11 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     public function mount()
     {
-        $url = Http::get('https://darbcrelease.org/api/member-darbc-names?status=1')->json();
-        $response = Http::get($url);
-        if ($response->successful()) {
-            $member_data = $response->json();
+        $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
-            $this->member_full_names = collect($member_data);
-        }else {
-            dd('error');
-         }
-        try {
-
-        } catch (\Throwable $th) {
-        }
-
-        // $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
-        // $response = file_get_contents($url);
-        // $member_data = json_decode($response, true);
-
-
+        $this->member_full_names = collect($member_data);
     }
 
     public function render()

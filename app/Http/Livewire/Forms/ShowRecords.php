@@ -2,17 +2,18 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
-use Filament\Tables;
+use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Tables;
+use Livewire\Component;
+use WireUi\Traits\Actions;
+use App\Models\VehicleSchedule;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Http;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Models\VehicleSchedule;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
 
 class ShowRecords extends Component implements Tables\Contracts\HasTable
 {
@@ -71,8 +72,8 @@ class ShowRecords extends Component implements Tables\Contracts\HasTable
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbcrelease.org/api/member-information/'.$record->deaths->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
 

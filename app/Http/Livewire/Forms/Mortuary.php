@@ -2,20 +2,21 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
-use App\Models\Mortuary as MortuaryModel;
-use Filament\Forms\Components\Fieldset;
+use Livewire\Component;
+use WireUi\Traits\Actions;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Http;
+use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
+use App\Models\Mortuary as MortuaryModel;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Wizard;
 use Filament\Forms\Components\FileUpload;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
 
 class Mortuary extends Component implements Forms\Contracts\HasForms
 {
@@ -61,8 +62,8 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
                         ->options($this->member_full_names->pluck('full_name', 'id'))
                          ->afterStateUpdated(function ($set, $get, $state) {
                             $url = 'https://darbcrelease.org/api/member-information/'.$state;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
                             $set('darbc_id', $collection['darbc_id']);
@@ -252,8 +253,8 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
     public function save()
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$this->full_name;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
 

@@ -2,29 +2,30 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Filament\Tables;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
-use App\Models\CommunityRelation;
-use App\Models\SupervisorCode;
-use App\Models\Purpose;
 use App\Models\Type;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\Position;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\BadgeColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Filament\Forms\Components\Fieldset;
+use Filament\Tables;
+use App\Models\Purpose;
+use Livewire\Component;
+use WireUi\Traits\Actions;
+use App\Models\SupervisorCode;
+use App\Models\CommunityRelation;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Http;
+use Filament\Tables\Actions\Position;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class CommunityRelations extends Component implements Tables\Contracts\HasTable
 {
@@ -234,8 +235,8 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
     public function getDarbcId($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['darbc_id'];

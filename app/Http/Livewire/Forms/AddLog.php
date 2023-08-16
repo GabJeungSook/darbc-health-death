@@ -12,6 +12,7 @@ use WireUi\Traits\Actions;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\DatePicker;
 
@@ -47,8 +48,8 @@ class AddLog extends Component implements Forms\Contracts\HasForms
             ->options($this->member_full_names->pluck('full_name', 'id'))
             ->afterStateUpdated(function ($set, $get, $state) {
                 $url = 'https://darbcrelease.org/api/member-information/'.$state;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
                 $set('member_id', $collection['darbc_id']);
@@ -101,8 +102,8 @@ class AddLog extends Component implements Forms\Contracts\HasForms
                 ->reactive()
                 ->afterStateUpdated(function ($set, $get, $state) {
                     $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
                     $collection = collect($member_data['data']);
                     //$member = Member::where('member_id', $get('member_id'))->first();
@@ -198,8 +199,8 @@ class AddLog extends Component implements Forms\Contracts\HasForms
             DB::commit();
         }else{
             $url = 'https://darbcrelease.org/api/member-information/'.$this->full_name;
-            $response = file_get_contents($url);
-            $member_data = json_decode($response, true);
+            $response = Http::withOptions(['verify' => false])->get($url);
+            $member_data = $response->json();
 
             $collection = collect($member_data['data']);
 
@@ -232,8 +233,8 @@ class AddLog extends Component implements Forms\Contracts\HasForms
     public function mount()
     {
         $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $this->member_full_names = collect($member_data);
 

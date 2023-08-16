@@ -2,41 +2,42 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Filament\Tables;
-use Filament\Forms;
-use Filament\Forms\Components;
-use Filament\Tables\Actions\Position;
-use App\Models\Member;
+use DB;
 use Closure;
-use Illuminate\Contracts\View\View;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\ViewAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\Action;
-use App\Models\HealthDeath;
+use Carbon\Carbon;
+use Filament\Forms;
+use Filament\Tables;
 use App\Models\Health;
-use App\Models\Transmittal;
+use App\Models\Member;
 use App\Models\Payment;
+use Livewire\Component;
 use App\Models\Hospital;
+use WireUi\Traits\Actions;
+use App\Models\HealthDeath;
+use App\Models\Transmittal;
 use App\Models\SupervisorCode;
+use Filament\Forms\Components;
 use App\Models\InsuranceCoverage;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Http;
+use Filament\Forms\Components\Wizard;
+use Filament\Tables\Actions\Position;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Wizard;
-use WireUi\Traits\Actions;
-use Filament\Tables\Actions\BulkAction;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class Masterlist extends Component implements Tables\Contracts\HasTable
 {
@@ -223,10 +224,12 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                                         ])
                                         ->reactive()
                                         ->afterStateUpdated(function ($set, $get, $state, $record) {
-
                                             $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                                            $response = file_get_contents($url);
-                                            $member_data = json_decode($response, true);
+                                            $response = Http::withOptions(['verify' => false])->get($url);
+                                            $member_data = $response->json();
+                                            // $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                                            // $response = file_get_contents($url);
+                                            // $member_data = json_decode($response, true);
 
                                             $collection = collect($member_data['data']);
 
@@ -808,8 +811,8 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
     public function getDarbcId($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['darbc_id'];

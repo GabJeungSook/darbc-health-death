@@ -155,8 +155,8 @@
                           <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
                             @php
                                      $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                                     $response = file_get_contents($url);
-                                     $member_data = json_decode($response, true);
+                                     $response = Http::withOptions(['verify' => false])->get($url);
+                                     $member_data = $response->json();
 
                                      $collection = collect($member_data['data']);
                                      $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']).'.';
@@ -184,8 +184,8 @@
                             <td class=" py-4 pl-4 pr-4 text-sm font-medium text-gray-900 ">
                                 @php
                                 $url_2 = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                                $response_2 = file_get_contents($url_2);
-                                $member_data_2 = json_decode($response_2, true);
+                                $response_2 = Http::withOptions(['verify' => false])->get($url_2);
+                                $member_data_2 = $response_2->json();
 
                                 $collection_2 = collect($member_data_2['data']);
                                 $member_name_2 = strtoupper($collection_2['user']['surname']) . ' ' .strtoupper($collection_2['user']['first_name']) . ' '. strtoupper($collection_2['user']['middle_name']).'.';

@@ -233,8 +233,8 @@
                         <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
                             @php
                             $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
                             $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']);
@@ -273,8 +273,8 @@
                         @if ($filters['member'] != false && $filters['member'] != null)
                             @php
                             $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
                             $member_name = strtoupper($collection['user']['surname']) . ' ' .strtoupper($collection['user']['first_name']) . ' '. strtoupper($collection['user']['middle_name']);

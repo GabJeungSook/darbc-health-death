@@ -2,30 +2,31 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Filament\Tables;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Tables\Actions\Position;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\ViewAction;
-use App\Models\Death as deathModel;
-use App\Models\VehicleSchedule;
-use App\Models\SupervisorCode;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\BadgeColumn;
-use Filament\Tables\Columns\IconColumn;
+use Filament\Tables;
+use Livewire\Component;
 use App\Models\Mortuary;
-use Filament\Forms\Components\Fieldset;
+use WireUi\Traits\Actions;
+use App\Models\SupervisorCode;
+use App\Models\VehicleSchedule;
+use App\Models\Death as deathModel;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Wizard;
+use Filament\Tables\Actions\Position;
+use Filament\Forms\Components\Fieldset;
+use Filament\Tables\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Builder;
 
 class Death extends Component  implements Tables\Contracts\HasTable
 {
@@ -239,8 +240,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
                                 $url = 'https://darbcrelease.org/api/member-information/'.$get('member_id');
-                                $response = file_get_contents($url);
-                                $member_data = json_decode($response, true);
+                                $response = Http::withOptions(['verify' => false])->get($url);
+                                $member_data = $response->json();
 
                                 $collection = collect($member_data['data']);
                                 //$member = Member::where('member_id', $get('member_id'))->first();
@@ -611,8 +612,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
             TextColumn::make('memberName')
                 ->formatStateUsing(function ($record) {
                     $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
                     $collection = collect($member_data['data']);
 
@@ -624,8 +625,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->label('DEPENDENT\'S NAME')
                 ->formatStateUsing(function ($record) {
                     $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                    $response = file_get_contents($url);
-                    $member_data = json_decode($response, true);
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
                     $collection = collect($member_data['data']);
                     if($record->enrollment_status == 'member')
@@ -713,8 +714,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
     public function getDarbcId($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['darbc_id'];

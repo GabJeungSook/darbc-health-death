@@ -2,11 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
 use Filament\Tables;
+use Livewire\Component;
 use App\Models\Mortuary;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Http;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
 
 class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
 {
@@ -41,8 +42,11 @@ class MortuaryInquiry extends Component implements Tables\Contracts\HasTable
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
+                // $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                // $response = file_get_contents($url);
+                // $member_data = json_decode($response, true);
 
                 $collection = collect($member_data['data']);
 

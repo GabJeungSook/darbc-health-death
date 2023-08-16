@@ -2,27 +2,28 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Filament\Tables;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
-use App\Models\CashAdvance as CashAdvanceModel;
+use Filament\Tables;
+use Livewire\Component;
+use WireUi\Traits\Actions;
 use App\Models\SupervisorCode;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Actions\Position;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Columns\BadgeColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
+use Filament\Tables\Actions\Action;
+use Illuminate\Support\Facades\Http;
+use Filament\Tables\Actions\Position;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Forms\Components\DatePicker;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use App\Models\CashAdvance as CashAdvanceModel;
 
 class CashAdvance extends Component implements Tables\Contracts\HasTable
 {
@@ -144,8 +145,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                         ->preload()
                         ->afterStateUpdated(function ($set, $get, $state, $record) {
                             $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                            $response = file_get_contents($url);
-                            $member_data = json_decode($response, true);
+                            $response = Http::withOptions(['verify' => false])->get($url);
+                            $member_data = $response->json();
 
                             $collection = collect($member_data['data']);
 
@@ -279,8 +280,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
             ->label('MEMBER NAME')
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
 
@@ -356,8 +357,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     public function getDarbcId($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['darbc_id'];
@@ -366,8 +367,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     public function getDarbcFirstName($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['user']['first_name'];
@@ -376,8 +377,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     public function getDarbcMiddleName($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['user']['middle_name'];

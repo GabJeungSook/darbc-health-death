@@ -2,21 +2,22 @@
 
 namespace App\Http\Livewire\Forms;
 
-use Livewire\Component;
+use DB;
+use Carbon\Carbon;
 use Filament\Forms;
-use App\Models\Member;
 use App\Models\Health;
+use App\Models\Member;
+use Livewire\Component;
 use App\Models\Hospital;
+use WireUi\Traits\Actions;
 use App\Models\InsuranceCoverage;
-use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\DatePicker;
+use Illuminate\Support\Facades\Http;
 use Filament\Forms\Components\Wizard;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
-use WireUi\Traits\Actions;
-use Carbon\Carbon;
-use DB;
 
 class AddHealthForm extends Component implements Forms\Contracts\HasForms
 {
@@ -77,8 +78,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
                                         }else{
                                             $url = 'https://darbcrelease.org/api/member-information/'.$state;
-                                            $response = file_get_contents($url);
-                                            $member_data = json_decode($response, true);
+                                            $response = Http::withOptions(['verify' => false])->get($url);
+                                            $member_data = $response->json();
 
                                             $collection = collect($member_data['data']);
                                             $set('darbc_id', $collection['darbc_id']);
@@ -175,8 +176,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
                                 $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
-                                $response = file_get_contents($url);
-                                $member_data = json_decode($response, true);
+                                $response = Http::withOptions(['verify' => false])->get($url);
+                                $member_data = $response->json();
 
                                 $collection = collect($member_data['data']);
 
@@ -521,8 +522,8 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
     public function mount()
     {
         $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         // $this->member_ids = collect($member_data);
 

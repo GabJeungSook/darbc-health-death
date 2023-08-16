@@ -24,8 +24,9 @@
                 <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->batch_number }}</td>
                 @php
                 $url = 'https://darbcrelease.org/api/member-information/'.$item->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
+
 
                 $collection = collect($member_data['data']);
                 $darbc_id = $collection['darbc_id'];
