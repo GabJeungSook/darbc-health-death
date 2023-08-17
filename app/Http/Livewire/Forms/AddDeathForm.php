@@ -748,6 +748,10 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
+        $url = 'https://darbcrelease.org/api/member-darbc-ids?status=1';
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
+
         $url = 'https://darbc.org/api/member-darbc-ids?status=1';
         $response = file_get_contents($url);
         $member_data = json_decode($response, true);

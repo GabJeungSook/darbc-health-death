@@ -160,7 +160,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
 
         $this->member_full_names = collect($member_data);
 
-        $url1 = 'https://darbc.org/api/member-darbc-ids?status=1';
+        $url1 = 'https://darbcrelease.org/api/member-darbc-ids?status=1';
         $response1 = Http::withOptions(['verify' => false])->get($url1);
         $member_data1 = $response1->json();
 
