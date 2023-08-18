@@ -387,8 +387,8 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     public function getDarbcLastName($member_id)
     {
         $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
-        $response = file_get_contents($url);
-        $member_data = json_decode($response, true);
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
 
         $collection = collect($member_data['data']);
         return $collection['user']['surname'];

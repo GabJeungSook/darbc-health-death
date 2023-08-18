@@ -15,9 +15,9 @@
             <div class="mt-6">
               <dl class="grid grid-cols-1 sm:grid-cols-3">
                 @php
-                $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                  $response = file_get_contents($url);
-                  $member_data = json_decode($response, true);
+                 $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                 $response = Http::withOptions(['verify' => false])->get($url);
+                 $member_data = $response->json();
 
                   $collection = collect($member_data['data']);
                   $member_name = $collection['user']['first_name'].' '.$collection['user']['middle_name'].' '.$collection['user']['surname'];

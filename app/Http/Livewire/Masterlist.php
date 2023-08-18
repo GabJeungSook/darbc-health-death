@@ -714,37 +714,36 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('memberName')
-                ->formatStateUsing(function ($record) {
-                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
-                })
+                // ->formatStateUsing(function ($record) {
+                //     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
+                // })
                 ->label('MEMBERS NAME')
                 ->searchable(['first_name', 'last_name'])
-                ,
-                // ->formatStateUsing(function ($record) {
-                //     $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                //     $response = file_get_contents($url);
-                //     $member_data = json_decode($response, true);
+                ->formatStateUsing(function ($record) {
+                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
-                //     $collection = collect($member_data['data']);
+                    $collection = collect($member_data['data']);
 
-                //     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                // }),
+                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                }),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
                 ->searchable(['first_name', 'last_name'])
                 ->formatStateUsing(function ($record) {
-                    // $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                    // $response = file_get_contents($url);
-                    // $member_data = json_decode($response, true);
+                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
 
-                    // $collection = collect($member_data['data']);
-                    // if($record->enrollment_status == 'member')
-                    // {
-                    //     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                    // }else{
-                    //     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
-                    // }
-                    return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
+                    $collection = collect($member_data['data']);
+                    if($record->enrollment_status == 'member')
+                    {
+                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                    }else{
+                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
+                    }
+                    //return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
                 ->sortable(),
 
