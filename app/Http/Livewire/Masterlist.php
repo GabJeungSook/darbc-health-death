@@ -724,9 +724,16 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);
+                    if( $member_data === null)
+                    {
+                        dd($member_data);
+                    }else{
+                        $collection = collect($member_data['data']);
+                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                    }
 
-                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+
+
                 }),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
