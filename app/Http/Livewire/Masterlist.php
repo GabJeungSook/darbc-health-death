@@ -746,8 +746,15 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                         $response = Http::withOptions(['verify' => false])->get($url);
                         $member_data = $response->json();
 
-                        $collection = collect($member_data['data']);
-                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                        if( $member_data === null)
+                        {
+                            dd($member_data);
+                        }else{
+                            $collection = collect($member_data['data']);
+                            return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                        }
+                        // $collection = collect($member_data['data']);
+                        // return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                     }else{
                         return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                     }
