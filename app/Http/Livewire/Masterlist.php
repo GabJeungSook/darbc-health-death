@@ -732,13 +732,14 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->label('DEPENDENT')
                 ->searchable(['first_name', 'last_name'])
                 ->formatStateUsing(function ($record) {
-                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);
                     if($record->enrollment_status == 'member')
                     {
+                        $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                        $response = Http::withOptions(['verify' => false])->get($url);
+                        $member_data = $response->json();
+
+                        $collection = collect($member_data['data']);
                         return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                     }else{
                         return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
