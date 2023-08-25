@@ -10,9 +10,12 @@
       {{-- <x-input-label for="email" :value="__('Email')" />
       <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required
         autofocus autocomplete="username" /> --}}
-      <x-input icon="identification" id="email" label="Email" name="email" :value="old('email')" required autofocus
+        <x-input icon="identification" id="username" label="Username" name="username" :value="old('username')" required autofocus
         autocomplete="username" placeholder="" />
-      <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <x-input-error :messages="$errors->get('username')" class="mt-2" />
+      {{-- <x-input icon="identification" id="email" label="Email" name="email" :value="old('email')" required autofocus
+        autocomplete="username" placeholder="" /> --}}
+      {{-- <x-input-error :messages="$errors->get('email')" class="mt-2" /> --}}
     </div>
 
     <!-- Password -->
