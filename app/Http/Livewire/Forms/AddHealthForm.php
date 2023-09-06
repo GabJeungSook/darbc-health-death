@@ -77,7 +77,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                                             $set('amount', null);
 
                                         }else{
-                                            $url = 'https://darbcrelease.org/api/member-information/'.$state;
+                                            $url = 'https://darbcmembership.org/api/member-information/'.$state;
                                             $response = Http::withOptions(['verify' => false])->get($url);
                                             $member_data = $response->json();
 
@@ -135,7 +135,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             //         $set('amount', null);
 
                             //     }else{
-                            //         $url = 'https://darbcrelease.org/api/member-information/'.$state;
+                            //         $url = 'https://darbcmembership.org/api/member-information/'.$state;
                             //         $response = file_get_contents($url);
                             //         $member_data = json_decode($response, true);
 
@@ -175,7 +175,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
-                                $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
+                                $url = 'https://darbcmembership.org/api/member-information/'.$get('full_name');
                                 $response = Http::withOptions(['verify' => false])->get($url);
                                 $member_data = $response->json();
 
@@ -521,7 +521,7 @@ class AddHealthForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
-        $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
+        $url = 'https://darbcmembership.org/api/member-darbc-names?status=1';
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 

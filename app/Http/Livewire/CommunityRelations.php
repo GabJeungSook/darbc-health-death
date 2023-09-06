@@ -234,7 +234,7 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcId($member_id)
     {
-        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
+        $url = 'https://darbcmembership.org/api/member-information/'.$member_id;
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 

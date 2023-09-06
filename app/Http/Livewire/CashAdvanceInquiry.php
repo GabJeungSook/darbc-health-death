@@ -38,7 +38,7 @@ class CashAdvanceInquiry extends Component implements Tables\Contracts\HasTable
             TextColumn::make('memberName')
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
-                $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 

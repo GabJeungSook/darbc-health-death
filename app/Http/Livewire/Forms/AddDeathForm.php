@@ -83,7 +83,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                                 ->options(Mortuary::whereDoesntHave('death')->pluck('member_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
-                                    $url = 'https://darbcrelease.org/api/member-information/'.$mortuary->member_id;
+                                    $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
                                     $response = Http::withOptions(['verify' => false])->get($url);
                                     $member_data = $response->json();
                                     $collection = collect($member_data['data']);
@@ -117,7 +117,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                             ->reactive()
                             ->disabled()
                             // ->afterStateUpdated(function ($set, $get, $state) {
-                            //     $url = 'https://darbcrelease.org/api/member-information/'.$get('full_name');
+                            //     $url = 'https://darbcmembership.org/api/member-information/'.$get('full_name');
                             //     $response = file_get_contents($url);
                             //     $member_data = json_decode($response, true);
 
@@ -158,7 +158,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
                         ])
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state) {
-                            $url = 'https://darbcrelease.org/api/member-information/'.$this->global_member_id;
+                            $url = 'https://darbcmembership.org/api/member-information/'.$this->global_member_id;
                             $response = Http::withOptions(['verify' => false])->get($url);
                             $member_data = $response->json();
 
@@ -748,7 +748,7 @@ class AddDeathForm extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
-        $url = 'https://darbcrelease.org/api/member-darbc-ids?status=1';
+        $url = 'https://darbcmembership.org/api/member-darbc-ids?status=1';
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 

@@ -84,7 +84,7 @@ class Log extends Component implements Tables\Contracts\HasTable
                     'date_received' => $record->date_received,
                 ]))
                 ->action(function (LogModel $record, array $data): void {
-                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
@@ -127,7 +127,7 @@ class Log extends Component implements Tables\Contracts\HasTable
                     ->searchable()
                     ->options($this->member_full_names->pluck('full_name', 'id'))
                     ->afterStateUpdated(function ($set, $get, $state) {
-                        $url = 'https://darbcrelease.org/api/member-information/'.$state;
+                        $url = 'https://darbcmembership.org/api/member-information/'.$state;
                         $response = Http::withOptions(['verify' => false])->get($url);
                         $member_data = $response->json();
 
@@ -158,7 +158,7 @@ class Log extends Component implements Tables\Contracts\HasTable
                         ])
                         ->reactive()
                         ->afterStateUpdated(function ($set, $get, $state, $record) {
-                            $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                            $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                             $response = Http::withOptions(['verify' => false])->get($url);
                             $member_data = $response->json();
 
@@ -218,7 +218,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     public function getDarbcId($member_id)
     {
-        $url = 'https://darbcrelease.org/api/member-information/'.$member_id;
+        $url = 'https://darbcmembership.org/api/member-information/'.$member_id;
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 
@@ -233,7 +233,7 @@ class Log extends Component implements Tables\Contracts\HasTable
             ->label('DARBC ID')
             ->searchable()
             ->formatStateUsing(function ($record) {
-                $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 
@@ -288,7 +288,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     public function mount()
     {
-        $url = 'https://darbcrelease.org/api/member-darbc-names?status=1';
+        $url = 'https://darbcmembership.org/api/member-darbc-names?status=1';
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 

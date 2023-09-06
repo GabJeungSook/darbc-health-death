@@ -26,7 +26,7 @@
           @foreach ($below as $item)
             <tr>
                 @php
-                    $url = 'https://darbcrelease.org/api/member-information/'.$item->member_id;
+                    $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 

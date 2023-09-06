@@ -48,7 +48,7 @@ class HealthDeathInquiry extends Component implements Tables\Contracts\HasTable
                 })
                 ->label('MEMBERS NAME')
                 ->formatStateUsing(function ($record) {
-                    $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 

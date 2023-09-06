@@ -42,7 +42,7 @@
               {{ $item->batch_number }}
             </td>
             {{-- @php
-                $url = 'https://darbcrelease.org/api/member-information/'.$item->member_id;
+                $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = file_get_contents($url);
                 $member_data = json_decode($response, true);
 

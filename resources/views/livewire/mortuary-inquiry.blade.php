@@ -206,7 +206,7 @@
 
                           <td class=" py-4 pl-4 pr-4 text-sm  text-gray-700 ">
                             @php
-                                     $url = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                                     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                                      $response = Http::withOptions(['verify' => false])->get($url);
                                      $member_data = $response->json();
 
@@ -286,7 +286,7 @@
                           @if ($filters['member_id'] != false && $filters['member_id'] != null)
                             <td class=" py-4 pl-4 pr-4 text-sm font-medium text-gray-900 ">
                                 @php
-                                $url_2 = 'https://darbcrelease.org/api/member-information/'.$record->member_id;
+                                $url_2 = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                                 $response_2 = Http::withOptions(['verify' => false])->get($url_2);
                                 $member_data_2 = $response_2->json();
 
