@@ -18,7 +18,7 @@ class NewUserSeeder extends Seeder
             'name' => 'Admin Funny',
             'username' => 'DARBCMEMBERSHIP',
             'email' => 'adminfunny@darbc.com',
-            'password' => Hash::make('funny'),
+            'password' => Hash::make('funny111317'),
             'role_id' => 1,
         ]);
         User::create([
