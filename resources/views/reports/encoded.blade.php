@@ -39,7 +39,7 @@
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);s
+                    $collection = collect($member_data['data']);
                 @endphp
                   <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
                     strtoupper($collection['user']['middle_name']).'. '.strtoupper($collection['user']['surname']) }}</td>
