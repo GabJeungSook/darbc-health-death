@@ -41,7 +41,7 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
               {{ $item->batch_number }}
             </td>
-            {{-- @php
+            @php
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = file_get_contents($url);
                 $member_data = json_decode($response, true);
@@ -51,11 +51,11 @@
                 $member_name = strtoupper($collection['user']['surname']) . ' '
                 .strtoupper($collection['user']['first_name']) . ' '
                 . strtoupper($collection['user']['middle_name']).'.';
-                @endphp --}}
-            {{-- <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
-            </td> --}}
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
+                @endphp
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
+            {{-- <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
+            </td> --}}
             @if ($item->enrollment_status == "member")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name ?? '' }}
             @else
