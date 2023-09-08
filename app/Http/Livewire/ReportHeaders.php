@@ -28,6 +28,12 @@ class ReportHeaders extends Component implements Tables\Contracts\HasTable
     protected function getTableActions(): array
     {
         return [
+            Action::make('delete')
+            ->color('danger')
+            ->icon('heroicon-o-trash')
+            ->button()
+            ->action(fn ($record) => $record->delete())
+            ->requiresConfirmation(),
             Action::make('edit')
             ->label('Edit Header')
             ->button()
