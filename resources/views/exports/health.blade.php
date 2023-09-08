@@ -13,6 +13,7 @@
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HOSPITAL</th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">NO. OF DAYS</th>
+            <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT</th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">STATUS</th>
           </tr>
         </thead>
@@ -50,6 +51,8 @@
               <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->hospitals->name }}
               </td>
               <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->number_of_days }}
+              </td>
+              <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->amount }}
               </td>
               <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->status }}
               </td>
