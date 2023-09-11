@@ -92,7 +92,7 @@
                 <div class="row-start-1 col-span-1">
                     <h1 class="font-medium">DATE OF DEATH: </h1>
                 </div>
-                {{\Carbon\Carbon::parse($record->date_of_death)->format('F d, Y')}}  to   {{\Carbon\Carbon::parse($record->date_of_death)->format('F d, Y')}}
+                {{\Carbon\Carbon::parse($record->date_of_death)->format('F d, Y')}}
                 <div class="row-start-2 col-start-2 col-span-5 h-0.5 w-full bg-gray-700"></div>
               </div>
               <div class="mt-1 grid grid-rows-2 grid-cols-6">
