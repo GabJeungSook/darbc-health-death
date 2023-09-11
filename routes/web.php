@@ -65,6 +65,14 @@ Route::get('/death-information/{record}', function ($record) {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('view-death');
 
+Route::get('/daily-claims-death/{record}', function ($record) {
+    $deathClaimRecord = Death::findOrFail($record);
+
+    return view('view-daily-claims-death', ['record' => $deathClaimRecord]);
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('daily-claims-death');
+
 Route::get('/cash-advance-information/{record}', function ($record) {
     $cashAdvanceRecord = CashAdvance::findOrFail($record);
 

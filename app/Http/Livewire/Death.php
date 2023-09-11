@@ -93,13 +93,18 @@ class Death extends Component  implements Tables\Contracts\HasTable
     public function getTableActions()
     {
         return [
-            Action::make('view')
-            ->icon('heroicon-o-eye')
+            Action::make('print_claim')
+            ->label('Print Claim')
+            ->icon('heroicon-o-printer')
             ->button()
             ->color('success')
+            ->url(fn (deathModel $record): string => route('daily-claims-death', $record)),
+            ActionGroup::make([
+            Action::make('view_data')
+            ->icon('heroicon-o-eye')
+            ->color('primary')
             ->url(fn (deathModel $record): string => route('view-death', $record))
             ->openUrlInNewTab(),
-            ActionGroup::make([
             Action::make('edit')
             ->icon('heroicon-o-pencil')
             ->button()
