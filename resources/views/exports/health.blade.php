@@ -38,7 +38,8 @@
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
               </td>
               @if ($item->enrollment_status == "member")
-              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $member_name ?? '' }}
+              {{-- <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $member_name ?? '' }} --}}
+                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">---</td>
               @else
               <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
               @endif
