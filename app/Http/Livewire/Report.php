@@ -130,9 +130,11 @@ class Report extends Component
         switch ($this->report_get) {
             case 1:
                 return \Excel::download(
-                    new \App\Exports\HealthExport(),
-                    'health-MembersAndDependent.xlsx'
-                );
+                    new \App\Exports\HealthExport($this->encoded_date, $this->date_from, $this->date_to, $this->status), 'health-MembersAndDependent.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\HealthExport(),
+                //     'health-MembersAndDependent.xlsx'
+                // );
                 break;
 
             case 2:
