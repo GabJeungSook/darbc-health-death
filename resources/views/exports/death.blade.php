@@ -13,6 +13,7 @@
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HAS VEHICLE</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF DEATH</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">PLACE OF DEATH</th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS BIRTHDAY</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">COVERAGE TYPE</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT</th>
                 </tr>
@@ -50,6 +51,9 @@
             </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
                 {{ $item->mortuary->place_of_death }}
+              </td>
+              <td class="border text-gray-600 uppercase  px-3  py-1">
+                {{ $item->birthday != null ? \Carbon\Carbon::parse($item->birthday)->format('F d, Y') : '' }}
               </td>
               @switch($item->coverage_type)
                 @case(1)
