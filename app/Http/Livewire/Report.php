@@ -63,6 +63,9 @@ class Report extends Component
                                       ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
                         })
+                        ->when($this->encoded_date, function ($query) {
+                            $query->whereDate('created_at', $this->encoded_date);
+                        })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {
                                 $query->whereIn('status', $this->transmittal_status);
@@ -79,6 +82,9 @@ class Report extends Component
                                         ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
                         })
+                        ->when($this->encoded_date, function ($query) {
+                            $query->whereDate('created_at', $this->encoded_date);
+                        })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {
                                 $query->whereIn('status', $this->transmittal_status);
@@ -94,6 +100,9 @@ class Report extends Component
                                 $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
                                         ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
+                        })
+                        ->when($this->encoded_date, function ($query) {
+                            $query->whereDate('created_at', $this->encoded_date);
                         })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {
@@ -137,21 +146,30 @@ class Report extends Component
 
             case 2:
                 return \Excel::download(
-                    new \App\Exports\TransmittalExport(),
-                    'Transmittals.xlsx'
-                );
+                    new \App\Exports\TransmittalExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    'Transmittals.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\TransmittalExport(),
+                //     'Transmittals.xlsx'
+                // );
                 break;
             case 7:
                 return \Excel::download(
-                    new \App\Exports\PaymentExport(),
-                    'Payments.xlsx'
-                );
+                    new \App\Exports\PaymentExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    'Payments.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\PaymentExport(),
+                //     'Payments.xlsx'
+                // );
                 break;
             case 8:
                 return \Excel::download(
-                    new \App\Exports\EncodedExport(),
-                    'Encoded.xlsx'
-                );
+                    new \App\Exports\EncodedExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    'Encoded.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\EncodedExport(),
+                //     'Encoded.xlsx'
+                // );
                 break;
             case 10:
                 return \Excel::download(
