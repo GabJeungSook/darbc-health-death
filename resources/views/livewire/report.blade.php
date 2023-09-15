@@ -59,7 +59,7 @@
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
       @case(1)
-        {{-- @include('reports.health') --}}
+        @include('reports.health')
       @break
       @case(2)
         @include('reports.transmittals')
