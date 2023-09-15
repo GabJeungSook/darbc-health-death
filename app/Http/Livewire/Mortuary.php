@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use Filament\Tables;
 use Filament\Forms;
+use Illuminate\Support\Facades\Http;
 use App\Models\Mortuary as MortuaryModel;
 use App\Models\SupervisorCode;
 use Filament\Tables\Columns\TextColumn;
@@ -205,8 +206,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             ->label('Member Name')
             ->formatStateUsing(function ($record) {
                 $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                $response = file_get_contents($url);
-                $member_data = json_decode($response, true);
+                $response = Http::withOptions(['verify' => false])->get($url);
+                $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
 
