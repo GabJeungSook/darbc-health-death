@@ -26,23 +26,7 @@ class MortuaryReport extends Component
     {
         return redirect()->route('mortuary');
     }
-    public function exportReport($id)
-    {
-        switch ($this->report_get) {
-            case 4:
-                return \Excel::download(
-                    new \App\Exports\MortuaryExport($this->encoded_date, $this->date_from, $this->date_to, $this->status, $this->vehicle, $this->diamond_package),
-                    'Mortuaries.xlsx');
-                // return \Excel::download(
-                //     new \App\Exports\MortuaryExport(),
-                //     'Mortuaries.xlsx'
-                // );
-                break;
-            default:
-                # code...
-                break;
-        }
-    }
+
 
     public function render()
     {
@@ -84,5 +68,23 @@ class MortuaryReport extends Component
             'first_report' => ReportHeader::where('report_id', 4)->where('report_name', 'Mortuary Benefits')->first(),
             'first_signatories' => Signatory::where('report_header_id', 4)->get(),
         ]);
+    }
+
+    public function exportReport($id)
+    {
+        switch ($this->report_get) {
+            case 4:
+                return \Excel::download(
+                    new \App\Exports\MortuaryExport($this->encoded_date, $this->date_from, $this->date_to, $this->status, $this->vehicle, $this->diamond_package),
+                    'Mortuaries.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\MortuaryExport(),
+                //     'Mortuaries.xlsx'
+                // );
+                break;
+            default:
+                # code...
+                break;
+        }
     }
 }
