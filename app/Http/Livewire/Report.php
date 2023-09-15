@@ -38,8 +38,10 @@ class Report extends Component
                     ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
                 }
 
-            })->when($this->encoded_date, function($query)
-            {
+            });
+        })
+        ->when($this->encoded_date, function ($query) {
+            $query->where(function ($query) {
                 $query->where('created_at', $this->encoded_date);
             });
         })
