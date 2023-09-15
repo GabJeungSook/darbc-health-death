@@ -15,6 +15,7 @@ class DeathReport extends Component
 {
     use WithPagination;
     public $report_get;
+    public $encoded_date;
     public $date_from;
     public $date_to;
     public $vehicle = [];
@@ -33,6 +34,9 @@ class DeathReport extends Component
             $query->where(function ($query) {
                 $query->whereBetween('date', [$this->date_from, $this->date_to]);
             });
+        })
+        ->when($this->encoded_date, function ($query) {
+            $query->whereDate('created_at', $this->encoded_date);
         })
         ->when(!empty($this->vehicle), function ($query) {
             if (is_array($this->vehicle)) {
