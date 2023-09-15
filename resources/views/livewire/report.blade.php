@@ -69,7 +69,7 @@
         @include('reports.paid')
       @break
       @case(8)
-      {{-- @include('reports.encoded') --}}
+      @include('reports.encoded')
       @break
       @case(10)
       @include('reports.belowten')
