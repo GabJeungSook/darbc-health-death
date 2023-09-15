@@ -713,6 +713,9 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
+            TextColumn::make('created_at')
+            ->label('Encoded Date')
+            ->date('F d, Y'),
             TextColumn::make('memberName')
                 // ->formatStateUsing(function ($record) {
                 //     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
@@ -769,6 +772,12 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 })
                 ->searchable()
                 ->sortable(),
+            TextColumn::make('confinement_date_from')
+            ->label('Confinement Date From')
+            ->date('F d, Y'),
+            TextColumn::make('confinement_date_to')
+            ->label('Confinement Date To')
+            ->date('F d, Y'),
             // TextColumn::make('number_of_days')
             //     ->label('NUMBER OF DAYS')
             //     ->searchable()
