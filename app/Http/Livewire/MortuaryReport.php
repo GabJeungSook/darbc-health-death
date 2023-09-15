@@ -14,6 +14,7 @@ class MortuaryReport extends Component
 {
     use WithPagination;
     public $report_get;
+    public $encoded_date;
     public $date_from;
     public $date_to;
     public $status = [];
@@ -46,6 +47,9 @@ class MortuaryReport extends Component
             $query->where(function ($query) {
                 $query->whereBetween('created_at', [$this->date_from, $this->date_to]);
             });
+        })
+        ->when($this->encoded_date, function ($query) {
+            $query->whereDate('created_at', $this->encoded_date);
         })
         ->when(!empty($this->status), function ($query) {
             if (is_array($this->status)) {
