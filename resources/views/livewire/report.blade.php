@@ -28,9 +28,13 @@
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
       @if ($report_get == 1)
+      <div class="">
+
+      </div>
         <div class="flex space-x-2">
-          <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
-          <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
+            <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
+          <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="date_from" />
+          <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="date_to" />
             <x-select label="Select Status" multiselect placeholder="All" wire:model="status">
                 <x-select.option label="Encoded" value="ENCODED" />
                 <x-select.option label="Transmitted" value="TRANSMITTED" />
@@ -55,7 +59,7 @@
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
       @case(1)
-        @include('reports.health')
+        {{-- @include('reports.health') --}}
       @break
       @case(2)
         @include('reports.transmittals')

@@ -15,6 +15,7 @@ class Report extends Component
 {
     use WithPagination;
     public $report_get;
+    public $encoded_date;
     public $date_from;
     public $date_to;
     public $status = [];
@@ -37,6 +38,9 @@ class Report extends Component
                     ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
                 }
 
+            })->when($this->encoded_date, function($query)
+            {
+                $query->where('created_at', $this->encoded_date);
             });
         })
         ->when(!empty($this->status), function ($query) {
