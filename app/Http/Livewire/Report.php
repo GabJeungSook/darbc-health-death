@@ -41,9 +41,7 @@ class Report extends Component
             });
         })
         ->when($this->encoded_date, function ($query) {
-            $query->where(function ($query) {
-                $query->where('created_at', $this->encoded_date);
-            });
+            $query->where('created_at', $this->encoded_date);
         })
         ->when(!empty($this->status), function ($query) {
             if (is_array($this->status)) {
