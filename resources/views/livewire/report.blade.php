@@ -32,7 +32,7 @@
 
       </div>
         <div class="flex space-x-2">
-            <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
+          <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
           <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="date_to" />
             <x-select label="Select Status" multiselect placeholder="All" wire:model="status">
