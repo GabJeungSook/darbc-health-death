@@ -15,10 +15,10 @@ class DeathExport implements FromView
     public $status;
     public $vehicle;
     public $diamond_package;
-    public $coverage;
+    public $coverage_type;
     public $death;
 
-    public function __construct($encoded_date, $date_from, $date_to, $vehicle,$diamond_package, $coverage)
+    public function __construct($encoded_date, $date_from, $date_to, $vehicle,$diamond_package, $coverage_type)
     {
         $this->encoded_date = $encoded_date;
         $this->date_from = $date_from;
@@ -26,7 +26,7 @@ class DeathExport implements FromView
         $this->vehicle = $vehicle;
         $this->diamond_package = $diamond_package;
         $this->date_to = $date_to;
-        $this->coverage = $coverage;
+        $this->coverage_type = $coverage_type;
 
         $this->death = Death::when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {

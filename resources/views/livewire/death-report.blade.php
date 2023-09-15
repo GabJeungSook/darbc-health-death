@@ -55,7 +55,7 @@
   <div class="mt-5 border rounded-lg p-4" x-ref="printContainer">
     @switch($report_get)
       @case(3)
-        @include('reports.death')
+        {{-- @include('reports.death') --}}
       @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>
