@@ -75,9 +75,12 @@ class DeathReport extends Component
         switch ($this->report_get) {
             case 3:
                 return \Excel::download(
-                    new \App\Exports\DeathExport(),
-                    'Death-MembersAndDependent.xlsx'
-                );
+                    new \App\Exports\DeathExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type),
+                    'Death-MembersAndDependent.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\DeathExport(),
+                //     'Death-MembersAndDependent.xlsx'
+                // );
                 break;
             default:
                 # code...
