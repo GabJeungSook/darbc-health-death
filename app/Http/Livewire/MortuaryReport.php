@@ -31,9 +31,12 @@ class MortuaryReport extends Component
         switch ($this->report_get) {
             case 4:
                 return \Excel::download(
-                    new \App\Exports\MortuaryExport(),
-                    'Mortuaries.xlsx'
-                );
+                    new \App\Exports\MortuaryExport($this->encoded_date, $this->date_from, $this->date_to, $this->status, $this->vehicle, $this->diamond_package),
+                    'Mortuaries.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\MortuaryExport(),
+                //     'Mortuaries.xlsx'
+                // );
                 break;
             default:
                 # code...
