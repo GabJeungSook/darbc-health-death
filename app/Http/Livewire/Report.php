@@ -29,8 +29,14 @@ class Report extends Component
 
         $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {
-                $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
-                      ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+                if($this->date_from === $this->date_to)
+                {
+                    $query->where('confinement_date_from', $this->date_from);
+                }else{
+                    $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+                    ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+                }
+
             });
         })
         ->when(!empty($this->status), function ($query) {
