@@ -16,6 +16,7 @@
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">NUMBER OF DAYS
             </th>
+            <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT</th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">STATUS
             </th>
 
@@ -33,7 +34,7 @@
                 @endphp
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
-              strtoupper($collection['user']['middle_name']).'. '.strtoupper($collection['user']['surname']) }}</td>
+              strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td>
               @if ($item->enrollment_status == 'member')
               {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
                 strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td> --}}
@@ -47,6 +48,7 @@
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->hospitals->name }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->number_of_days }}</td>
+              <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->amount }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->status }}</td>
             </tr>
           @endforeach
