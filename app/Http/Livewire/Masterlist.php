@@ -81,6 +81,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 'ENCODED' => 'Encoded',
                 'TRANSMITTED' => 'Transmitted',
                 'PAID' => 'Paid',
+                'UNPAID' => 'Unpaid',
             ])
         ];
     }
