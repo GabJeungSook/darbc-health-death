@@ -216,7 +216,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
         DB::beginTransaction();
         CommunityRelation::create([
             // 'member_id' =>  $this->full_name,
-            'reference_number' => 1,
+            'reference_number' => uniqid(),
             'first_name' => $this->first_name,
             'middle_name' => $this->middle_name,
             'last_name' => $this->last_name,

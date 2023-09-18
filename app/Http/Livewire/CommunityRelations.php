@@ -182,10 +182,10 @@ class CommunityRelations extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            // TextColumn::make('reference_number')
-            // ->label('Ref. No.')
-            // ->searchable()
-            // ->sortable(),
+            TextColumn::make('reference_number')
+            ->label('Ref. No.')
+            ->searchable()
+            ->sortable(),
             TextColumn::make('memberName')
             ->label('NAME')
             ->formatStateUsing(function ($record) {
