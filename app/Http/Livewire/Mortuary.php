@@ -214,8 +214,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
                 // return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
-            ->sortable(),
-            // ->searchable(['claimants_first_name', 'claimants_last_name']),
+            ->sortable()
+            ->searchable(),
             TextColumn::make('claimantName')
             ->label('Claimants Name')
             ->formatStateUsing(function ($record) {
