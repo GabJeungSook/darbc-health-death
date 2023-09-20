@@ -6,7 +6,7 @@
             @click="printOut($refs.printContainer.outerHTML);"  />
         </div>
     </div>
-    <div class="p-3 mt-3 border-2" x-ref="printContainer">
+    <div class="p-3 mt-3" x-ref="printContainer">
         {{-- <div class="mt-4 flex justify-center text-center space-x-1">
             <div class="grid ">
               <img src="{{ asset('images/darbc.png') }}" class="h-10 mt-1" alt="" media="print">
@@ -22,7 +22,7 @@
           </div>
           <div class="mt-2 h-0.5 bg-gray-700"></div>
           <div class="mt-0.5 h-0.5 bg-gray-700"></div> --}}
-          <div class="mt-52">
+          <div class="mt-40">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
           <div class="mt-4">
@@ -106,7 +106,7 @@
             <p class="text-md font-normal ml-4">Kindly submit your billing to our cashier for payment processing.</p>
           </div>
           <div class="mt-8">
-            <p class="text-md font-normal ml-4">Thank you and more power</p>
+            <p class="text-md font-normal ml-4">Thank you and more power.</p>
           </div>
           <div class="mt-8">
             <p class="text-md font-normal ml-4">Very truly yours,</p>
