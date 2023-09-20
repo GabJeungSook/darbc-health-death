@@ -221,6 +221,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 $member_data = $response->json();
 
                 $collection = collect($member_data['data']);
+                dd($collection);
                 $last_name = $collection['user']['surname'];
 
                 return $last_name;
