@@ -25,6 +25,7 @@
           </th>
           <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER NAME</th>
           <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT NAME</th>
+          <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AGE</th>
           <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF CONFINEMENT FROM
           </th>
           <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF CONFINEMENT TO
@@ -63,6 +64,9 @@
             @else
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}</td>
             @endif
+            <td class="border text-gray-600 uppercase  px-3  py-1">
+                {{ $item->age }}
+            </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">
               {{ \Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}
             </td>
