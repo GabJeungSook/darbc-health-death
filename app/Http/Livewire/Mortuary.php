@@ -214,25 +214,25 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
                 // return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
-            ->sortable()
-            ->searchable(query: function (Builder $query, string $search): Builder {
-                $url = 'https://darbcmembership.org/api/member-darbc-names';
-                $response = Http::withOptions(['verify' => false])->get($url);
-                $member_data = $response->json();
+            ->sortable(),
+            // ->searchable(query: function (Builder $query, string $search): Builder {
+            //     $url = 'https://darbcmembership.org/api/member-darbc-names';
+            //     $response = Http::withOptions(['verify' => false])->get($url);
+            //     $member_data = $response->json();
 
-                $member_full_names = collect($member_data);
+            //     $member_full_names = collect($member_data);
 
-                $filteredNames = $member_full_names->filter(function ($item) use ($search) {
-                    return str_contains(strtolower($item['full_name']), strtolower($search));
-                });
+            //     $filteredNames = $member_full_names->filter(function ($item) use ($search) {
+            //         return str_contains(strtolower($item['full_name']), strtolower($search));
+            //     });
 
-                if (!$filteredNames->isEmpty()) {
-                    foreach ($filteredNames as $item) {
-                        $foundName = $item['full_name'];
-                        return $foundName;
-                    }
-                }
-            }),
+            //     if (!$filteredNames->isEmpty()) {
+            //         foreach ($filteredNames as $item) {
+            //             $foundName = $item['full_name'];
+            //             return $foundName;
+            //         }
+            //     }
+            // }),
             TextColumn::make('claimantName')
             ->label('Claimants Name')
             ->formatStateUsing(function ($record) {
