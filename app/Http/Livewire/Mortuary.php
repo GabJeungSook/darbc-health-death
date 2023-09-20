@@ -221,6 +221,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             ->formatStateUsing(function ($record) {
                   return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
+            ->searchable(['claimants_first_name', 'claimants_last_name'])
             ->sortable(),
             BadgeColumn::make('status')
             ->enum([
