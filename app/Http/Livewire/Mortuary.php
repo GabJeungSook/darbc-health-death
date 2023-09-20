@@ -216,7 +216,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
             })
             ->sortable()
             ->searchable(query: function (Builder $query, string $search): Builder {
-                $url = 'https://darbcmembership.org/api/member-information/'.$query->member_id;
+                $url = 'https://darbcmembership.org/api/member-information/';
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 
