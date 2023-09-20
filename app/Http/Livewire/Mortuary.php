@@ -221,8 +221,17 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 $member_data = $response->json();
 
                 $member_full_names = collect($member_data);
-                dd($member_full_names);
-                return $member_full_names;
+
+                $filteredNames = $member_full_names->filter(function ($item) use ($search) {
+                    return str_contains($item['full_name'], $search);
+                });
+
+                if (!$filteredNames->isEmpty()) {
+                    foreach ($filteredNames as $item) {
+                        $foundName = $item['full_name'];
+                       return $foundName;
+                    }
+                }
             }),
             TextColumn::make('claimantName')
             ->label('Claimants Name')
