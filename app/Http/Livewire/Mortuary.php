@@ -225,7 +225,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 $filteredNames = $member_full_names->filter(function ($item) use ($search) {
                     return str_contains(strtolower($item['full_name']), strtolower($search));
                 });
-                dd($filteredNames);
+
                 if (!$filteredNames->isEmpty()) {
                     foreach ($filteredNames as $item) {
                         $foundName = $item['full_name'];
