@@ -215,8 +215,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 // return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
             })
             ->sortable()
-            ->searchable(query: function (Builder $query, string $search, MortuaryModel $record): Builder {
-                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            ->searchable(query: function (Builder $query, string $search): Builder {
+                $url = 'https://darbcmembership.org/api/member-information/'.$query->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 
