@@ -194,7 +194,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-o-trash')
                 ->action(fn ($record) => $record->delete())
                 ->requiresConfirmation()
-                ->visible(fn ($record) => $record->death === null)
+                // ->visible(fn ($record) => $record->death === null)
             ])
         ];
     }

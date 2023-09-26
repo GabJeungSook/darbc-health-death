@@ -268,7 +268,12 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
                     ->label('Supervisor Code')
                     ->password()
                     ->required(),
-                ])->visible(fn ($record) => $record->update_attempts == 2)
+                ])->visible(fn ($record) => $record->update_attempts == 2),
+                Action::make('delete')
+                ->color('danger')
+                ->icon('heroicon-o-trash')
+                ->action(fn ($record) => $record->delete())
+                ->requiresConfirmation()
             ])
         ];
     }
