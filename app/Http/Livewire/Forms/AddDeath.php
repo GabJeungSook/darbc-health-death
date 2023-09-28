@@ -107,9 +107,6 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                             $set('grocery', '2000');
                                             $set('water', '1000');
                                         }
-
-                                    }else{
-
                                     }
 
                                 })
@@ -166,7 +163,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                         ->reactive()
                         ->disabled(fn ($get) => $get('mortuary_id') == null)
                         ->afterStateUpdated(function ($set, $get, $state) {
-                            $url = 'https://darbcmembership.org/api/member-information/'.$this->global_member_id;
+                            $url = 'https://darbcmembership.org/api/member-information/'.$get('mortuary_id');
                             $response = Http::withOptions(['verify' => false])->get($url);
                             $member_data = $response->json();
 
@@ -179,8 +176,8 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 $set('last_name', $collection['user']['surname']);
                                 $set('contact_number', $collection['contact_number']);
                                 $set('birthday', $collection['date_of_birth']);
-                                $set('date_of_death', $record->date_of_death);
-                                $set('place_of_death', $record->place_of_death);
+                                // $set('date_of_death', $record->date_of_death);
+                                // $set('place_of_death', $record->place_of_death);
                                 if($collection['date_of_birth'] != null)
                                 {
                                     $date_of_birth = $collection['date_of_birth'];
