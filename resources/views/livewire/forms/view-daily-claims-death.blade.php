@@ -44,17 +44,17 @@
                 <div class="row-start-1 col-span-1">
                     <h1 class="font-medium">REPLACEMENT: </h1>
                 </div>
-                {{-- {{strtoupper($record->last_name).', '.strtoupper($record->middle_name).' '.strtoupper($record->first_name)}} --}}
+                @if ($record->enrollment_status == "replacement")
+                {{strtoupper($record->dependents_last_name).', '.strtoupper($record->dependents_middle_name).' '.strtoupper($record->dependents_first_name)}}
+                @endif
                 <div class="row-start-2 col-start-2 col-span-5 h-0.5 w-full bg-gray-700"></div>
               </div>
               <div class="mt-1 grid grid-rows-2 grid-cols-6">
                 <div class="row-start-1 col-span-1">
                     <h1 class="font-medium">NAME OF DEPENDENT: </h1>
                 </div>
-                @if ($record->enrollment_status == "member")
-                    {{strtoupper($collection['user']['full_name'])}}
-                @else
-                {{strtoupper($record->last_name).', '.strtoupper($record->middle_name).' '.strtoupper($record->first_name)}}
+                @if ($record->enrollment_status == "dependent")
+                {{strtoupper($record->dependents_last_name).', '.strtoupper($record->dependents_middle_name).' '.strtoupper($record->dependents_first_name)}}
                 @endif
                 <div class="row-start-2 col-start-2 col-span-5 h-0.5 w-full bg-gray-700"></div>
               </div>
