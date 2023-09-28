@@ -275,14 +275,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 Forms\Components\Select::make('mortuary_id')->label('Member')
                                 ->reactive()
                                 ->searchable()
-                                ->options(function ($get) {
-                                    if($get('enrollment_status') === 'member')
-                                    {
-                                       return Mortuary::whereDoesntHave('death')->pluck('member_name', 'id');
-                                    }else{
-                                        return $this->member_full_names->pluck('full_name', 'id');
-                                    }
-                                })
+                                ->options($this->member_full_names->pluck('full_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
                                     $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
