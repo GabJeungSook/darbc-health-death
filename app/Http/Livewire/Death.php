@@ -34,6 +34,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
     use Actions;
 
     public $addDeath = false;
+    public $addDeathForm = false;
     public $showRecord = false;
     public $showVehicleModal = false;
 
@@ -76,6 +77,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     protected $listeners = [
         'close_modal'=> 'closeModal',
+        'close_modal_death'=> 'closeModalDeath',
         'show_vehicle_schedule' =>'showVehicleSchedule',
         'close_vehicle' =>'CloseVehicleSchedule'
     ];
@@ -680,6 +682,11 @@ class Death extends Component  implements Tables\Contracts\HasTable
     public function closeModal()
     {
         $this->addDeath = false;
+    }
+
+    public function closeModalDeath()
+    {
+        $this->addDeathForm = false;
     }
 
     public function showVehicleSchedule()

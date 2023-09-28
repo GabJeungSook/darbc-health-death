@@ -645,7 +645,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
             'birthday', 'age', 'contact_number', 'date_of_death', 'place_of_death', 'coverage_type', 'has_vehicle',
             'amount'
         ]);
-        $this->emit('close_modal');
+        $this->emit('close_modal_death');
     }
 
     public function save()
