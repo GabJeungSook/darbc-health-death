@@ -11,6 +11,7 @@ use App\Models\Mortuary;
 use WireUi\Traits\Actions;
 use App\Models\SupervisorCode;
 use App\Models\VehicleSchedule;
+use App\Models\DeathTransmittal;
 use App\Models\Death as deathModel;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Grid;
@@ -43,6 +44,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
     public $mortuary_id;
     public $date;
     public $batch_number;
+    public $batch_number_transmittal;
     public $member_id;
     public $enrollment_status;
     public $first_name;
@@ -605,13 +607,59 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->password()
                 ->required(),
             ]),
+            Action::make('transmitted')
+            ->icon('heroicon-o-arrow-right')
+            ->color('warning')
+            ->mountUsing(fn (Forms\ComponentContainer $form, Death $record) => $form->fill([
+                'batch_number' => $this->batch_number_transmittal,
+                'date_transmitted' =>now()
+            ]))
+            ->action(function (Death $record, array $data): void {
+                DB::beginTransaction();
+                $death = DeathTransmittal::create([
+                    'death_id' => $record->id,
+                    'batch_number' => $this->batch_number_transmittal,
+                    'date_transmitted' => $data['date_transmitted'],
+                ]);
+
+                  //save Files from fileupload
+                foreach($data['attachment'] as $document){
+                    $death->attachments()->create(
+                        [
+                             "path"=>'public/'.$document,
+                             "document_name"=>$document,
+                        ]
+                    );
+                }
+
+                $record->status = 'TRANSMITTED';
+                $record->save();
+                DB::commit();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully saved'
+                );
+            })
+            ->form([
+                Forms\Components\TextInput::make('batch_number')
+                ->label('Batch Number')
+                ->disabled(),
+                DatePicker::make('date_transmitted')->label('Date Transmitted')
+                ->required()
+                ->reactive(),
+                FileUpload::make('attachment')
+                ->enableOpen()
+                ->multiple()
+                ->disk('public')
+                ->preserveFilenames()
+                ->reactive()
+            ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
             Action::make('delete')
             ->color('danger')
             ->icon('heroicon-o-trash')
             ->action(fn ($record) => $record->delete())
             ->requiresConfirmation()
         ])
-
         ];
 
     }
@@ -750,7 +798,27 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     public function mount()
     {
+        if (Death::count() > 0) {
+            // get the latest record
+            $latestData = Death::latest('created_at')->first();
 
+            // check if today is Monday and the latest record was created on Sunday
+            $isWednesday = Carbon::today()->isWednesday();
+            $isNotWednesday = !$latestData->created_at->isWednesday();
+
+            $isFriday = Carbon::today()->isFriday();
+            $isNotFriday = !$latestData->created_at->isFriday();
+
+            if (($isWednesday && $isNotWednesday) || ($isFriday && $isNotFriday)) {
+                // increment the batch number if it's a Monday and the latest record was created on Sunday
+                $this->batch_number_transmittal = $latestData->batch_number + 1;
+            } else {
+                // otherwise, use the latest batch number
+                $this->batch_number_transmittal = $latestData->batch_number;
+            }
+        } else {
+            $this->batch_number_transmittal = 1;
+        }
     }
 
     public function render()
