@@ -741,10 +741,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->colors([
                     'primary' => 'ENCODED',
                     'warning' => 'TRANSMITTED',
-                ])
-                ->formatStateUsing(function ($record) {
-                    return strtoupper($record->has_diamond_package);
-                }),
+                ]),
             TextColumn::make('amount')
                 ->label('AMOUNT')
                 ->formatStateUsing(function ($record) {
