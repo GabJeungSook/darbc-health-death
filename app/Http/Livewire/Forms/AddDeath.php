@@ -24,6 +24,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
     use Actions;
 
     // public $data;
+    public $member_full_names;
     public $member_ids;
     public $global_member_id;
     public $mortuary_ids;
@@ -274,7 +275,14 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 Forms\Components\Select::make('mortuary_id')->label('Member')
                                 ->reactive()
                                 ->searchable()
-                                ->options(Mortuary::whereDoesntHave('death')->pluck('member_name', 'id'))
+                                ->options(function ($get) {
+                                    if($get('enrollment_status') === 'member')
+                                    {
+                                       return Mortuary::whereDoesntHave('death')->pluck('member_name', 'id');
+                                    }else{
+                                        return $this->member_full_names->pluck('full_name', 'id');
+                                    }
+                                })
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
                                     $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
@@ -748,6 +756,12 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
 
     public function mount()
     {
+        $url1 = 'https://darbcmembership.org/api/member-darbc-names';
+        $response1 = Http::withOptions(['verify' => false])->get($url1);
+        $member_data1 = $response1->json();
+
+        $this->member_full_names = collect($member_data1);
+
         $url = 'https://darbcmembership.org/api/member-darbc-ids?status=1';
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
