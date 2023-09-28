@@ -242,6 +242,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             Forms\Components\Select::make('enrollment_status')->label('Are you a')
                             ->options([
                                 'member' => 'Member',
+                                'replacement' => 'Replacement',
                                 'dependent' => 'Dependent',
                             ])
                             ->reactive()
@@ -294,6 +295,12 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                 Forms\Components\TextInput::make('middle_name')->label('Middle Name')->disabled(fn ($get) => $this->member_id == null)->reactive(),
                                 Forms\Components\TextInput::make('last_name')->label('Last Name')->disabled(fn ($get) => $this->member_id == null)->reactive()->required(),
                             ])->columns(3)->visible(fn ($get) => $get('enrollment_status') == 'member'),
+                            Fieldset::make('Replacement\'s Name')
+                            ->schema([
+                                Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->reactive()->required(),
+                                Forms\Components\TextInput::make('dependents_middle_name')->label('Middle Name')->reactive(),
+                                Forms\Components\TextInput::make('dependents_last_name')->label('Last Name')->reactive()->required(),
+                                ])->columns(1),
                             Fieldset::make('Dependent\'s Name')
                             ->schema([
                                 Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->reactive()->required(),
@@ -628,8 +635,14 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 })
                 ->label('MEMBER NAME')
                 ->searchable(['first_name', 'last_name']),
+            TextColumn::make('enrollment_status')
+            ->sortable()
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->enrollment_status);
+            })
+            ->searchable(['enrollment_status']),
             TextColumn::make('dependents_name')
-                ->label('DEPENDENT\'S NAME')
+                ->label('DEPENDENT\'S / REPLACEMENT\'S NAME')
                 ->formatStateUsing(function ($record) {
                     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);
