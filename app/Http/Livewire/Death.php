@@ -640,6 +640,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             ->formatStateUsing(function ($record) {
                 return strtoupper($record->enrollment_status);
             })
+            ->label('ENROLLMENT STATUS')
             ->searchable(['enrollment_status']),
             TextColumn::make('dependents_name')
                 ->label('DEPENDENT\'S / REPLACEMENT\'S NAME')
