@@ -444,6 +444,24 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             Forms\Components\TextInput::make('middle_name')->label('Middle Name')->disabled(fn ($get) => $this->member_id == null)->reactive(),
                             Forms\Components\TextInput::make('last_name')->label('Last Name')->disabled(fn ($get) => $this->member_id == null)->reactive()->required(),
                         ])->columns(3)->visible(fn ($get) => $this->enrollment_status == 'member'),
+                        Fieldset::make('Replacement\'s Name')
+                        ->schema([
+                            Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->disabled(fn ($get) => $this->member_id == null)->reactive()->required(),
+                            Forms\Components\TextInput::make('dependents_middle_name')->label('Middle Name')->disabled(fn ($get) => $this->member_id == null)->reactive(),
+                            Forms\Components\TextInput::make('dependents_last_name')->label('Last Name')->disabled(fn ($get) => $this->member_id == null)->reactive()->required(),
+                            // Grid::make()
+                            // ->schema([
+                            //     Forms\Components\Radio::make('dependent_type')
+                            //     ->label('Dependent Type')
+                            //     ->options([
+                            //         'spouse' => 'Spouse',
+                            //         'child' => 'Child',
+                            //     ])
+                            //     ->inline()
+                            //     ->required()
+                            // ])->columns(1),
+
+                        ])->columns(3)->visible(fn ($get) => $this->enrollment_status == 'replacement'),
                         Fieldset::make('Dependent\'s Name')
                         ->schema([
                             Forms\Components\TextInput::make('dependents_first_name')->label('First Name')->disabled(fn ($get) => $this->member_id == null)->reactive()->required(),
@@ -462,6 +480,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             ])->columns(1),
 
                         ])->columns(3)->visible(fn ($get) => $this->enrollment_status == 'dependent'),
+
                     ]),
                 Wizard\Step::make('Step 2')
                     ->schema([
