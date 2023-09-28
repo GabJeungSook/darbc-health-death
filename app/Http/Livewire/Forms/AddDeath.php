@@ -347,12 +347,15 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                         $set('amount', $amount + 0);
                                       }
                                 }else{
-                                    $this->dialog()->error(
-                                        $title = 'Invalid Age!',
-                                        $description = 'Member must be 18 - 86 years old.'
-                                    );
-                                    $set('birthday', null);
-                                    $set('age', null);
+                                    if($get('age') != null)
+                                    {
+                                        $this->dialog()->error(
+                                            $title = 'Invalid Age!',
+                                            $description = 'Member must be 18 - 86 years old.'
+                                        );
+                                        $set('birthday', null);
+                                        $set('age', null);
+                                    }
                                 }
                             }
 
