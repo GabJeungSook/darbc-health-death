@@ -164,6 +164,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             'dependent' => 'Dependent',
                         ])
                         ->reactive()
+                        ->disabled(fn ($get) => $get('mortuary_id') == null)
                         ->afterStateUpdated(function ($set, $get, $state) {
                             $url = 'https://darbcmembership.org/api/member-information/'.$this->global_member_id;
                             $response = Http::withOptions(['verify' => false])->get($url);
