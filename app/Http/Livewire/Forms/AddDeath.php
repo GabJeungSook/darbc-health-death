@@ -542,12 +542,10 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                     ->schema([
                         Card::make()
                         ->schema([
-                            DatePicker::make('date_of_death')->label('Date Of Death')->disabled(fn ($get) => $this->member_id == null)
-                            ->disabled()
+                            DatePicker::make('date_of_death')->label('Date Of Death')
                             ->reactive()
                             ->required(),
-                            Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')->disabled(fn ($get) => $this->member_id == null)
-                            ->disabled()
+                            Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')
                             ->reactive()
                             ->required(),
                             Forms\Components\TextInput::make('has_vehicle')->label('Vehicle')
@@ -560,10 +558,9 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                     $set('amount', $get('amount') + 1000);
                                 }
                             })
-                            ->disabled()
                             ->reactive()
                             ->required(),
-                            Forms\Components\Select::make('coverage_type')->label('Type Of Coverage')->disabled(fn ($get) => $this->member_id == null)
+                            Forms\Components\Select::make('coverage_type')->label('Type Of Coverage')
                             ->options([
                                 '1' => 'Accidental Death/ Disablement',
                                 '2' => 'Accident Burial Benefit',
@@ -573,7 +570,6 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 '6' => 'Daily Hospital Income Benefit, due to accident and/or illness',
                                 '7' => 'Premium inclusive of taxes',
                             ])
-                            ->disabled()
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state){
                                 if($get('has_vehicle') == 'No')
