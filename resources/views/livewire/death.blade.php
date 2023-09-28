@@ -1,8 +1,8 @@
 <div>
     <div class="flex justify-between">
         <div>
-            <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addDeath', true)"/>
-            <x-button label="ADD DEATH" class="font-bold" red icon="plus" wire:click="$set('addDeathForm', true)"/>
+            {{-- <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addDeath', true)"/> --}}
+            <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addDeathForm', true)"/>
             <x-button label="INQUIRY" class="font-bold" indigo icon="document-search" wire:click="redirectToInquiry" />
             <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
 
