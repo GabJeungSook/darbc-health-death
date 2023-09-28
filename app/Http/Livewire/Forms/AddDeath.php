@@ -176,6 +176,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                         Forms\Components\Select::make('enrollment_status')->label('Are you a')
                         ->options([
                             'member' => 'Member',
+                            'replacement' => 'Replacement',
                             'dependent' => 'Dependent',
                         ])
                         ->reactive()
@@ -188,14 +189,14 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             $collection = collect($member_data['data']);
                             if($state == 'member')
                             {
-                                $record = Mortuary::find($get('mortuary_id'));
+                                $record = Mortuary::where('member_id', $get('mortuary_id'))->first();
                                 $set('first_name', $collection['user']['first_name']);
                                 $set('middle_name',$collection['user']['middle_name']);
                                 $set('last_name', $collection['user']['surname']);
                                 $set('contact_number', $collection['contact_number']);
                                 $set('birthday', $collection['date_of_birth']);
-                                // $set('date_of_death', $record->date_of_death);
-                                // $set('place_of_death', $record->place_of_death);
+                                $set('date_of_death', $record->date_of_death);
+                                $set('place_of_death', $record->place_of_death);
                                 if($collection['date_of_birth'] != null)
                                 {
                                     $date_of_birth = $collection['date_of_birth'];
@@ -292,7 +293,74 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                     $set('birthday', null);
                                     $set('age', null);
                                 }
-                            }elseif($get('enrollment_status') == 'member'){
+                            }elseif($get('enrollment_status') == 'replacement')
+                            {
+                                if($get('age') >= 18 && $get('age') <= 60)
+                                {
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 100000);
+                                          break;
+                                        case '2':
+                                            $set('amount', $amount + 10000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 55000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 1000);
+                                          break;
+                                        case '7':
+                                            $set('amount', $amount + 2900);
+                                          break;
+                                        default:
+                                        $set('amount', 0);
+                                      }
+                                }elseif($get('age') >= 61 && $get('age') <= 86){
+                                    switch ($get('coverage_type')) {
+                                        case '1':
+                                            $set('amount', $amount + 100000);
+                                          break;
+                                        case '2':
+                                            $set('amount',$amount +  10000);
+                                          break;
+                                        case '3':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '4':
+                                            $set('amount', $amount + 55000);
+                                          break;
+                                        case '5':
+                                            $set('amount', $amount + 50000);
+                                          break;
+                                        case '6':
+                                            $set('amount', $amount + 1000);
+                                          break;
+                                        case '7':
+                                            $set('amount', $amount + 4200);
+                                          break;
+                                        default:
+                                        $set('amount', $amount + 0);
+                                      }
+                                }else{
+                                    if($get('age') != null)
+                                    {
+                                        $this->dialog()->error(
+                                            $title = 'Invalid Age!',
+                                            $description = 'Replacement must be 18 - 86 years old.'
+                                        );
+                                        $set('birthday', null);
+                                        $set('age', null);
+                                    }
+                                }
+                            }
+                            elseif($get('enrollment_status') == 'member'){
                                 if($get('age') >= 18 && $get('age') <= 60)
                                 {
                                     switch ($get('coverage_type')) {
