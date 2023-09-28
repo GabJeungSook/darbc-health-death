@@ -83,8 +83,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 ->searchable()
                                 ->options($this->member_full_names->pluck('full_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
-                                    $mortuary = Mortuary::where('id', $state)->first();
-                                    dd($state);
+                                    $mortuary = Mortuary::where('member_id', $state)->first();
 
                                     if($mortuary)
                                     {
