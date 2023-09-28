@@ -84,10 +84,10 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 ->options($this->member_full_names->pluck('full_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
+                                    dd($state);
 
                                     if($mortuary)
                                     {
-                                        dd('ye');
                                         $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
                                         $response = Http::withOptions(['verify' => false])->get($url);
                                         $member_data = $response->json();
