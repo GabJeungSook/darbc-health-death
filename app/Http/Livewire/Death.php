@@ -706,7 +706,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     }
                 })
                 ->searchable(),
-                BadgeColumn::make('mortuary.diamond_package')
+                BadgeColumn::make('has_diamond_package')
                 ->label('DIAMOND PACKAGE')
                 ->enum([
                     'Yes' => 'Yes',
@@ -723,15 +723,28 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->formatStateUsing(function ($record) {
                     return strtoupper($record->has_diamond_package);
                 }),
-            TextColumn::make('mortuary.date_of_death')
+            TextColumn::make('date_of_death')
                 ->label('DATE OF DEATH')
                 ->date('F d, Y'),
-            TextColumn::make('mortuary.place_of_death')
+            TextColumn::make('place_of_death')
                 ->label('PLACE OF DEATH')
                 ->formatStateUsing(function ($record) {
                     return strtoupper($record->mortuary->place_of_death);
                 })
                 ->searchable(),
+            BadgeColumn::make('status')
+                ->label('STATUS')
+                ->enum([
+                    'ENCODED' => 'ENCODED',
+                    'TRANSMITTED' => 'TRANSMITTED',
+                ])
+                ->colors([
+                    'primary' => 'ENCODED',
+                    'warning' => 'TRANSMITTED',
+                ])
+                ->formatStateUsing(function ($record) {
+                    return strtoupper($record->has_diamond_package);
+                }),
             TextColumn::make('amount')
                 ->label('AMOUNT')
                 ->formatStateUsing(function ($record) {
