@@ -299,7 +299,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                         $set('water', '1000');
                                     }
 
-                                })->disabled(fn ($get) => $get('enrollment_status') == null)
+                                })->disabled(fn ($get) => $get('enrollment_status') != null)
                             ])->columns(1),
                             DatePicker::make('date')->label('Date')
                             ->disabled()
