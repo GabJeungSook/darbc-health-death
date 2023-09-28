@@ -610,11 +610,11 @@ class Death extends Component  implements Tables\Contracts\HasTable
             Action::make('transmitted')
             ->icon('heroicon-o-arrow-right')
             ->color('warning')
-            ->mountUsing(fn (Forms\ComponentContainer $form, Death $record) => $form->fill([
+            ->mountUsing(fn (Forms\ComponentContainer $form, deathModel $record) => $form->fill([
                 'batch_number' => $this->batch_number_transmittal,
                 'date_transmitted' =>now()
             ]))
-            ->action(function (Death $record, array $data): void {
+            ->action(function (deathModel $record, array $data): void {
                 DB::beginTransaction();
                 $death = DeathTransmittal::create([
                     'death_id' => $record->id,
@@ -798,9 +798,9 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     public function mount()
     {
-        if (Death::count() > 0) {
+        if (deathModel::count() > 0) {
             // get the latest record
-            $latestData = Death::latest('created_at')->first();
+            $latestData = deathModel::latest('created_at')->first();
 
             // check if today is Monday and the latest record was created on Sunday
             $isWednesday = Carbon::today()->isWednesday();
