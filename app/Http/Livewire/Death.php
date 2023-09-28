@@ -654,6 +654,27 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->preserveFilenames()
                 ->reactive()
             ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
+            Action::make('edit_transmitted')
+            ->label('Edit Transmitted')
+            ->icon('heroicon-o-arrow-right')
+            ->color('warning')
+            ->mountUsing(fn (Forms\ComponentContainer $form, deathModel $record) => $form->fill([
+                'date_transmitted' => $record->date_transmitted,
+            ]))
+            ->form([
+                DatePicker::make('date_transmitted')->label('Date Transmitted')
+                ->required()
+                ->reactive(),
+            ])
+            ->action(function (deathModel $record, array $data): void {
+                $record->date_transmitted = $data['date_transmitted'];
+                $record->save();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully updated'
+                );
+            })
+            ->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED"),
             Action::make('delete')
             ->color('danger')
             ->icon('heroicon-o-trash')
