@@ -87,6 +87,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
 
                                     if($mortuary)
                                     {
+                                        dd('ye');
                                         $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
                                         $response = Http::withOptions(['verify' => false])->get($url);
                                         $member_data = $response->json();
