@@ -84,12 +84,13 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 ->options($this->member_full_names->pluck('full_name', 'id'))
                                 ->afterStateUpdated(function ($set, $get, $state) {
                                     $mortuary = Mortuary::where('id', $state)->first();
-                                    $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
-                                    $response = Http::withOptions(['verify' => false])->get($url);
-                                    $member_data = $response->json();
-                                    $collection = collect($member_data['data']);
+
                                     if($mortuary)
                                     {
+                                        $url = 'https://darbcmembership.org/api/member-information/'.$mortuary->member_id;
+                                        $response = Http::withOptions(['verify' => false])->get($url);
+                                        $member_data = $response->json();
+                                        $collection = collect($member_data['data']);
                                         $set('member_id', $collection['darbc_id']);
                                         $this->global_member_id = $collection['id'];
                                         $set('has_diamond_package', $mortuary->diamond_package);
@@ -107,6 +108,10 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                             $set('water', '1000');
                                         }
                                     }else{
+                                        $url = 'https://darbcmembership.org/api/member-information/'.$state;
+                                        $response = Http::withOptions(['verify' => false])->get($url);
+                                        $member_data = $response->json();
+                                        $collection = collect($member_data['data']);
                                         $set('member_id', $collection['darbc_id']);
                                         $this->global_member_id = $collection['id'];
                                         $set('birthday', $collection['date_of_birth']);
