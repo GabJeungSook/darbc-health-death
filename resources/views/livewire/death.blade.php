@@ -2,6 +2,7 @@
     <div class="flex justify-between">
         <div>
             <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addDeath', true)"/>
+            <x-button label="ADD DEATH" class="font-bold" red icon="plus" wire:click="$set('addDeathForm', true)"/>
             <x-button label="INQUIRY" class="font-bold" indigo icon="document-search" wire:click="redirectToInquiry" />
             <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
 
@@ -26,6 +27,9 @@
     </div>
     <x-modal.card hide-close="false" title="Add Death Information" align="center" max-width="4xl" blur wire:model.defer="addDeath">
         <livewire:forms.add-death-form />
+      </x-modal.card>
+      <x-modal.card hide-close="false" title="Add Death Information" align="center" max-width="4xl" blur wire:model.defer="addDeathForm">
+        <livewire:forms.add-death />
       </x-modal.card>
     <x-modal.card hide-close="false" title="Add Vehicle Schedule" align="center" max-width="4xl" blur wire:model.defer="showVehicleModal">
         <livewire:forms.add-vehicle-schedule />
