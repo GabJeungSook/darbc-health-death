@@ -726,7 +726,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                         return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
                     }
                 })
-                ->searchable(),
+                ->searchable(['first_name', 'last_name']),
                 BadgeColumn::make('has_diamond_package')
                 ->label('DIAMOND PACKAGE')
                 ->enum([
