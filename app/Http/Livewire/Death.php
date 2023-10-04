@@ -750,7 +750,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             TextColumn::make('place_of_death')
                 ->label('PLACE OF DEATH')
                 ->formatStateUsing(function ($record) {
-                    return strtoupper($record->mortuary->place_of_death);
+                    return strtoupper($record->place_of_death);
                 })
                 ->searchable(),
             BadgeColumn::make('status')
