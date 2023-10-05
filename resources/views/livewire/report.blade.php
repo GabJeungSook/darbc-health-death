@@ -45,8 +45,8 @@
         @elseif ($report_get == 2 || $report_get == 7 ||  $report_get == 8)
         <div class="flex space-x-2">
             <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
-            <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
-            <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="transmittal_date_to" />
+            <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
+            <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="transmittal_date_to" />
               <x-select label="Select Status" multiselect placeholder="All" wire:model="transmittal_status">
                   <x-select.option label="Encoded" value="ENCODED" />
                   <x-select.option label="Transmitted" value="TRANSMITTED" />
