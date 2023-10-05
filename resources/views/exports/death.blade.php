@@ -40,7 +40,7 @@
               @if ($item->enrollment_status == "member")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
-            @elseif($item->enrollment_status == "dependent")
+            @elseif($item->enrollment_status == "dependent" || $item->enrollment_status == "replacement")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->dependents_first_name).' '.
             strtoupper($item->dependents_middle_name).' '.strtoupper($item->dependents_last_name)}}</td>
             @endif
