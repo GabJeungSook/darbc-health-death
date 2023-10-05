@@ -548,14 +548,19 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             Forms\Components\TextInput::make('place_of_death')->label('Place Of Death')
                             ->reactive()
                             ->required(),
-                            Forms\Components\TextInput::make('has_vehicle')->label('Vehicle')
+                            Forms\Components\Select::make('has_vehicle')->label('Vehicle')
+                            ->options([
+                                'Yes' => 'Yes',
+                                'No' => 'No'
+                            ])
                             ->afterStateUpdated(function ($set, $get, $state){
                                 if($state == 'Yes')
                                 {
                                     $set('coverage_type', null);
                                     $set('amount', 0);
                                 }else{
-                                    $set('amount', $get('amount') + 1000);
+                                    $set('amount', $get('amount'));
+                                    // $set('amount', $get('amount') + 1000);
                                 }
                             })
                             ->reactive()

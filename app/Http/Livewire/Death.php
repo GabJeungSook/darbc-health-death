@@ -399,7 +399,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                         $set('coverage_type', null);
                                         $set('amount', 0);
                                     }else{
-                                        $set('amount', $get('amount') + 1000);
+                                        $set('amount', $get('amount'));
+                                        // $set('amount', $get('amount') + 1000);
                                     }
                                 })
                                 ->disabled()
