@@ -16,7 +16,7 @@
         <tr>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">BATCH NUMBER</th>
-                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS NAME FIRST NAME</th>
+                <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS NAME</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AGE</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENTS NAME</th>
                 <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HAS DIAMOND PACKAGE</th>
