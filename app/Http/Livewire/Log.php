@@ -286,6 +286,10 @@ class Log extends Component implements Tables\Contracts\HasTable
         $this->addLog = false;
     }
 
+    public function redirectToReport()
+    {
+        return redirect()->route('log-report');
+    }
     public function mount()
     {
         $url = 'https://darbcmembership.org/api/member-darbc-names?status=1';

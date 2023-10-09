@@ -115,6 +115,12 @@ Route::get('/view-log/{record}', function ($record) {
     ->middleware(['auth', 'verified', 'role:admin'])
     ->name('view-log');
 
+Route::get('/log-report', function () {
+        return view('log-report');
+})
+    ->middleware(['auth', 'verified', 'role:admin'])
+    ->name('log-report');
+
 Route::get('/community-relations', function () {
     return view('community-relations');
 })

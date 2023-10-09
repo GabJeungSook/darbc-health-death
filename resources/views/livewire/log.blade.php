@@ -1,6 +1,7 @@
 <div>
     <div>
         <x-button label="ADD NEW" class="font-bold" indigo icon="plus" wire:click="$set('addLog', true)" />
+        <x-button label="REPORTS" class="font-bold" indigo icon="document-report" wire:click="redirectToReport"/>
     </div>
     <div class="mt-4">
         {{$this->table}}
