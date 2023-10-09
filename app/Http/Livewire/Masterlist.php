@@ -130,9 +130,29 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->icon('heroicon-o-trash')
                 ->button()
                 ->color('danger')
-                ->action(fn ($record) => $record->delete())
+                // ->action(fn ($record) => $record->delete())
+                ->action(function ($record) {
+                    DB::beginTransaction();
+                    if($record->transmittals()->exists())
+                    {
+                        $record->delete();
+                        $record->transmittals()->delete();
+                    }elseif($record->payments()->exists())
+                    {
+                        $record->delete();
+                        $record->payments()->delete();
+                    }else{
+                        $record->delete();
+                    }
+                    DB::commit();
+                    $this->dialog()->success(
+                        $title = 'Success',
+                        $description = 'Data successfully deleted'
+                    );
+
+                })
                 ->requiresConfirmation()
-                ->visible(fn ($record) => $record->status == 'ENCODED'),
+                ->visible(),
                 ActionGroup::make([
                     Action::make('view_data')
                     ->icon('heroicon-o-eye')
