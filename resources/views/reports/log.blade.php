@@ -49,7 +49,7 @@
             strtoupper($item->dependents_middle_name).' '.strtoupper($item->dependents_last_name)}}</td>
             @endif
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->hospitals->name }}</td>
-              <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->amount }}</td>
+              <td class="border text-gray-600 uppercase  px-3  py-1">{{ number_format($item->amount, 2) }}</td>
               <td class="border text-gray-600 uppercase  px-3  py-1">
                 {{ \Carbon\Carbon::parse($item->date_received)->format('F d, Y') }}
             </td>
