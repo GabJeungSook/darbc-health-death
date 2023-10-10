@@ -226,7 +226,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             }else{
                                 $amount = 0;
                             }
-                            if($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'spouse')
+                            if(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'spouse')
                             {
                                 if($get('age') >= 18 && $get('age') <= 86)
                                 {
@@ -260,7 +260,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                     $set('birthday', null);
                                     $set('age', null);
                                 }
-                            }elseif($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'child'){
+                            }elseif(($get('enrollment_status') == 'dependent') && $get('dependent_type') == 'child'){
                                 if($get('age') >= 1 && $get('age') <= 19)
                                 {
                                     switch ($get('coverage_type')) {
@@ -583,7 +583,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 }else{
                                     $amount = 0;
                                 }
-                                if($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'spouse')
+                                if(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'spouse')
                                 {
                                     if($get('age') >= 18 && $get('age') <= 86)
                                     {
@@ -617,7 +617,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                         $set('birthday', null);
                                         $set('age', null);
                                     }
-                                }elseif($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'child'){
+                                }elseif(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'child'){
                                     if($get('age') >= 1 && $get('age') <= 19)
                                     {
                                         switch ($state) {
