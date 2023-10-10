@@ -224,8 +224,9 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
 
                             if($get('has_vehicle') == 'No')
                             {
-                                $amount = 1000;
+                                $amount = 0;
                             }else{
+                                // $amount = 1000;
                                 $amount = 0;
                             }
                             if(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'spouse')
@@ -581,9 +582,10 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                             ->afterStateUpdated(function ($set, $get, $state){
                                 if($get('has_vehicle') == 'No')
                                 {
-                                    $amount = 1000;
+                                    $amount = 0;
                                 }else{
                                     $amount = 0;
+                                    // $amount = 1000;
                                 }
                                 if(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'spouse')
                                 {
