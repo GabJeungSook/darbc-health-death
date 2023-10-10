@@ -195,8 +195,8 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 $set('last_name', $collection['user']['surname']);
                                 $set('contact_number', $collection['contact_number']);
                                 $set('birthday', $collection['date_of_birth']);
-                                $set('date_of_death', $record->mortuary->date_of_death);
-                                $set('place_of_death', $record->mortuary->place_of_death);
+                                // $set('date_of_death', $record->mortuary->date_of_death);
+                                // $set('place_of_death', $record->mortuary->place_of_death);
 
 
                                 if($collection['date_of_birth'] != null)
