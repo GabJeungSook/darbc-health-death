@@ -28,7 +28,7 @@
         <div class="flex space-x-2">
           <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
-          <x-select label="Status" multiselect placeholder="All" wire:model="status">
+          <x-select label="Status" placeholder="All" wire:model="status">
             <x-select.option label="Approved" value="Approved" />
             <x-select.option label="Pending" value="Pending" />
             </x-select>
