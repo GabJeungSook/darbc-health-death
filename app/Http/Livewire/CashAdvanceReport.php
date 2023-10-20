@@ -33,7 +33,12 @@ class CashAdvanceReport extends Component
                 $query->where(function ($query) {
                     $query->whereBetween('date_received', [$this->date_from, $this->date_to]);
                 });
-            })->paginate(100),
+            })->when($this->status, function ($query) {
+                $query->where(function ($query) {
+                    $query->where('status', $this->status);
+                });
+            })
+            ->paginate(100),
             'reports' => ReportHeader::where('report_id', 5)->get(),
             'first_report' => ReportHeader::where('report_id', 5)->where('report_name', 'Cash Advances')->first(),
             'first_signatories' => Signatory::where('report_header_id', 5)->get(),
@@ -45,7 +50,7 @@ class CashAdvanceReport extends Component
         switch ($this->report_get) {
             case 5:
                 return \Excel::download(
-                    new \App\Exports\MasterListExport($this->date_from, $this->date_to),
+                    new \App\Exports\MasterListExport($this->date_from, $this->date_to, $this->status),
                     'CashAdvances.xlsx'
                 );
                 break;
