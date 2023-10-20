@@ -45,7 +45,7 @@ class CashAdvanceReport extends Component
         switch ($this->report_get) {
             case 5:
                 return \Excel::download(
-                    new \App\Exports\MasterListExport(),
+                    new \App\Exports\MasterListExport($this->date_from, $this->date_to),
                     'CashAdvances.xlsx'
                 );
                 break;

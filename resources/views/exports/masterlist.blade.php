@@ -11,6 +11,7 @@
                   </th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT REQUESTED
                   </th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT APPROVED</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE RECEIVED</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">STATUS</th>
           </tr>
@@ -29,21 +30,16 @@
                   .strtoupper($collection['user']['first_name']) . ' '
                   . strtoupper($collection['user']['middle_name']).'.';
                   @endphp
-               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}
-               </td>
-               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}
-                </td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $member_name }}
-              </td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}
-              </td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}
-             </td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->account }}
-             </td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->amount_requested }}
-             <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ \Carbon\Carbon::parse($item->date_received)->format('F d, Y') }}
-             <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->status }}
+               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}</td>
+               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $member_name }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->account }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_requested, 2, '.', ',') }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_approved, 2, '.', ',') }}</td>
+             <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ \Carbon\Carbon::parse($item->date_received)->format('F d, Y') }}</td>
+             <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->status }}</td>
             </tr>
           @endforeach
         </tbody>
