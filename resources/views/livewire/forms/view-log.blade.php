@@ -22,7 +22,7 @@
           </div>
           <div class="mt-2 h-0.5 bg-gray-700"></div>
           <div class="mt-0.5 h-0.5 bg-gray-700"></div> --}}
-          <div class="mt-44">
+          <div class="mt-28">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
           <div class="mt-4">
@@ -34,13 +34,18 @@
           <div class="mt-1">
             <h3 class="text-md font-normal ml-4">{{$record->hospitals->address}}</h3>
           </div>
+          <div class="mt-10">
+            <h3 class="text-md font-normal ml-4">Sir/Madam:</h3>
+          </div>
           <div class="mt-16">
             <p class="text-md font-normal ml-4">Please charge to <span class="font-bold">Dolefil Agrarian Reform Beneficiaries Cooperative (DARBC)</span>
-            the medical bills of our member-beneficiary
+
             @if ($record->enrollment_status == "member")
-            <span class="font-bold">{{ucfirst($record->first_name) . ' ' . ucfirst($record->middle_name) . ' ' . ucfirst($record->last_name)}}</span>
+            the medical bills of our member
+            <span class="font-bold">{{strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name)}}</span>
             @else
-            <span class="font-bold">{{ucfirst($record->dependents_first_name) . ' ' . ucfirst($record->dependents_middle_name) . ' ' . ucfirst($record->dependents_last_name)}}</span>
+            the medical bills of our beneficiary
+            <span class="font-bold">{{strtoupper($record->dependents_last_name) . ' ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name)}}</span>
             @endif
             @php
                 function convertNumberToWords($number) {
@@ -100,7 +105,7 @@
 }
              $amountInWords = strtoupper(convertNumberToWords($record->amount));
             @endphp
-          up to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span>.</p>
+          up to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span> only.</p>
           </div>
           <div class="mt-8">
             <p class="text-md font-normal ml-4">Kindly submit your billing to our cashier for payment processing.</p>
@@ -118,7 +123,7 @@
             <p class="text-lg font-bold ml-4">{{$signatory->position}}</p>
           </div>
           <div class="mt-16">
-            <p class="text-lg font-bold ml-4">CHARGEABLE TO: <span class="font-normal">{{$record->first_name . ' ' . $record->middle_name . ' ' . $record->last_name}}</span></p>
+            <p class="text-lg font-bold ml-4">Chargeable To: <span class="font-normal">{{$record->last_name . ', ' . $record->first_name . ' ' . $record->middle_name}}</span></p>
           </div>
 
 
