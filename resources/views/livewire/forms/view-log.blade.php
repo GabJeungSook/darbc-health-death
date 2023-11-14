@@ -4,9 +4,10 @@
         <div>
             <x-button label="PRINT" sm dark icon="printer" class="font-bold"
             @click="printOut($refs.printContainer.outerHTML);"  />
+            <x-button label="Export to Word(.docx)" sm primary icon="document-download" class="font-bold" wire:click="downloadToWord"/>
         </div>
     </div>
-    <div class="p-3 mt-3" x-ref="printContainer">
+    <div class="p-3 mt-3" x-ref="printContainer" id="contentToExport">
         {{-- <div class="mt-4 flex justify-center text-center space-x-1">
             <div class="grid ">
               <img src="{{ asset('images/darbc.png') }}" class="h-10 mt-1" alt="" media="print">
