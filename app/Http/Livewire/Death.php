@@ -747,7 +747,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             ->label('ENROLLMENT STATUS')
             ->searchable(['enrollment_status']),
             TextColumn::make('dependents_name')
-                ->label('DEPENDENT\'S / REPLACEMENT\'S NAME')
+                ->label('CLAIMANT\'S NAME')
                 ->formatStateUsing(function ($record) {
                     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);

@@ -52,7 +52,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     protected function getTableActionsPosition(): ?string
     {
-        return Position::AfterCells;
+        return Position::BeforeCells;
     }
 
     public function getTableActions()
