@@ -30,6 +30,11 @@ class Health extends Model
         return $this->hasOne(Transmittal::class);
     }
 
+    public function in_houses()
+    {
+        return $this->hasOne(InHouse::class);
+    }
+
     public function payments()
     {
         return $this->hasOne(Payment::class);

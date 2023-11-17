@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Tables;
 use App\Models\Health;
 use App\Models\Member;
+use App\Models\InHouse;
 use App\Models\Payment;
 use Livewire\Component;
 use App\Models\Hospital;
@@ -177,6 +178,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                          'number_of_days' => $record->number_of_days,
                          'amount' => $record->amount,
                          'transmittal_date' => $record->transmittals?->date_transmitted,
+                         'transmittal_date' => $record->in_houses?->date_transmitted,
                          'payment_date' => $record->payments?->date_of_payment,
                     ]))->action(function (Health $record, array $data): void {
                         if($record->update_attempts == 2)
@@ -200,9 +202,16 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                             $health->number_of_days = $data['number_of_days'];
                             $health->amount = $data['amount'];
 
-                            if($health->status != 'ENCODED')
+                            if($health->status != 'ENCODED' && $health->status != 'TRANSMITTED')
                             {
                                 $health->transmittals()->update([
+                                    'date_transmitted' => $data['transmittal_date'],
+                                ]);
+                            }
+
+                            if($health->status != 'ENCODED' && $health->status != 'IN-HOUSE')
+                            {
+                                $health->in_houses()->update([
                                     'date_transmitted' => $data['transmittal_date'],
                                 ]);
                             }
@@ -585,7 +594,12 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                                 ->schema([
                                     DatePicker::make('transmittal_date')->label('Date Transmitted')
                                     ->reactive()
-                                ])->visible(fn ($record) => $record->status != 'ENCODED'),
+                                ])->visible(fn ($record) => $record->status != 'ENCODED' && $record->status != 'TRANSMITTED'),
+                            Wizard\Step::make('In-House')
+                                ->schema([
+                                    DatePicker::make('transmittal_date')->label('Date Transmitted')
+                                    ->reactive()
+                                ])->visible(fn ($record) => $record->status != 'ENCODED' && $record->status != 'IN-HOUSE'),
                             Wizard\Step::make('Payment')
                                 ->schema([
                                     DatePicker::make('payment_date')->label('Date Of Payment')
@@ -675,6 +689,58 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                         //     ->options(Health::query()->pluck('id', 'id'))
                         //     ->required(),
                     ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
+                    Action::make('in-house')
+                    ->label('In-House')
+                    ->icon('heroicon-o-home')
+                    ->color('warning')
+                    ->mountUsing(fn (Forms\ComponentContainer $form, Health $record) => $form->fill([
+                        'batch_number' => $this->batch_number,
+                        'date_transmitted' =>now()
+                    ]))
+                    ->action(function (Health $record, array $data): void {
+                        DB::beginTransaction();
+                        $health = InHouse::create([
+                            'health_id' => $record->id,
+                            'batch_number' => $this->batch_number,
+                            'date_transmitted' => $data['date_transmitted'],
+                        ]);
+
+                          //save Files from fileupload
+                        foreach($data['attachment'] as $document){
+                            $health->attachments()->create(
+                                [
+                                     "path"=>'public/'.$document,
+                                     "document_name"=>$document,
+                                ]
+                            );
+                        }
+
+                        $record->status = 'IN-HOUSE';
+                        $record->save();
+                        DB::commit();
+                        $this->dialog()->success(
+                            $title = 'Success',
+                            $description = 'Data successfully saved'
+                        );
+                    })
+                    ->form([
+                        Forms\Components\TextInput::make('batch_number')
+                        ->label('Batch Number')
+                        ->disabled(),
+                        DatePicker::make('date_transmitted')->label('Date Transmitted')
+                        ->required()
+                        ->reactive(),
+                        FileUpload::make('attachment')
+                        ->enableOpen()
+                        ->multiple()
+                        ->disk('public')
+                        ->preserveFilenames()
+                        ->reactive()
+                        // Forms\Components\Select::make('authorId')
+                        //     ->label('Author')
+                        //     ->options(Health::query()->pluck('id', 'id'))
+                        //     ->required(),
+                    ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
                     Action::make('paid')
                     ->icon('heroicon-o-cash')
                     ->color('success')
@@ -711,7 +777,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                         ->multiple()
                         ->preserveFilenames()
                         ->reactive()
-                    ])->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED" || $record->status == "UNPAID"),
+                    ])->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED" || $record->status == "UNPAID" || $record->status == "IN-HOUSE"),
                     Action::make('unpaid')
                     ->icon('heroicon-o-x-circle')
                     ->color('danger')
@@ -725,7 +791,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                             $description = 'Data successfully saved'
                         );
                     })
-                    ->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED")
+                    ->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED" || $record->status == "IN-HOUSE")
                 ]),
         ];
 
@@ -815,12 +881,14 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                 ->enum([
                     'ENCODED' => 'ENCODED',
                     'TRANSMITTED' => 'TRANSMITTED',
+                    'IN-HOUSE' => 'IN-HOUSE',
                     'PAID' => 'PAID',
                     'UNPAID' => 'UNPAID',
                 ])
                 ->colors([
                     'primary' => 'ENCODED',
                     'warning' => 'TRANSMITTED',
+                    'warning' => 'IN-HOUSE',
                     'success' => 'PAID',
                     'danger' => 'UNPAID',
                 ]),
