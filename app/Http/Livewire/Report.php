@@ -205,6 +205,17 @@ class Report extends Component
                     'Below10K.xlsx'
                 );
                 break;
+            case 28:
+                return \Excel::download(
+                    new \App\Exports\AboveTenExportExport(),
+                    'Above10K.xlsx'
+                );
+                break;
+            case 29:
+                return \Excel::download(
+                    new \App\Exports\InHouseExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    'In-House.xlsx');
+                break;
             default:
                 # code...
                 break;
