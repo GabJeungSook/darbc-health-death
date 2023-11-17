@@ -73,6 +73,25 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                             }
                         })->paginate(100),
+        'in_house' =>
+                        $this->report_get != 11
+                            ? []
+                            : Health::whereHas('in_houses')->where('status', 'IN-HOUSE')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
+                                $query->where(function ($query) {
+                                    $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
+                                          ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
+                                });
+                            })
+                            ->when($this->encoded_date, function ($query) {
+                                $query->whereDate('created_at', $this->encoded_date);
+                            })
+                            ->when(!empty($this->transmittal_status), function ($query) {
+                                if (is_array($this->transmittal_status)) {
+                                    $query->whereIn('status', $this->transmittal_status);
+                                } else {
+                                    $query->where('status', $this->transmittal_status);
+                                }
+                            })->paginate(100),
             'payments' =>
                     $this->report_get != 7
                         ? []
@@ -115,6 +134,10 @@ class Report extends Component
                     $this->report_get != 9
                         ? []
                         : Health::where('amount', '<', 10000)->paginate(100),
+            'above' =>
+                    $this->report_get != 10
+                        ? []
+                        : Health::where('amount', '>', 10000)->paginate(100),
             'reports' => ReportHeader::where('report_id', 1)->get(),
             'first_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Health - Members & Dependent')->first(),
             'first_signatories' => Signatory::where('report_header_id', 1)->get(),
@@ -125,8 +148,13 @@ class Report extends Component
             'fourth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Encoded')->first(),
             'fourth_signatories' => Signatory::where('report_header_id', 8)->get(),
             'sixth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Below 10k')->first(),
-            'sixth_signatories' => Signatory::where('report_header_id', 10)->get(),
+            'sixth_signatories' => Signatory::where('report_header_id', 9)->get(),
+            'seventh_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Above 10k')->first(),
+            'seventh_signatories' => Signatory::where('report_header_id', 10)->get(),
+            'eighth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'In-House')->first(),
+            'eighth_signatories' => Signatory::where('report_header_id', 11)->get(),
             'total' => Health::where('amount', '<', 10000)->sum('amount'),
+            'total_above' => Health::where('amount', '>', 10000)->sum('amount'),
         ]);
     }
     public function redirectToHealth()

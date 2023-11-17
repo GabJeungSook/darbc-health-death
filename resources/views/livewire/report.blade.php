@@ -42,7 +42,7 @@
                 <x-select.option label="Unpaid" value="UNPAID" />
             </x-select>
         </div>
-        @elseif ($report_get == 2 || $report_get == 7 ||  $report_get == 8)
+        @elseif ($report_get == 2 || $report_get == 7 ||  $report_get == 8 || $report_get == 11)
         <div class="flex space-x-2">
             <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
             <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
@@ -73,6 +73,12 @@
       @break
       @case(9)
       @include('reports.belowten')
+      @break
+      @case(10)
+      @include('reports.aboveten')
+      @break
+      @case(11)
+      @include('reports.in-house')
       @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>
