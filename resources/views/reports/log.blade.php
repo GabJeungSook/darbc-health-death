@@ -41,7 +41,7 @@
                   . strtoupper($collection['user']['middle_name']);
                   @endphp
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $darbc_id }}</td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  strtoupper($enrollment_status) }}</td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  strtoupper($item->enrollment_status) }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}</td>
               @if ($item->enrollment_status == "member")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}

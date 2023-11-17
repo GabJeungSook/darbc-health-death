@@ -4,6 +4,7 @@
               <tr>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">BATCH NUMBER</th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">ENROLLMENT STATUS</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS NAME</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AGE
                   </th>
@@ -23,6 +24,7 @@
             <tr>
                 <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
                 <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->batch_number }}</td>
+                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
                 @php
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
