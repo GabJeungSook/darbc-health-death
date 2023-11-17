@@ -18,7 +18,6 @@
             <x-button.circle positive icon="refresh" spinner="report_get" />
           </div>
     </div>
-
   @if ($report_get)
     <div class="mt-5 flex justify-between items-end">
       <div class="mt-5 flex space-x-2 ">
@@ -42,7 +41,7 @@
                 <x-select.option label="Unpaid" value="UNPAID" />
             </x-select>
         </div>
-        @elseif ($report_get == 2 || $report_get == 7 ||  $report_get == 8 || $report_get == 11)
+        @elseif ($report_get == 2 || $report_get == 7 ||  $report_get == 8 || $report_get == 29)
         <div class="flex space-x-2">
             <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
             <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
@@ -74,10 +73,10 @@
       @case(9)
       @include('reports.belowten')
       @break
-      @case(10)
+      @case(28)
       @include('reports.aboveten')
       @break
-      @case(11)
+      @case(29)
       @include('reports.in-house')
       @break
       @default

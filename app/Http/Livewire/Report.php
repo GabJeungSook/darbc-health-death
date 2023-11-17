@@ -74,7 +74,7 @@ class Report extends Component
                             }
                         })->paginate(100),
         'in_house' =>
-                        $this->report_get != 11
+                        $this->report_get != 29
                             ? []
                             : Health::whereHas('in_houses')->where('status', 'IN-HOUSE')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
                                 $query->where(function ($query) {
@@ -135,7 +135,7 @@ class Report extends Component
                         ? []
                         : Health::where('amount', '<', 10000)->paginate(100),
             'above' =>
-                    $this->report_get != 10
+                    $this->report_get != 28
                         ? []
                         : Health::where('amount', '>', 10000)->paginate(100),
             'reports' => ReportHeader::where('report_id', 1)->get(),
@@ -149,10 +149,10 @@ class Report extends Component
             'fourth_signatories' => Signatory::where('report_header_id', 8)->get(),
             'sixth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Below 10k')->first(),
             'sixth_signatories' => Signatory::where('report_header_id', 9)->get(),
-            'seventh_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Above 10k')->first(),
-            'seventh_signatories' => Signatory::where('report_header_id', 10)->get(),
-            'eighth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'In-House')->first(),
-            'eighth_signatories' => Signatory::where('report_header_id', 11)->get(),
+            'seventh_report' => ReportHeader::where('report_id', 28)->where('report_name', 'Above 10k')->first(),
+            'seventh_signatories' => Signatory::where('report_header_id', 1)->get(),
+            'eighth_report' => ReportHeader::where('report_id', 29)->where('report_name', 'In-House')->first(),
+            'eighth_signatories' => Signatory::where('report_header_id', 1)->get(),
             'total' => Health::where('amount', '<', 10000)->sum('amount'),
             'total_above' => Health::where('amount', '>', 10000)->sum('amount'),
         ]);
