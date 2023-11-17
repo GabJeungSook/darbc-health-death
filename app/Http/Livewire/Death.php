@@ -491,7 +491,41 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                             $set('birthday', null);
                                             $set('age', null);
                                         }
-                                    }elseif($get('enrollment_status') == 'member'){
+                                    }elseif($get('enrollment_status') == 'replacement'){
+                                        if($get('age') >= 18 && $get('age') <= 86)
+                                        {
+                                            switch ($state) {
+                                                case '1':
+                                                    $set('amount', $amount + 20000);
+                                                  break;
+                                                case '2':
+                                                    $set('amount', $amount + 2000);
+                                                  break;
+                                                case '3':
+                                                    $set('amount', $amount + 15000);
+                                                  break;
+                                                case '4':
+                                                    $set('amount', $amount + 15000);
+                                                  break;
+                                                case '5':
+                                                    $set('amount', $amount + 10000);
+                                                  break;
+                                                case '6':
+                                                    $set('amount', $amount + 300);
+                                                  break;
+                                                default:
+                                                $set('amount', $amount + 0);
+                                              }
+                                        }else{
+                                            $this->dialog()->error(
+                                                $title = 'Invalid Age!',
+                                                $description = 'Replacement must be 18 - 86 years old.'
+                                            );
+                                            $set('birthday', null);
+                                            $set('age', null);
+                                        }
+                                    }
+                                    elseif($get('enrollment_status') == 'member'){
                                         if($get('age') >= 18 && $get('age') <= 60)
                                         {
                                             switch ($state) {
