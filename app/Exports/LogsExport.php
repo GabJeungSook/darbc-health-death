@@ -13,7 +13,7 @@ class LogsExport implements FromView
     public $date_from;
     public $date_to;
     public $logs;
-    public $enrollment_status_selected
+    public $enrollment_status_selected;
 
     public function __construct($encoded_date, $date_from, $date_to, $enrollment_status_selected)
     {
