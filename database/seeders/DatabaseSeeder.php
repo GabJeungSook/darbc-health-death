@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             NewAdminSeeder::class,
             AdditionalHealthSeeder::class,
+            AdditionalReportHeaderSeeder::class,
         ]);
     }
 }
