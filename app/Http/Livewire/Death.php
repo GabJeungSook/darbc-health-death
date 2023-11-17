@@ -708,7 +708,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             TextColumn::make('enrollment_status')
             ->sortable()
             ->formatStateUsing(function ($record) {
-                return $record->enrollment_status == 'member' ? 'M' : 'D' ;
+                return strtoupper($record->enrollment_status);
             })
             ->label('ENROLLMENT STATUS')
             ->searchable(['enrollment_status']),
