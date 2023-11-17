@@ -258,7 +258,12 @@ class Log extends Component implements Tables\Contracts\HasTable
             TextColumn::make('patientName')
             ->label('DEPENDENT')
             ->formatStateUsing(function ($record) {
-                return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
+                if($record->enrollment_status == 'member')
+                {
+                    return '---';
+                }else{
+                    return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name);
+                }
             })
             ->searchable(['dependents_last_name', 'dependents_first_name'])
             ->sortable(),
