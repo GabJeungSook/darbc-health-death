@@ -47,7 +47,7 @@ class Log extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return LogModel::query();
+        return LogModel::query()->latest();
     }
 
     protected function getTableActionsPosition(): ?string

@@ -36,7 +36,7 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return MortuaryModel::query();
+        return MortuaryModel::query()->latest();
     }
 
     protected function getTableActionsPosition(): ?string

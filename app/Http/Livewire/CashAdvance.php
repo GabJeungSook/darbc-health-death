@@ -51,7 +51,7 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return CashAdvanceModel::query();
+        return CashAdvanceModel::query()->latest();
     }
 
     protected function getTableActionsPosition(): ?string

@@ -66,7 +66,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return Health::query();
+            return Health::query()->latest();
     }
 
     protected function getTableActionsPosition(): ?string

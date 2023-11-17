@@ -86,7 +86,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     protected function getTableQuery(): Builder
     {
-        return deathModel::query();
+        return deathModel::query()->latest();
     }
 
     protected function getTableActionsPosition(): ?string
