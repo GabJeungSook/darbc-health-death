@@ -47,7 +47,7 @@ class InHouseExport implements FromView
     */
     public function view(): View
     {
-        return view('exports.in-house', [
+        return view('exports.in_house', [
             'in_houses' => $this->transmitted,
         ]);
     }
