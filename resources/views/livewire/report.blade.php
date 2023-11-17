@@ -71,7 +71,7 @@
       @case(8)
       @include('reports.encoded')
       @break
-      @case(10)
+      @case(9)
       @include('reports.belowten')
       @break
       @default

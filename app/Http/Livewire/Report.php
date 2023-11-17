@@ -112,7 +112,7 @@ class Report extends Component
                              }
                         })->paginate(100),
             'below' =>
-                    $this->report_get != 10
+                    $this->report_get != 9
                         ? []
                         : Health::where('amount', '<', 10000)->paginate(100),
             'reports' => ReportHeader::where('report_id', 1)->get(),
@@ -171,7 +171,7 @@ class Report extends Component
                 //     'Encoded.xlsx'
                 // );
                 break;
-            case 10:
+            case 9:
                 return \Excel::download(
                     new \App\Exports\BelowTenExport(),
                     'Below10K.xlsx'

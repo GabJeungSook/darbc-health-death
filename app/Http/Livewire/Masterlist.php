@@ -81,6 +81,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             ->options([
                 'ENCODED' => 'Encoded',
                 'TRANSMITTED' => 'Transmitted',
+                'IN-HOUSE' => 'In-House',
                 'PAID' => 'Paid',
                 'UNPAID' => 'Unpaid',
             ])

@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             SignatorySeeder::class,
             RoleSeeder::class,
             NewAdminSeeder::class,
+            AdditionalHealthSeeder::class,
         ]);
     }
 }
