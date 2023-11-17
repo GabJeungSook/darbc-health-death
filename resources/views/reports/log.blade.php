@@ -16,6 +16,7 @@
           <tr>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DARBC ID</th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">ENROLLMENT STATUS</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBERS NAME</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DEPENDENT</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HOSPITAL</th>
@@ -40,6 +41,7 @@
                   . strtoupper($collection['user']['middle_name']);
                   @endphp
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $darbc_id }}</td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  strtoupper($enrollment_status) }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}</td>
               @if ($item->enrollment_status == "member")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
