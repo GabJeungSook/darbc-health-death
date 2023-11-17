@@ -764,14 +764,10 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     'primary' => 'ENCODED',
                     'warning' => 'TRANSMITTED',
                 ]),
-            TextColumn::make('amount')
+            TextColumn::make('deathAmount')
                 ->label('AMOUNT')
                 ->formatStateUsing(function ($record) {
-                    if($record->enrollment_status == 'member' || $record->enrollment_status == 'dependent' || $record->enrollment_status == 'replacement')
-                    {
-                        return number_format($record->amount, 2, '.', ',');
-                    }
-
+                    return number_format($record->amount, 2, '.', ',');
                 })
                 ->searchable(),
         ];
