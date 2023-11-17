@@ -149,7 +149,7 @@ class Report extends Component
             'fourth_signatories' => Signatory::where('report_header_id', 8)->get(),
             'sixth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Below 10k')->first(),
             'sixth_signatories' => Signatory::where('report_header_id', 9)->get(),
-            'seventh_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Above 10K Daily Payment')->first(),
+            'seventh_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Above 10k')->first(),
             'seventh_signatories' => Signatory::where('report_header_id', 28)->get(),
             'eighth_report' => ReportHeader::where('report_id', 1)->where('report_name', 'In-House')->first(),
             'eighth_signatories' => Signatory::where('report_header_id', 29)->get(),

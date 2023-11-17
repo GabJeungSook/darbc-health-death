@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($seventh_report->header)}}</h1>
+    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($seventh_report?->header)}}</h1>
     <div class="mt-5 overflow-x-auto">
       <span class="px-2 text-md font-medium text-gray-500">{{\Carbon\Carbon::now()->format('F d, Y')}}</span>
       <table id="example" class="table-auto mt-5" style="width:100%">
