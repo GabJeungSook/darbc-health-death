@@ -766,9 +766,9 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ]),
             TextColumn::make('amount')
                 ->label('AMOUNT')
-                // ->formatStateUsing(function ($record) {
-                //     return number_format($record->amount, 2, '.', ',');
-                // })
+                ->formatStateUsing(function ($record) {
+                    return number_format($record->amount, 2, '.', ',');
+                })
                 ->searchable(),
         ];
     }
