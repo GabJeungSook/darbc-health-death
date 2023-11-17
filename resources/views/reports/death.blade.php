@@ -36,7 +36,7 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
               {{ $item->batch_number }}
             </td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $item->enrollment_status == 'member' ? 'M' : 'D' }}</td>
             @php
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
