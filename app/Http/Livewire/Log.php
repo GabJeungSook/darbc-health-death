@@ -242,6 +242,13 @@ class Log extends Component implements Tables\Contracts\HasTable
                 return $collection['darbc_id'];
             })
             ->sortable(),
+            TextColumn::make('enrollment_status')
+            ->formatStateUsing(function ($record) {
+                return $record->enrollment_status == 'member' ? 'M' : 'D' ;
+            })
+            ->label('ENROLLMENT STATUS')
+            ->searchable()
+            ->sortable(),
             TextColumn::make('memberName')
             ->formatStateUsing(function ($record) {
                 return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name) ;
