@@ -13,13 +13,14 @@ class LogReport extends Component
     public $date_from;
     public $date_to;
     public $encoded_date;
+    public $enrollment_status_selected;
 
     public function exportReport($id)
     {
         switch ($this->report_get) {
             case 1:
                 return Excel::download(
-                    new \App\Exports\LogsExport($this->encoded_date, $this->date_from, $this->date_to),
+                    new \App\Exports\LogsExport($this->encoded_date, $this->date_from, $this->date_to, $this->enrollment_status_selected),
                     'Letter-Of-Guarantee.xlsx');
                 break;
             default:
@@ -37,7 +38,11 @@ class LogReport extends Component
         })
         ->when($this->encoded_date, function ($query) {
             $query->whereDate('created_at', $this->encoded_date);
-        })->get();
+        })
+        ->when($this->enrollment_status_selected, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status_selected);
+        })
+        ->get();
         return view('livewire.log-report',[
         'logs' => $this->report_get != 1 ? [] : ($this->logs == null ? [] : $this->logs)]);
     }

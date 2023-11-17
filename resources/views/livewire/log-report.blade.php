@@ -26,6 +26,10 @@
         <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
         <x-datetime-picker label="Received Date From" placeholder="Select Date" without-time wire:model="date_from" />
         <x-datetime-picker label="Received Date To" placeholder="Select Date" without-time wire:model="date_to" />
+        <x-select label="Enrollment Status" placeholder="All" wire:model="enrollment_status_selected">
+            <x-select.option label="Member" value="member" />
+            <x-select.option label="Dependent" value="dependent" />
+        </x-select>
       </div>
     </div>
 
