@@ -27,8 +27,7 @@
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF CONFINEMENT TO
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">HOSPITAL
-            </th>
+
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">NUMBER OF DAYS
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">AMOUNT
@@ -76,7 +75,7 @@
               <td class="border text-gray-600  px-3  py-1">{{ $item->age }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td>
-              <td class="border text-gray-600  px-3  py-1">{{ $item->hospitals->name }}</td>
+
               <td class="border text-gray-600  px-3  py-1">{{ $item->number_of_days }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->amount }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->status }}</td>
