@@ -2,6 +2,7 @@
 <div class="p-3 mt-3" x-ref="printContainer" id="contentToExport">
       <div class="mt-28">
         <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
+        <p></p>
       </div>
       <div class="mt-4">
         <h3 class="text-lg font-bold ml-4" style="font-weight: bold; margin-top: 5px;">THE ADMINISTRATOR</h3>
@@ -12,9 +13,12 @@
       <div class="mt-1">
         <h3 class="text-md font-normal ml-4">{{$record->hospitals->address}}</h3>
       </div>
+      <p></p>
+      <p></p>
       <div class="mt-10">
-        <h3 class="text-md font-normal ml-4" style="margin-top: 20px;">Sir/Madam:</h3>
+        <h3 class="text-md font-normal ml-4">Sir/Madam:</h3>
       </div>
+      <p></p>
       <div class="mt-16">
         <p class="text-md font-normal ml-4" style="margin-top: 20px;">Please charge to <span class="font-bold">Dolefil Agrarian Reform Beneficiaries Cooperative (DARBC)</span>
 
@@ -85,21 +89,27 @@ if ($num < 20) {
         @endphp
       up to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span> only.</p>
       </div>
+      <p></p>
       <div class="mt-8">
         <p class="text-md font-normal ml-4">Kindly submit your billing to our cashier for payment processing.</p>
       </div>
+      <p></p>
       <div class="mt-8">
         <p class="text-md font-normal ml-4">Thank you and more power.</p>
       </div>
+      <p></p>
       <div class="mt-8">
         <p class="text-md font-normal ml-4">Very truly yours,</p>
       </div>
+      <p></p>
       <div class="mt-16">
         <p class="text-md font-normal ml-4">{{$signatory->name}}</p>
       </div>
       <div class="mt-1">
         <p class="text-lg font-bold ml-4">{{$signatory->position}}</p>
       </div>
+      <p></p>
+      <p></p>
       <div class="mt-16">
         <p class="text-lg font-bold ml-4">Chargeable To: <span class="font-normal">{{$record->last_name . ', ' . $record->first_name . ' ' . $record->middle_name}}</span></p>
       </div>

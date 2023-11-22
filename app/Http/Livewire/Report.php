@@ -19,11 +19,13 @@ class Report extends Component
     public $date_from;
     public $date_to;
     public $status = [];
+    public $transmitted_date;
     public $transmittal_date_from;
     public $transmittal_date_to;
     public $transmittal_status = [];
     protected $health;
     protected $transmittal;
+    protected $enrollment_status;
 
     public function render()
     {
@@ -50,6 +52,9 @@ class Report extends Component
                 $query->where('status', $this->status);
             }
         })
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
+        })
         ->paginate(100);
         return view('livewire.report', [
             'healths' =>
@@ -57,22 +62,28 @@ class Report extends Component
             'transmittals' =>
                     $this->report_get != 2
                         ? []
-                        : Health::whereHas('transmittals')->where('status', 'TRANSMITTED')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
+                        : Health::whereHas('transmittals', function ($query) {
+                            $query->whereDate('date_transmitted', $this->transmitted_date);
+                        })->where('status', 'TRANSMITTED')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
                             $query->where(function ($query) {
                                 $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
                                       ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
                         })
-                        ->when($this->encoded_date, function ($query) {
-                            $query->whereDate('created_at', $this->encoded_date);
-                        })
+                        // ->when($this->encoded_date, function ($query) {
+                        //     $query->whereDate('created_at', $this->encoded_date);
+                        // })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {
                                 $query->whereIn('status', $this->transmittal_status);
                             } else {
                                 $query->where('status', $this->transmittal_status);
                             }
-                        })->paginate(100),
+                        })
+                        ->when($this->enrollment_status, function ($query) {
+                            $query->where('enrollment_status', $this->enrollment_status);
+                        })
+                        ->paginate(100),
         'in_house' =>
                         $this->report_get != 29
                             ? []
@@ -129,7 +140,11 @@ class Report extends Component
                             } else {
                                 $query->where('status', $this->transmittal_status);
                              }
-                        })->paginate(100),
+                        })
+                        ->when($this->enrollment_status, function ($query) {
+                            $query->where('enrollment_status', $this->enrollment_status);
+                        })
+                        ->paginate(100),
             'below' =>
                     $this->report_get != 9
                         ? []
@@ -167,7 +182,7 @@ class Report extends Component
         switch ($this->report_get) {
             case 1:
                 return \Excel::download(
-                    new \App\Exports\HealthExport($this->encoded_date, $this->date_from, $this->date_to, $this->status),
+                    new \App\Exports\HealthExport($this->encoded_date, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
                     'health-MembersAndDependent.xlsx');
 
                 break;

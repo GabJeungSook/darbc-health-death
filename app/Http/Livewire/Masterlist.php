@@ -826,30 +826,23 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
 
 
                 }),
+            TextColumn::make('enrollment_status')
+            ->label('ENROLLMENT STATUS')
+            ->searchable()
+            ->formatStateUsing(function ($record) {
+                return strtoupper($record->enrollment_status);
+            })
+            ->sortable(),
             TextColumn::make('patientName')
                 ->label('DEPENDENT')
                 ->searchable(['first_name', 'last_name'])
                 ->formatStateUsing(function ($record) {
-
                     if($record->enrollment_status == 'member')
                     {
-                        $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                        $response = Http::withOptions(['verify' => false])->get($url);
-                        $member_data = $response->json();
-
-                        if( $member_data === null)
-                        {
-                            dd($member_data);
-                        }else{
-                            $collection = collect($member_data['data']);
-                            return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                        }
-                        // $collection = collect($member_data['data']);
-                        // return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                        return '---';
                     }else{
-                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
+                        return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name);
                     }
-                    //return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                 })
                 ->sortable(),
 

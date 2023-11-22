@@ -14,25 +14,25 @@
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DATE
+            {{-- <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DATE
+            </th> --}}
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">NAME
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">MEMBER NAME
-            </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DEPENDENT NAME
+            {{-- <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DEPENDENT NAME
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">AGE
+            </th> --}}
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">DATE OF CONFINEMENT
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DATE OF CONFINEMENT FROM
+            {{-- <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DATE OF CONFINEMENT TO
+            </th> --}}
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">HOSPITAL
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DATE OF CONFINEMENT TO
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">NUMBER OF DAYS
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">HOSPITAL
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">AMOUNT
             </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">NUMBER OF DAYS
-            </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">AMOUNT
-            </th>
-            <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">STATUS
+            <th class="border text-left whitespace-nowrap px-2 font-medium text-gray-500 py-2">SIGNATURE
             </th>
 
           </tr>
@@ -47,35 +47,27 @@
 
                     $collection = collect($member_data['data']);
                 @endphp
-                  <td class="border text-gray-600  px-3 text-3xs whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
-                  <td class="border text-gray-600 text-3xs whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
+                  {{-- <td class="border text-gray-600  px-3 text-3xs whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td> --}}
+                  <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
                     strtoupper($collection['user']['first_name']).' '.strtoupper($collection['user']['middle_name']) }}</td>
-                    @if ($item->enrollment_status == 'member')
-                    {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
-                      strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td> --}}
+                    {{-- @if ($item->enrollment_status == 'member')
                       <td class="border text-gray-600 text-3xs px-3 whitespace-nowrap py-1">---</td>
                     @else
                     <td class="border text-gray-600 text-3xs whitespace-nowrap  px-3  py-1">{{ strtoupper($item->first_name).' '.
                       strtoupper($item->middle_name).' '.strtoupper($item->last_name) }}</td>
-                    @endif
-               {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($item->first_name).' '.
-                strtoupper($item->middle_name).'. '.strtoupper($item->last_name) }}</td> --}}
-              {{-- @if ($item->enrollment_status == 'member') --}}
-              {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
-                strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td> --}}
-              {{-- @else --}}
-              {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($item->first_name).' '.
-                strtoupper($item->middle_name).'. '.strtoupper($item->last_name) }}</td> --}}
-              {{-- @endif --}}
-              <td class="border text-gray-600 uppercase text-3xs px-3  py-1">
+                    @endif --}}
+
+              {{-- <td class="border text-gray-600 uppercase text-3xs px-3  py-1">
                 {{ $item->age }}
+              </td> --}}
+              <td class="border text-gray-600 px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}  -
+                {{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}
               </td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}</td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ $item->hospitals->name }}</td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ $item->number_of_days }}</td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ $item->amount }}</td>
-              <td class="border text-gray-600 text-3xs px-3  py-1">{{ $item->status }}</td>
+              {{-- <td class="border text-gray-600 text-3xs px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td> --}}
+              <td class="border text-gray-600 px-3  py-1">{{ $item->hospitals->name }}</td>
+              <td class="border text-gray-600 px-3  py-1">{{ $item->number_of_days }}</td>
+              <td class="border text-gray-600 px-3  py-1">₱{{number_format($item->amount, 2, '.', ',') }}</td>
+              <td class="border text-gray-600 px-3  py-1"></td>
             </tr>
           @endforeach
         </tbody>

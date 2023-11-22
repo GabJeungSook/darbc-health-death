@@ -14,13 +14,15 @@ class HealthExport implements FromView
     public $date_to;
     public $status;
     public $health;
+    public $enrollment_status;
 
-    public function __construct($encoded_date, $date_from, $date_to, $status)
+    public function __construct($encoded_date, $date_from, $date_to, $status, $enrollment_status)
     {
         $this->encoded_date = $encoded_date;
         $this->date_from = $date_from;
         $this->date_to = $date_to;
         $this->status = $status;
+        $this->enrollment_status = $enrollment_status;
 
         $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {
@@ -43,6 +45,9 @@ class HealthExport implements FromView
             } else {
                 $query->where('status', $this->status);
             }
+        })
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
     }
