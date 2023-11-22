@@ -16,6 +16,8 @@ class Report extends Component
     use WithPagination;
     public $report_get;
     public $encoded_date;
+    public $encoded_date_from;
+    public $encoded_date_to;
     public $date_from;
     public $date_to;
     public $status = [];
@@ -42,8 +44,16 @@ class Report extends Component
 
             });
         })
-        ->when($this->encoded_date, function ($query) {
-            $query->whereDate('created_at', $this->encoded_date);
+        ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+            $query->where(function ($query) {
+                if($this->encoded_date_from === $this->encoded_date_to)
+                {
+                    $query->where('created_at', $this->encoded_date_from);
+                }else{
+                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                }
+
+            });
         })
         ->when(!empty($this->status), function ($query) {
             if (is_array($this->status)) {
@@ -93,8 +103,16 @@ class Report extends Component
                                           ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                                 });
                             })
-                            ->when($this->encoded_date, function ($query) {
-                                $query->whereDate('created_at', $this->encoded_date);
+                            ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+                                $query->where(function ($query) {
+                                    if($this->encoded_date_from === $this->encoded_date_to)
+                                    {
+                                        $query->where('created_at', $this->encoded_date_from);
+                                    }else{
+                                        $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                    }
+
+                                });
                             })
                             ->when(!empty($this->transmittal_status), function ($query) {
                                 if (is_array($this->transmittal_status)) {
@@ -112,8 +130,16 @@ class Report extends Component
                                         ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
                         })
-                        ->when($this->encoded_date, function ($query) {
-                            $query->whereDate('created_at', $this->encoded_date);
+                        ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+                            $query->where(function ($query) {
+                                if($this->encoded_date_from === $this->encoded_date_to)
+                                {
+                                    $query->where('created_at', $this->encoded_date_from);
+                                }else{
+                                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                }
+
+                            });
                         })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {
@@ -131,8 +157,16 @@ class Report extends Component
                                         ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
                             });
                         })
-                        ->when($this->encoded_date, function ($query) {
-                            $query->whereDate('created_at', $this->encoded_date);
+                        ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+                            $query->where(function ($query) {
+                                if($this->encoded_date_from === $this->encoded_date_to)
+                                {
+                                    $query->where('created_at', $this->encoded_date_from);
+                                }else{
+                                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                }
+
+                            });
                         })
                         ->when(!empty($this->transmittal_status), function ($query) {
                             if (is_array($this->transmittal_status)) {

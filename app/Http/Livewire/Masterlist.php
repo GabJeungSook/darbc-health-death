@@ -841,7 +841,7 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                     {
                         return '---';
                     }else{
-                        return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name);
+                        return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
                     }
                 })
                 ->sortable(),

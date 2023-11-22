@@ -58,9 +58,9 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->dependents_first_name).' '.
             strtoupper($item->dependents_middle_name).' '.strtoupper($item->dependents_last_name)}}</td>
             @endif
-            <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_diamond_package == 'Yes' ? 'Yes' : 'No'}}</td>
-            <td class="border text-gray-600 uppercase  px-3  py-1">{{$item->has_vehicle}}</td>
-            <td class="border text-gray-600 uppercase  px-3  py-1">
+            <td class="border text-gray-600 uppercase px-3 py-1">{{$item->has_diamond_package == 'Yes' ? 'Yes' : 'No'}}</td>
+            <td class="border text-gray-600 uppercase px-3 py-1">{{$item->has_vehicle}}</td>
+            <td class="border text-gray-600 uppercase px-3 py-1">
                 {{ $item->date_of_death != null ? \Carbon\Carbon::parse($item->date_of_death)->format('F d, Y') : '' }}
             </td>
             <td class="border text-gray-600 uppercase  px-3  py-1">

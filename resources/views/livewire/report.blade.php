@@ -31,7 +31,8 @@
 
       </div>
         <div class="flex space-x-2">
-          <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
+          <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time wire:model="encoded_date_from" />
+          <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time wire:model="encoded_date_to" />
           <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="date_from" />
           <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="date_to" />
             <x-select label="Select Status" multiselect placeholder="All" wire:model="status">
@@ -63,7 +64,8 @@
           </div>
       @elseif ($report_get == 7 ||  $report_get == 8 || $report_get == 29)
       <div class="flex space-x-2">
-        <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
+        <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time wire:model="encoded_date_from" />
+        <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time wire:model="encoded_date_to" />
         <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
         <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="transmittal_date_to" />
           <x-select label="Select Status" multiselect placeholder="All" wire:model="transmittal_status">
