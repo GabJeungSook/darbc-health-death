@@ -228,7 +228,7 @@ class Report extends Component
 
             case 2:
                 return \Excel::download(
-                    new \App\Exports\TransmittalExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    new \App\Exports\TransmittalExport($this->transmitted_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
                     'Transmittals.xlsx');
                 // return \Excel::download(
                 //     new \App\Exports\TransmittalExport(),
