@@ -126,7 +126,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 'dependents_middle_name' => $record->dependents_middle_name,
                 'dependents_last_name' => $record->dependents_last_name,
                 'dependent_type' => $record->dependent_type,
-                'has_diamond_package' => $record->mortuary->diamond_package,
+                'has_diamond_package' => $record->has_diamond_package,
                 'islam_cash' => $record->has_diamond_package == 'Islam' ? '30000' : '0',
                 'cash' => $record->has_diamond_package == 'Distant' || $record->has_diamond_package == 'No' ? '20000' : '0',
                 'grocery' => $record->has_diamond_package == 'Distant' || $record->has_diamond_package == 'No' ? '2000' : '0',
@@ -134,9 +134,9 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 'birthday' => $record->birthday,
                 'age' => $record->age,
                 'contact_number' => $record->contact_number,
-                'date_of_death' => Carbon::parse($record->mortuary->date_of_death)->format('F d, Y'),
-                'place_of_death' => $record->mortuary->place_of_death,
-                'has_vehicle' => $record->mortuary->vehicle,
+                'date_of_death' => Carbon::parse($record->date_of_death)->format('F d, Y'),
+                'place_of_death' => $record->place_of_death,
+                'has_vehicle' => $record->has_vehicle,
                 'schedule_first_name' => $record->schedules->first()?->schedule_first_name,
                 'schedule_middle_name' => $record->schedules->first()?->schedule_middle_name,
                 'schedule_last_name' => $record->schedules->first()?->schedule_last_name,
@@ -491,41 +491,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                             $set('birthday', null);
                                             $set('age', null);
                                         }
-                                    }elseif($get('enrollment_status') == 'replacement'){
-                                        if($get('age') >= 18 && $get('age') <= 86)
-                                        {
-                                            switch ($state) {
-                                                case '1':
-                                                    $set('amount', $amount + 20000);
-                                                  break;
-                                                case '2':
-                                                    $set('amount', $amount + 2000);
-                                                  break;
-                                                case '3':
-                                                    $set('amount', $amount + 15000);
-                                                  break;
-                                                case '4':
-                                                    $set('amount', $amount + 15000);
-                                                  break;
-                                                case '5':
-                                                    $set('amount', $amount + 10000);
-                                                  break;
-                                                case '6':
-                                                    $set('amount', $amount + 300);
-                                                  break;
-                                                default:
-                                                $set('amount', $amount + 0);
-                                              }
-                                        }else{
-                                            $this->dialog()->error(
-                                                $title = 'Invalid Age!',
-                                                $description = 'Replacement must be 18 - 86 years old.'
-                                            );
-                                            $set('birthday', null);
-                                            $set('age', null);
-                                        }
-                                    }
-                                    elseif($get('enrollment_status') == 'member'){
+                                    }elseif($get('enrollment_status') == 'member' || $get('enrollment_status') == 'replacement'){
                                         if($get('age') >= 18 && $get('age') <= 60)
                                         {
                                             switch ($state) {
