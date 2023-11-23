@@ -578,6 +578,23 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->disabled()
                 ->required(),
             ])->visible(fn ($record) => $record->update_attempts < 2),
+            Action::make('edit_amount')
+            ->label('Edit Amount')
+            ->icon('heroicon-o-pencil')
+            ->color('primary')
+            ->mountUsing(fn (Forms\ComponentContainer $form, deathModel $record) => $form->fill([
+                'amount' => $record->amount,
+            ]))
+            ->action(function (deathModel $record, array $data): void {
+                DB::beginTransaction();
+                $record->amount = $data['amount'];
+                $record->save();
+                DB::commit();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Amount successfully updated'
+                );
+            }),
             Action::make('code')
             ->label('Enter Supervisor Code')
             ->icon('heroicon-o-code')
