@@ -594,7 +594,12 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     $title = 'Success',
                     $description = 'Amount successfully updated'
                 );
-            }),
+            })
+            ->form([
+                Forms\Components\TextInput::make('amount')->label('Amount')
+                ->reactive()
+                ->required(),
+            ]),
             Action::make('code')
             ->label('Enter Supervisor Code')
             ->icon('heroicon-o-code')
