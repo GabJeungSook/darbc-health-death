@@ -36,7 +36,7 @@
                     $collection = collect($member_data['data']);
                     $darbc_id = $collection['darbc_id'];
                 @endphp
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->transmittals->date_transmitted)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
