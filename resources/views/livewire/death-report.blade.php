@@ -48,6 +48,10 @@
             <x-select.option label="Daily Hospital Income Benefit, due to accident and/or illness" value="6" />
             <x-select.option label="Premium inclusive of taxes" value="7" />
         </x-select>
+        <x-select label="Enrollment Status" multiselect placeholder="All" wire:model="enrollment_status">
+            <x-select.option label="Member" value="member" />
+            <x-select.option label="Dependent" value="dependent" />
+        </x-select>
       </div>
       @endif
     </div>

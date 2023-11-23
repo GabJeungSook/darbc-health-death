@@ -21,7 +21,9 @@ class DeathReport extends Component
     public $vehicle = [];
     public $diamond_package = [];
     public $coverage_type = [];
+    public $enrollment_status;
     protected $death;
+
 
     public function redirectToDeath()
     {
@@ -58,6 +60,9 @@ class DeathReport extends Component
             } else {
                 $query->where('coverage_type', $this->coverage_type);
             }
+        })
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
 
