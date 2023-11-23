@@ -73,7 +73,12 @@ class Report extends Component
                     $this->report_get != 2
                         ? []
                         : Health::whereHas('transmittals', function ($query) {
-                            $query->whereDate('date_transmitted', $this->transmitted_date);
+                            if($this->transmitted_date != null)
+                            {
+                                $query->whereDate('date_transmitted', $this->transmitted_date);
+                            }else{
+                                $query->whereNotNull('date_transmitted');
+                            }
                         })->where('status', 'TRANSMITTED')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
                             $query->where(function ($query) {
                                 $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
