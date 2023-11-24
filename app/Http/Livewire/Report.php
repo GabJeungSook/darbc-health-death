@@ -48,7 +48,7 @@ class Report extends Component
             $query->where(function ($query) {
                 if($this->encoded_date_from === $this->encoded_date_to)
                 {
-                    $query->where('created_at', $this->encoded_date_from);
+                    $query->whereRaw('DATE(created_at)', $this->encoded_date_from);
                 }else{
                     $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
                         $this->encoded_date_from,
