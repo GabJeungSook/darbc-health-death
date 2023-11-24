@@ -210,8 +210,16 @@ class DeathReport extends Component
             })
             ->paginate(100),
             'reports' => ReportHeader::where('report_id', 2)->get(),
-            'first_report' => ReportHeader::where('report_id', 2)->where('report_name', 'Death - Members & Dependent')->first(),
+            'first_report' => ReportHeader::where('report_id', 2)->where('id', 3)->first(),
             'first_signatories' => Signatory::where('report_header_id', 3)->get(),
+            'second_report' => ReportHeader::where('report_id', 2)->where('id', 30)->first(),
+            'second_signatories' => Signatory::where('report_header_id', 30)->get(),
+            'third_report' => ReportHeader::where('report_id', 2)->where('id', 31)->first(),
+            'third_signatories' => Signatory::where('report_header_id', 31)->get(),
+            'fourth_report' => ReportHeader::where('report_id', 2)->where('id', 32)->first(),
+            'fourth_signatories' => Signatory::where('report_header_id', 32)->get(),
+            'fifth_report' => ReportHeader::where('report_id', 2)->where('id', 33)->first(),
+            'fifth_signatories' => Signatory::where('report_header_id', 33)->get(),
         ]);
     }
 

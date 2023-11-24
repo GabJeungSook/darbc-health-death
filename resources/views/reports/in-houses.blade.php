@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">DEATH - IN-HOUSE</h1>
+    <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($fifth_report->header)}}</h1>
     <div class="mt-5 overflow-x-auto">
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
@@ -111,7 +111,7 @@
         </tbody>
       </table>
       <div class="mt-10 flex justify-around">
-          @foreach ($first_signatories as $item)
+          @foreach ($fifth_signatories as $item)
               <div class="mt-5">
                   <h1>{{$item->description}}:</h1>
                   @if ($item->name == null || $item->name == '')
