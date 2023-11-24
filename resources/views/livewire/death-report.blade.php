@@ -99,6 +99,9 @@
       @case(32)
       @include('reports.death-unpaid')
       @break
+      @case(33)
+      @include('reports.in-houses')
+      @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>
       @break
