@@ -7,9 +7,9 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class DeathExport implements FromView
+class DeathTransmittalExport implements FromView
 {
-    public $encoded_date;
+    public $transmitted_date;
     public $date_from;
     public $date_to;
     public $status;
@@ -19,9 +19,9 @@ class DeathExport implements FromView
     public $death;
     public $enrollment_status;
 
-    public function __construct($encoded_date, $date_from, $date_to, $vehicle,$diamond_package, $coverage_type, $enrollment_status)
+    public function __construct($transmitted_date, $date_from, $date_to, $vehicle,$diamond_package, $coverage_type, $enrollment_status)
     {
-        $this->encoded_date = $encoded_date;
+        $this->transmitted_date = $transmitted_date;
         $this->date_from = $date_from;
         $this->date_to = $date_to;
         $this->vehicle = $vehicle;
@@ -30,13 +30,17 @@ class DeathExport implements FromView
         $this->coverage_type = $coverage_type;
         $this->enrollment_status = $enrollment_status;
 
-        $this->death = Death::when($this->date_from && $this->date_to, function ($query) {
+        $this->death = Death::whereHas('transmittals', function ($query) {
+            if($this->transmitted_date != null)
+            {
+                $query->whereDate('date_transmitted', $this->transmitted_date);
+            }else{
+                $query->whereNotNull('date_transmitted');
+            }
+        })->when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {
                 $query->whereBetween('date', [$this->date_from, $this->date_to]);
             });
-        })
-        ->when($this->encoded_date, function ($query) {
-            $query->whereDate('created_at', $this->encoded_date);
         })
         ->when(!empty($this->vehicle), function ($query) {
             if (is_array($this->vehicle)) {
@@ -59,14 +63,18 @@ class DeathExport implements FromView
                 $query->where('coverage_type', $this->coverage_type);
             }
         })
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
+        })
         ->paginate(100);
     }
-
-
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     public function view(): View
     {
-        return view('exports.death', [
-            'deaths' => $this->death,
+        return view('exports.death-transmittals', [
+            'transmittals' => $this->death,
         ]);
     }
 }

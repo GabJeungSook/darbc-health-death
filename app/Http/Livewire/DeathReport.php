@@ -228,12 +228,36 @@ class DeathReport extends Component
         switch ($this->report_get) {
             case 3:
                 return \Excel::download(
-                    new \App\Exports\DeathExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type),
+                    new \App\Exports\DeathExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type, $this->enrollment_status),
                     'Death-MembersAndDependent.xlsx');
                 // return \Excel::download(
                 //     new \App\Exports\DeathExport(),
                 //     'Death-MembersAndDependent.xlsx'
                 // );
+                break;
+            case 30:
+                return \Excel::download(
+                    new \App\Exports\DeathTransmittalExport($this->transmitted_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type, $this->enrollment_status),
+                    'Death-Transmittal.xlsx'
+                );
+                break;
+            case 31:
+                return \Excel::download(
+                    new \App\Exports\DeathPaidExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type, $this->enrollment_status),
+                    'Death-Paid.xlsx'
+                );
+                break;
+            case 32:
+                return \Excel::download(
+                    new \App\Exports\DeathUnpaidExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type, $this->enrollment_status),
+                    'Death-Unpaid.xlsx'
+                );
+                break;
+            case 33:
+                return \Excel::download(
+                    new \App\Exports\DeathInHouseExport($this->encoded_date, $this->date_from, $this->date_to, $this->vehicle, $this->diamond_package, $this->coverage_type, $this->enrollment_status),
+                    'Death-InHouse.xlsx'
+                );
                 break;
             default:
                 # code...

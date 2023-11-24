@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 
-class DeathExport implements FromView
+class DeathInhouseExport implements FromView
 {
     public $encoded_date;
     public $date_from;
@@ -30,7 +30,7 @@ class DeathExport implements FromView
         $this->coverage_type = $coverage_type;
         $this->enrollment_status = $enrollment_status;
 
-        $this->death = Death::when($this->date_from && $this->date_to, function ($query) {
+        $this->death = Death::whereHas('in_houses')->when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {
                 $query->whereBetween('date', [$this->date_from, $this->date_to]);
             });
@@ -59,14 +59,18 @@ class DeathExport implements FromView
                 $query->where('coverage_type', $this->coverage_type);
             }
         })
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
+        })
         ->paginate(100);
     }
-
-
+    /**
+    * @return \Illuminate\Support\Collection
+    */
     public function view(): View
     {
-        return view('exports.death', [
-            'deaths' => $this->death,
+        return view('exports.in-houses', [
+            'in_houses' => $this->death,
         ]);
     }
 }

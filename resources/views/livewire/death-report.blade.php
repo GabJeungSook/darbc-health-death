@@ -24,7 +24,7 @@
         <x-button label="EXPORT" sm positive wire:click="exportReport({{ $report_get }})"
           spinner="exportReport({{ $report_get }})" icon="document-text" class="font-bold" />
       </div>
-      @if ($report_get == 3 || $report_get == 31 || $report_get == 32)
+      @if ($report_get == 3 || $report_get == 31 || $report_get == 32 || $report_get == 33)
       <div class="flex space-x-2">
         <x-datetime-picker label="Encoded Date" placeholder="Select Date" without-time wire:model="encoded_date" />
         <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
