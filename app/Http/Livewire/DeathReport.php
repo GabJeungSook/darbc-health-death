@@ -110,6 +110,72 @@ class DeathReport extends Component
                     $query->where('enrollment_status', $this->enrollment_status);
                 })
                 ->paginate(100),
+            'payments' => Death::whereHas('payments')->where('status', 'PAID')->when($this->date_from && $this->date_to, function ($query) {
+                $query->where(function ($query) {
+                    $query->whereBetween('date', [$this->date_from, $this->date_to]);
+                });
+            })
+            ->when($this->encoded_date, function ($query) {
+                $query->whereDate('created_at', $this->encoded_date);
+            })
+            ->when(!empty($this->vehicle), function ($query) {
+                if (is_array($this->vehicle)) {
+                    $query->whereIn('has_vehicle', $this->vehicle);
+                } else {
+                    $query->where('has_vehicle', $this->vehicle);
+                }
+            })
+            ->when(!empty($this->diamond_package), function ($query) {
+                if (is_array($this->diamond_package)) {
+                    $query->whereIn('has_diamond_package', $this->diamond_package);
+                } else {
+                    $query->where('has_diamond_package', $this->diamond_package);
+                }
+            })
+            ->when(!empty($this->coverage_type), function ($query) {
+                if (is_array($this->coverage_type)) {
+                    $query->whereIn('coverage_type', $this->coverage_type);
+                } else {
+                    $query->where('coverage_type', $this->coverage_type);
+                }
+            })
+            ->when($this->enrollment_status, function ($query) {
+                $query->where('enrollment_status', $this->enrollment_status);
+            })
+            ->paginate(100),
+            'unpaid' => Death::where('status', 'UNPAID')->when($this->date_from && $this->date_to, function ($query) {
+                $query->where(function ($query) {
+                    $query->whereBetween('date', [$this->date_from, $this->date_to]);
+                });
+            })
+            ->when($this->encoded_date, function ($query) {
+                $query->whereDate('created_at', $this->encoded_date);
+            })
+            ->when(!empty($this->vehicle), function ($query) {
+                if (is_array($this->vehicle)) {
+                    $query->whereIn('has_vehicle', $this->vehicle);
+                } else {
+                    $query->where('has_vehicle', $this->vehicle);
+                }
+            })
+            ->when(!empty($this->diamond_package), function ($query) {
+                if (is_array($this->diamond_package)) {
+                    $query->whereIn('has_diamond_package', $this->diamond_package);
+                } else {
+                    $query->where('has_diamond_package', $this->diamond_package);
+                }
+            })
+            ->when(!empty($this->coverage_type), function ($query) {
+                if (is_array($this->coverage_type)) {
+                    $query->whereIn('coverage_type', $this->coverage_type);
+                } else {
+                    $query->where('coverage_type', $this->coverage_type);
+                }
+            })
+            ->when($this->enrollment_status, function ($query) {
+                $query->where('enrollment_status', $this->enrollment_status);
+            })
+            ->paginate(100),
             'reports' => ReportHeader::where('report_id', 2)->get(),
             'first_report' => ReportHeader::where('report_id', 2)->where('report_name', 'Death - Members & Dependent')->first(),
             'first_signatories' => Signatory::where('report_header_id', 3)->get(),
