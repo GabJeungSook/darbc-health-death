@@ -59,7 +59,7 @@ class DeathExport implements FromView
                 $query->where('coverage_type', $this->coverage_type);
             }
         })
-        ->paginate(100);
+        ->get();
     }
 
 

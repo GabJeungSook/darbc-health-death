@@ -55,7 +55,7 @@ class PaymentExport implements FromView
             } else {
                 $query->where('status', $this->transmittal_status);
              }
-        })->paginate(100);
+        })->get();
     }
 
     public function view(): View

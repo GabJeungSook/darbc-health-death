@@ -55,7 +55,7 @@ class MortuaryExport implements FromView
                 $query->where('diamond_package', $this->diamond_package);
             }
         })
-        ->paginate(100);
+        ->get();
     }
 
     public function view(): View

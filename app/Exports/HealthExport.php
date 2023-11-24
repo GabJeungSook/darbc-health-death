@@ -63,7 +63,7 @@ class HealthExport implements FromView
         ->when($this->enrollment_status, function ($query) {
             $query->where('enrollment_status', $this->enrollment_status);
         })
-        ->paginate(100);
+        ->get();
     }
 
     public function view(): View

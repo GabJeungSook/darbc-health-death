@@ -54,7 +54,7 @@ class InHouseExport implements FromView
             } else {
                 $query->where('status', $this->transmittal_status);
             }
-        })->paginate(100);
+        })->get();
     }
     /**
     * @return \Illuminate\Support\Collection
