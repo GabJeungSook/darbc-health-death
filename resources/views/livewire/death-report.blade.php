@@ -53,6 +53,35 @@
             <x-select.option label="Dependent" value="dependent" />
         </x-select>
       </div>
+      @elseif($report_get == 30)
+      <div class="flex space-x-2">
+        <x-datetime-picker label="Transmitted Date" placeholder="Select Date" without-time wire:model="transmitted_date" />
+        <x-datetime-picker label="From" placeholder="Select Date" without-time wire:model="date_from" />
+        <x-datetime-picker label="To" placeholder="Select Date" without-time wire:model="date_to" />
+          <x-select label="Vehicle" multiselect placeholder="All" wire:model="vehicle">
+              <x-select.option label="Yes" value="Yes" />
+              <x-select.option label="No" value="No" />
+          </x-select>
+          <x-select label="Diamond Package" multiselect placeholder="All" wire:model="diamond_package">
+            <x-select.option label="Yes" value="Yes" />
+            <x-select.option label="No" value="No" />
+            <x-select.option label="Islam" value="Islam" />
+            <x-select.option label="Distant" value="Distant" />
+        </x-select>
+        <x-select label="Coverage Type" multiselect placeholder="All" wire:model="coverage_type">
+            <x-select.option label="Accidental Death/ Disablement" value="1" />
+            <x-select.option label="Accident Burial Benefit" value="2" />
+            <x-select.option label="Unprovoked Murder & Assault" value="3" />
+            <x-select.option label="Burial Benefit due to Natural Death" value="4" />
+            <x-select.option label="Motorcycling Coverage" value="5" />
+            <x-select.option label="Daily Hospital Income Benefit, due to accident and/or illness" value="6" />
+            <x-select.option label="Premium inclusive of taxes" value="7" />
+        </x-select>
+        <x-select label="Enrollment Status" placeholder="All" wire:model="enrollment_status">
+            <x-select.option label="Member" value="member" />
+            <x-select.option label="Dependent" value="dependent" />
+        </x-select>
+      </div>
       @endif
     </div>
   @endif
@@ -60,6 +89,9 @@
     @switch($report_get)
       @case(3)
         @include('reports.death')
+      @break
+      @case(30)
+      @include('reports.death-transmittals')
       @break
       @default
         <h1 class="text-gray-600">Select report to generate.</h1>

@@ -30,6 +30,10 @@ class Death extends Model
         return $this->hasMany(VehicleSchedule::class);
     }
 
+    public function transmittals()
+    {
+        return $this->hasOne(DeathTransmittal::class);
+    }
 
     public function in_houses()
     {

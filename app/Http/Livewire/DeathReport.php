@@ -16,6 +16,7 @@ class DeathReport extends Component
     use WithPagination;
     public $report_get;
     public $encoded_date;
+    public $transmitted_date;
     public $date_from;
     public $date_to;
     public $vehicle = [];
@@ -69,6 +70,46 @@ class DeathReport extends Component
         return view('livewire.death-report', [
             'deaths' =>
             $this->report_get != 3 ? [] : ($this->death == null ? [] : $this->death),
+            'transmittals' =>
+            $this->report_get != 30
+                ? []
+                : Death::whereHas('transmittals', function ($query) {
+                    if($this->transmitted_date != null)
+                    {
+                        $query->whereDate('date_transmitted', $this->transmitted_date);
+                    }else{
+                        $query->whereNotNull('date_transmitted');
+                    }
+                })->when($this->date_from && $this->date_to, function ($query) {
+                    $query->where(function ($query) {
+                        $query->whereBetween('date', [$this->date_from, $this->date_to]);
+                    });
+                })
+                ->when(!empty($this->vehicle), function ($query) {
+                    if (is_array($this->vehicle)) {
+                        $query->whereIn('has_vehicle', $this->vehicle);
+                    } else {
+                        $query->where('has_vehicle', $this->vehicle);
+                    }
+                })
+                ->when(!empty($this->diamond_package), function ($query) {
+                    if (is_array($this->diamond_package)) {
+                        $query->whereIn('has_diamond_package', $this->diamond_package);
+                    } else {
+                        $query->where('has_diamond_package', $this->diamond_package);
+                    }
+                })
+                ->when(!empty($this->coverage_type), function ($query) {
+                    if (is_array($this->coverage_type)) {
+                        $query->whereIn('coverage_type', $this->coverage_type);
+                    } else {
+                        $query->where('coverage_type', $this->coverage_type);
+                    }
+                })
+                ->when($this->enrollment_status, function ($query) {
+                    $query->where('enrollment_status', $this->enrollment_status);
+                })
+                ->paginate(100),
             'reports' => ReportHeader::where('report_id', 2)->get(),
             'first_report' => ReportHeader::where('report_id', 2)->where('report_name', 'Death - Members & Dependent')->first(),
             'first_signatories' => Signatory::where('report_header_id', 3)->get(),
