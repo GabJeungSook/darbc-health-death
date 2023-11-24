@@ -2,18 +2,20 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use Filament\Tables;
+use DB;
 use Filament\Forms;
-use Filament\Forms\Components\TextInput;
+use Filament\Tables;
+use Livewire\Component;
 use App\Models\Signatory;
-use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use WireUi\Traits\Actions;
+use App\Models\ReportHeader;
 use Filament\Forms\Components\Grid;
 use Filament\Tables\Actions\Action;
-use WireUi\Traits\Actions;
-use DB;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class Signatories extends Component implements Tables\Contracts\HasTable
 {
@@ -23,6 +25,44 @@ class Signatories extends Component implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
         return Signatory::query()->whereHas('report_headers')->orderBy('report_header_id');
+    }
+
+    protected function getTableHeaderActions(): array
+    {
+        return [
+            Action::make('create')
+            ->label('Add Signatory')
+            ->button()
+            ->icon('heroicon-o-plus-circle')
+            ->color('primary')
+            ->form([
+                Select::make('report_header_id')
+                ->label('Report Header')
+                ->options(ReportHeader::all()->pluck('header', 'id')),
+                TextInput::make('name')
+                    ->label('Name')
+                    ->required(),
+                TextInput::make('position')
+                    ->label('Position')
+                    ->required(),
+                TextInput::make('description')
+                    ->label('Description')
+                    ->required(),
+            ])
+            ->action(function (array $data): void {
+                Signatory::create([
+                    'report_header_id' => $data['report_header_id'],
+                    'name' => $data['name'],
+                    'position' => $data['position'],
+                    'description' => $data['description'],
+                ]);
+
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully added'
+                );
+            }),
+        ];
     }
 
     protected function getTableActions(): array
