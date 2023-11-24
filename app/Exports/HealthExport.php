@@ -10,15 +10,18 @@ use Maatwebsite\Excel\Concerns\FromView;
 class HealthExport implements FromView
 {
     public $encoded_date;
+    public $encoded_date_from;
+    public $encoded_date_to;
     public $date_from;
     public $date_to;
     public $status;
     public $health;
     public $enrollment_status;
 
-    public function __construct($encoded_date, $date_from, $date_to, $status, $enrollment_status)
+    public function __construct($encoded_date_from, $encoded_date_to, $date_from, $date_to, $status, $enrollment_status)
     {
-        $this->encoded_date = $encoded_date;
+        $this->encoded_date_from = $encoded_date_from;
+        $this->encoded_date_to = $encoded_date_to;
         $this->date_from = $date_from;
         $this->date_to = $date_to;
         $this->status = $status;
@@ -36,8 +39,19 @@ class HealthExport implements FromView
 
             });
         })
-        ->when($this->encoded_date, function ($query) {
-            $query->whereDate('created_at', $this->encoded_date);
+        ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+            $query->where(function ($query) {
+                if($this->encoded_date_from === $this->encoded_date_to)
+                {
+                    $query->where('created_at', $this->encoded_date_from);
+                }else{
+                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                        $this->encoded_date_from,
+                        $this->encoded_date_to
+                    ]);
+                }
+
+            });
         })
         ->when(!empty($this->status), function ($query) {
             if (is_array($this->status)) {

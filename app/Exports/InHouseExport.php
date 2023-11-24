@@ -10,6 +10,8 @@ use Maatwebsite\Excel\Concerns\FromView;
 class InHouseExport implements FromView
 {
     public $encoded_date;
+    public $encoded_date_from;
+    public $encoded_date_to;
     public $transmittal_date_from;
     public $transmittal_date_to;
     public $transmittal_status;
@@ -18,9 +20,10 @@ class InHouseExport implements FromView
     public $coverage_type;
     public $transmitted;
 
-    public function __construct($encoded_date, $transmittal_date_from, $transmittal_date_to, $transmittal_status)
+    public function __construct($encoded_date_from, $encoded_date_to, $transmittal_date_from, $transmittal_date_to, $transmittal_status)
     {
-        $this->encoded_date = $encoded_date;
+        $this->encoded_date_from = $encoded_date_from;
+        $this->encoded_date_to = $encoded_date_to;
         $this->transmittal_date_from = $transmittal_date_from;
         $this->transmittal_date_to = $transmittal_date_to;
         $this->transmittal_status = $transmittal_status;
@@ -31,8 +34,19 @@ class InHouseExport implements FromView
                       ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
             });
         })
-        ->when($this->encoded_date, function ($query) {
-            $query->whereDate('created_at', $this->encoded_date);
+        ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+            $query->where(function ($query) {
+                if($this->encoded_date_from === $this->encoded_date_to)
+                {
+                    $query->where('created_at', $this->encoded_date_from);
+                }else{
+                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                        $this->encoded_date_from,
+                        $this->encoded_date_to
+                    ]);
+                }
+
+            });
         })
         ->when(!empty($this->transmittal_status), function ($query) {
             if (is_array($this->transmittal_status)) {

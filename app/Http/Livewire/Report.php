@@ -50,7 +50,10 @@ class Report extends Component
                 {
                     $query->where('created_at', $this->encoded_date_from);
                 }else{
-                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                        $this->encoded_date_from,
+                        $this->encoded_date_to
+                    ]);
                 }
 
             });
@@ -114,7 +117,10 @@ class Report extends Component
                                     {
                                         $query->where('created_at', $this->encoded_date_from);
                                     }else{
-                                        $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                        $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                                            $this->encoded_date_from,
+                                            $this->encoded_date_to
+                                        ]);
                                     }
 
                                 });
@@ -141,7 +147,10 @@ class Report extends Component
                                 {
                                     $query->where('created_at', $this->encoded_date_from);
                                 }else{
-                                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                                        $this->encoded_date_from,
+                                        $this->encoded_date_to
+                                    ]);
                                 }
 
                             });
@@ -223,7 +232,7 @@ class Report extends Component
         switch ($this->report_get) {
             case 1:
                 return \Excel::download(
-                    new \App\Exports\HealthExport($this->encoded_date, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
+                    new \App\Exports\HealthExport($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
                     'health-MembersAndDependent.xlsx');
 
                 break;
@@ -239,7 +248,7 @@ class Report extends Component
                 break;
             case 7:
                 return \Excel::download(
-                    new \App\Exports\PaymentExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    new \App\Exports\PaymentExport($this->encoded_date_from, $this->encoded_date_to, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
                     'Payments.xlsx');
                 // return \Excel::download(
                 //     new \App\Exports\PaymentExport(),
@@ -248,7 +257,7 @@ class Report extends Component
                 break;
             case 8:
                 return \Excel::download(
-                    new \App\Exports\EncodedExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    new \App\Exports\EncodedExport($this->encoded_date_from, $this->encoded_date_to, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status, $this->enrollment_status),
                     'Encoded.xlsx');
                 // return \Excel::download(
                 //     new \App\Exports\EncodedExport(),
@@ -269,7 +278,7 @@ class Report extends Component
                 break;
             case 29:
                 return \Excel::download(
-                    new \App\Exports\InHouseExport($this->encoded_date, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
+                    new \App\Exports\InHouseExport($this->encoded_date_from, $this->encoded_date_to, $this->transmittal_date_from, $this->transmittal_date_to, $this->transmittal_status),
                     'In-House.xlsx');
                 break;
             default:
