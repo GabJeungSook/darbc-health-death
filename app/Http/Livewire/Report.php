@@ -167,9 +167,11 @@ class Report extends Component
                                 if($this->encoded_date_from === $this->encoded_date_to)
                                 {
                                     $query->where('created_at', $this->encoded_date_from);
-                                }else{
-                                    $query->whereDateBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to])
-                                    ->whereDateBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                                }else {
+                                    $query->whereBetween('created_at', [
+                                        $this->encoded_date_from,
+                                        $this->encoded_date_to
+                                    ]);
                                 }
                             });
                         })
