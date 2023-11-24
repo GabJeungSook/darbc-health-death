@@ -36,7 +36,7 @@ class Report extends Component
             $query->where(function ($query) {
                 if($this->date_from === $this->date_to)
                 {
-                    $query->where('confinement_date_from', $this->date_from);
+                    $query->whereDate('confinement_date_from', $this->date_from);
                 }else{
                     $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
                     ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
@@ -48,7 +48,7 @@ class Report extends Component
             $query->where(function ($query) {
                 if($this->encoded_date_from === $this->encoded_date_to)
                 {
-                    $query->whereRaw('DATE(created_at)', $this->encoded_date_from);
+                    $query->whereDate('created_at', $this->encoded_date_from);
                 }else{
                     $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
                         $this->encoded_date_from,
