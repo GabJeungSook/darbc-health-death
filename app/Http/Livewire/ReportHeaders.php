@@ -6,6 +6,8 @@ use Livewire\Component;
 use Filament\Tables;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Select;
+use App\Models\Report;
 use App\Models\ReportHeader;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +25,40 @@ class ReportHeaders extends Component implements Tables\Contracts\HasTable
     protected function getTableQuery(): Builder
     {
         return ReportHeader::query()->orderBy('report_id');
+    }
+
+    protected function getTableHeaderActions(): array
+    {
+        return [
+            Action::make('create')
+            ->label('Add Report Header')
+            ->button()
+            ->icon('heroicon-o-plus-circle')
+            ->color('primary')
+            ->form([
+                Select::make('report_id')
+                ->label('Report')
+                ->options(Report::all()->pluck('name', 'id')),
+                TextInput::make('report_name')
+                    ->label('Report Name')
+                    ->required(),
+                TextInput::make('header')
+                    ->label('Header')
+                    ->required(),
+            ])
+            ->action(function (array $data): void {
+                ReportHeader::create([
+                    'report_id' => $data['report_id'],
+                    'report_name' => $data['report_name'],
+                    'header' => $data['header'],
+                ]);
+
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully added'
+                );
+            }),
+        ];
     }
 
     protected function getTableActions(): array

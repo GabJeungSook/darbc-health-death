@@ -9,6 +9,8 @@ use Filament\Tables;
 use Livewire\Component;
 use App\Models\Mortuary;
 use WireUi\Traits\Actions;
+use App\Models\DeathInHouse;
+use App\Models\DeathPayment;
 use App\Models\SupervisorCode;
 use App\Models\VehicleSchedule;
 use App\Models\DeathTransmittal;
@@ -677,6 +679,53 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->preserveFilenames()
                 ->reactive()
             ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
+            Action::make('in_house')
+            ->icon('heroicon-o-home')
+            ->color('warning')
+            ->mountUsing(fn (Forms\ComponentContainer $form, deathModel $record) => $form->fill([
+                'batch_number' => $this->batch_number_transmittal,
+                'date_transmitted' =>now()
+            ]))
+            ->action(function (deathModel $record, array $data): void {
+                DB::beginTransaction();
+                $death = DeathInHouse::create([
+                    'death_id' => $record->id,
+                    'batch_number' => $this->batch_number_transmittal,
+                    'date_transmitted' => $data['date_transmitted'],
+                ]);
+
+                  //save Files from fileupload
+                foreach($data['attachment'] as $document){
+                    $death->attachments()->create(
+                        [
+                             "path"=>'public/'.$document,
+                             "document_name"=>$document,
+                        ]
+                    );
+                }
+
+                $record->status = 'IN-HOUSE';
+                $record->save();
+                DB::commit();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully saved'
+                );
+            })
+            ->form([
+                Forms\Components\TextInput::make('batch_number')
+                ->label('Batch Number')
+                ->disabled(),
+                DatePicker::make('date_transmitted')->label('Date Transmitted')
+                ->required()
+                ->reactive(),
+                FileUpload::make('attachment')
+                ->enableOpen()
+                ->multiple()
+                ->disk('public')
+                ->preserveFilenames()
+                ->reactive()
+            ])->requiresConfirmation()->visible(fn ($record) => $record->status == "ENCODED"),
             Action::make('edit_transmitted')
             ->label('Edit Transmitted')
             ->icon('heroicon-o-arrow-right')
@@ -698,6 +747,57 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 );
             })
             ->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED"),
+            Action::make('paid')
+            ->icon('heroicon-o-cash')
+            ->color('success')
+            ->action(function (deathModel $record, array $data): void {
+                DB::beginTransaction();
+                $payment = DeathPayment::create([
+                    'death_id' => $record->id,
+                    'date_of_payment' => $data['date_of_payment'],
+                ]);
+
+                   //save Files from fileupload
+                   foreach($data['attachment'] as $document){
+                    $payment->payment_attachments()->create(
+                        [
+                            "path"=>'public/'.$document,
+                            "document_name"=>$document,
+                        ]
+                    );
+                }
+
+                $record->status = 'PAID';
+                $record->save();
+                DB::commit();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully saved'
+                );
+            })
+            ->form([
+                DatePicker::make('date_of_payment')->label('Date Of Payment')
+                ->reactive(),
+                FileUpload::make('attachment')
+                ->enableOpen()
+                ->multiple()
+                ->preserveFilenames()
+                ->reactive()
+            ])->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED" || $record->status == "UNPAID" || $record->status == "IN-HOUSE"),
+            Action::make('unpaid')
+            ->icon('heroicon-o-x-circle')
+            ->color('danger')
+            ->action(function (deathModel $record, array $data): void {
+                DB::beginTransaction();
+                $record->status = 'UNPAID';
+                $record->save();
+                DB::commit();
+                $this->dialog()->success(
+                    $title = 'Success',
+                    $description = 'Data successfully saved'
+                );
+            })
+            ->requiresConfirmation()->visible(fn ($record) => $record->status == "TRANSMITTED" || $record->status == "IN-HOUSE"),
             Action::make('delete')
             ->color('danger')
             ->icon('heroicon-o-trash')

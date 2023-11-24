@@ -29,4 +29,15 @@ class Death extends Model
     {
         return $this->hasMany(VehicleSchedule::class);
     }
+
+
+    public function in_houses()
+    {
+        return $this->hasOne(DeathInHouse::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasOne(DeathPayment::class);
+    }
 }
