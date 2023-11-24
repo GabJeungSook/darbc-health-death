@@ -38,7 +38,7 @@ class Signatories extends Component implements Tables\Contracts\HasTable
             ->form([
                 Select::make('report_header_id')
                 ->label('Report Header')
-                ->options(ReportHeader::all()->pluck('header', 'id')),
+                ->options(ReportHeader::all()->pluck('report_name', 'id')),
                 TextInput::make('name')
                     ->label('Name')
                     ->required(),
