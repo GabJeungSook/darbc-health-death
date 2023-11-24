@@ -31,10 +31,10 @@
 
       </div>
         <div class="flex space-x-2">
-          <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time wire:model="encoded_date_from" />
-          <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time wire:model="encoded_date_to" />
-          <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="date_from" />
-          <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="date_to" />
+          <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_from" />
+          <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_to" />
+          <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time without-timezone wire:model="date_from" />
+          <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time without-timezone wire:model="date_to" />
             <x-select label="Select Status" multiselect placeholder="All" wire:model="status">
                 <x-select.option label="Encoded" value="ENCODED" />
                 <x-select.option label="Transmitted" value="TRANSMITTED" />
@@ -48,9 +48,9 @@
         </div>
         @elseif ($report_get == 2)
         <div class="flex space-x-2">
-            <x-datetime-picker label="Transmitted Date" placeholder="Select Date" without-time wire:model="transmitted_date" />
-            <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
-            <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="transmittal_date_to" />
+            <x-datetime-picker label="Transmitted Date" placeholder="Select Date" without-time without-timezone wire:model="transmitted_date" />
+            <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time without-timezone wire:model="transmittal_date_from" />
+            <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time without-timezone wire:model="transmittal_date_to" />
               <x-select label="Select Status" multiselect placeholder="All" wire:model="transmittal_status">
                   <x-select.option label="Encoded" value="ENCODED" />
                   <x-select.option label="Transmitted" value="TRANSMITTED" />
@@ -64,10 +64,10 @@
           </div>
       @elseif ($report_get == 7 ||  $report_get == 8 || $report_get == 29)
       <div class="flex space-x-2">
-        <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time wire:model="encoded_date_from" />
-        <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time wire:model="encoded_date_to" />
-        <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time wire:model="transmittal_date_from" />
-        <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time wire:model="transmittal_date_to" />
+        <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_from" />
+        <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_to" />
+        <x-datetime-picker label="Confinement From" placeholder="Select Date" without-time without-timezone wire:model="transmittal_date_from" />
+        <x-datetime-picker label="Confinement To" placeholder="Select Date" without-time without-timezone wire:model="transmittal_date_to" />
           <x-select label="Select Status" multiselect placeholder="All" wire:model="transmittal_status">
               <x-select.option label="Encoded" value="ENCODED" />
               <x-select.option label="Transmitted" value="TRANSMITTED" />
