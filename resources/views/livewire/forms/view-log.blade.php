@@ -26,16 +26,16 @@
           <div class="mt-28">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
-          <div class="mt-4">
+          <div class="mt-10">
             <h3 class="text-lg font-bold ml-4">THE ADMINISTRATOR</h3>
           </div>
-          <div class="mt-1">
+          <div class="">
             <h3 class="text-md font-normal ml-4">{{$record->hospitals->name}}</h3>
           </div>
-          <div class="mt-1">
+          <div class="">
             <h3 class="text-md font-normal ml-4">{{$record->hospitals->address}}</h3>
           </div>
-          <div class="mt-10">
+          <div class="mt-24">
             <h3 class="text-md font-normal ml-4">Sir/Madam:</h3>
           </div>
           <div class="mt-16">
@@ -120,7 +120,7 @@
           <div class="mt-16">
             <p class="text-md font-normal ml-4">{{$signatory->name}}</p>
           </div>
-          <div class="mt-1">
+          <div class="">
             <p class="text-lg font-bold ml-4">{{$signatory->position}}</p>
           </div>
           <div class="mt-16">
