@@ -65,7 +65,6 @@
               {{-- <td class="border text-gray-600 text-3xs px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td> --}}
 
               <td class="border text-gray-600 px-3 text-xs py-1">{{ $item->number_of_days }}</td>
-              //amoount minus 1%
                 <td class="border text-gray-600 px-3 text-xs py-1">₱{{number_format($item->amount - ($item->amount * 0.01), 2, '.', ',') }}</td>
               <td class="border text-gray-600 px-3 text-xs py-1"></td>
               <td class="border text-gray-600  px-3 text-xs text-xswhitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
