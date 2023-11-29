@@ -14,8 +14,7 @@
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
           <tr>
-            <th class="border text-left whitespace-nowrap px-2 text-xs font-medium text-gray-500 py-2">DATE
-            </th>
+
             <th class="border text-left whitespace-nowrap px-2 text-xs font-medium text-gray-500 py-2">NAME
             </th>
             {{-- <th class="border text-left whitespace-nowrap px-2 text-2xs font-medium text-gray-500 py-2">DEPENDENT NAME
@@ -33,7 +32,8 @@
             </th>
             <th class="border text-left whitespace-nowrap px-2 text-xs font-medium text-gray-500 py-2">SIGNATURE
             </th>
-
+            <th class="border text-left whitespace-nowrap px-2 text-xs font-medium text-gray-500 py-2">DATE
+            </th>
           </tr>
         </thead>
         <tbody class="">
@@ -46,7 +46,7 @@
 
                     $collection = collect($member_data['data']);
                 @endphp
-                  <td class="border text-gray-600  px-3 text-xswhitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
+
                   <td class="border text-gray-600 whitespace-nowrap text-xs px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
                     strtoupper($collection['user']['first_name']).' '.strtoupper($collection['user']['middle_name']) }}</td>
                     {{-- @if ($item->enrollment_status == 'member')
@@ -65,8 +65,10 @@
               {{-- <td class="border text-gray-600 text-3xs px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td> --}}
 
               <td class="border text-gray-600 px-3 text-xs py-1">{{ $item->number_of_days }}</td>
-              <td class="border text-gray-600 px-3 text-xs py-1">₱{{number_format($item->amount, 2, '.', ',') }}</td>
+              //amoount minus 1%
+                <td class="border text-gray-600 px-3 text-xs py-1">₱{{number_format($item->amount - ($item->amount * 0.01), 2, '.', ',') }}</td>
               <td class="border text-gray-600 px-3 text-xs py-1"></td>
+              <td class="border text-gray-600  px-3 text-xs text-xswhitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
             </tr>
           @endforeach
         </tbody>

@@ -50,6 +50,7 @@
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y') }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->hospitals->name }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->number_of_days }}</td>
+              <td class="border text-gray-600  px-3  py-1">₱{{number_format($item->amount - ($item->amount * 0.01), 2, '.', ',') }}</td>
               <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->amount }}</td>
               <td class="border text-gray-600  px-3  py-1">{{ $item->status }}</td>
             </tr>

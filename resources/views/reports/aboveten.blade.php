@@ -4,7 +4,7 @@
         <img src="{{ asset('images/darbc.png') }}" class="h-10" alt="">
       </div>
       <div>
-        <h1 class="text-xl font-bold text-gray-700"> DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP.</h1>
+        <h1 class="text-xl font-bold text-gray-700"> DOLEFIL AGRARIAN REFORM BENEFICIARIES COOP. (DARBC)</h1>
         <h1>DARBC Complex, Brgy. Cannery Site, Polomolok, South Cotabato</h1>
       </div>
     </div>
@@ -70,7 +70,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="mt-10 flex justify-around">
+      <div class="mt-20 flex justify-around">
         @foreach ($seventh_signatories as $item)
             <div class="mt-5">
                 @if ($item->name == null || $item->name == '')
