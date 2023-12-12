@@ -10,6 +10,14 @@
     </div>
 
     <h1 class="text-xl mt-5 text-center font-bold text-gray-700">{{strtoupper($fourth_report->header)}}</h1>
+    @if ($encoded_date_from != null && $encoded_date_to != null)
+        @if($encoded_date_from == $encoded_date_to)
+        <h1 class="text-xl mt-5 text-center font-bold text-gray-700"> {{ \Carbon\Carbon::parse($encoded_date_from)->format('F d, Y') }}</h1>
+        @elseif($encoded_date_from != $encoded_date_to)
+        <h1 class="text-xl mt-5 text-center font-bold text-gray-700"> {{ \Carbon\Carbon::parse($encoded_date_from)->format('F d, Y') }} - {{ \Carbon\Carbon::parse($encoded_date_to)->format('F d, Y') }}</h1>
+        @endif
+    @endif
+
     <div class="mt-5 overflow-x-auto">
       <table id="example" class="table-auto mt-5" style="width:100%">
         <thead class="font-normal">
@@ -67,7 +75,7 @@
               <td class="border text-gray-600 px-3 text-xs py-1">{{ $item->number_of_days }}</td>
                 <td class="border text-gray-600 px-3 text-xs py-1">₱{{number_format($item->amount - ($item->amount * 0.01), 2, '.', ',') }}</td>
               <td class="border text-gray-600 px-3 text-xs py-1"></td>
-              <td class="border text-gray-600  px-3 text-xs text-xswhitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
+              <td class="border text-gray-600  px-3 text-xs text-xswhitespace-nowrap py-1"></td>
             </tr>
           @endforeach
         </tbody>
