@@ -41,7 +41,7 @@
                 <td class="border text-gray-600  px-3 whitespace-nowrap py-1">---</td>
               @else
               <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($item->first_name).' '.
-                strtoupper($item->middle_name).'. '.strtoupper($item->last_name) }}</td>
+                strtoupper($item->middle_name).' '.strtoupper($item->last_name) }}</td>
               @endif
 
               <td class="border text-gray-600  px-3  py-1">{{ Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y') }}</td>

@@ -28,7 +28,7 @@
                   $darbc_id = $collection['darbc_id'];
                   $member_name = strtoupper($collection['user']['surname']) . ' '
                   .strtoupper($collection['user']['first_name']) . ' '
-                  . strtoupper($collection['user']['middle_name']).'.';
+                  . strtoupper($collection['user']['middle_name']);
                   @endphp
                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}</td>
                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
