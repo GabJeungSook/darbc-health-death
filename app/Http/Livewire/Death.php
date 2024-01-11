@@ -493,7 +493,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                             $set('birthday', null);
                                             $set('age', null);
                                         }
-                                    }elseif($get('enrollment_status') == 'member' || $get('enrollment_status') == 'replacement'){
+                                    }else{
                                         if($get('age') >= 18 && $get('age') <= 60)
                                         {
                                             switch ($state) {
