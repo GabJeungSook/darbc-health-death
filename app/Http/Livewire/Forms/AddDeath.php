@@ -229,7 +229,7 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                 // $amount = 1000;
                                 $amount = 0;
                             }
-                            if(($get('enrollment_status') == 'dependent' || $get('enrollment_status') == 'replacement') && $get('dependent_type') == 'spouse')
+                            if($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'spouse')
                             {
                                 if($get('age') >= 18 && $get('age') <= 86)
                                 {
@@ -296,74 +296,75 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
                                     $set('birthday', null);
                                     $set('age', null);
                                 }
-                            }elseif($get('enrollment_status') == 'replacement')
-                            {
-                                if($get('age') >= 18 && $get('age') <= 60)
-                                {
-                                    switch ($get('coverage_type')) {
-                                        case '1':
-                                            $set('amount', $amount + 100000);
-                                          break;
-                                        case '2':
-                                            $set('amount', $amount + 10000);
-                                          break;
-                                        case '3':
-                                            $set('amount', $amount + 50000);
-                                          break;
-                                        case '4':
-                                            $set('amount', $amount + 55000);
-                                          break;
-                                        case '5':
-                                            $set('amount', $amount + 50000);
-                                          break;
-                                        case '6':
-                                            $set('amount', $amount + 1000);
-                                          break;
-                                        case '7':
-                                            $set('amount', $amount + 2900);
-                                          break;
-                                        default:
-                                        $set('amount', 0);
-                                      }
-                                }elseif($get('age') >= 61 && $get('age') <= 86){
-                                    switch ($get('coverage_type')) {
-                                        case '1':
-                                            $set('amount', $amount + 100000);
-                                          break;
-                                        case '2':
-                                            $set('amount',$amount +  10000);
-                                          break;
-                                        case '3':
-                                            $set('amount', $amount + 50000);
-                                          break;
-                                        case '4':
-                                            $set('amount', $amount + 55000);
-                                          break;
-                                        case '5':
-                                            $set('amount', $amount + 50000);
-                                          break;
-                                        case '6':
-                                            $set('amount', $amount + 1000);
-                                          break;
-                                        case '7':
-                                            $set('amount', $amount + 4200);
-                                          break;
-                                        default:
-                                        $set('amount', $amount + 0);
-                                      }
-                                }else{
-                                    if($get('age') != null)
-                                    {
-                                        $this->dialog()->error(
-                                            $title = 'Invalid Age!',
-                                            $description = 'Replacement must be 18 - 86 years old.'
-                                        );
-                                        $set('birthday', null);
-                                        $set('age', null);
-                                    }
-                                }
                             }
-                            elseif($get('enrollment_status') == 'member'){
+                            // elseif($get('enrollment_status') == 'replacement')
+                            // {
+                            //     if($get('age') >= 18 && $get('age') <= 60)
+                            //     {
+                            //         switch ($get('coverage_type')) {
+                            //             case '1':
+                            //                 $set('amount', $amount + 100000);
+                            //               break;
+                            //             case '2':
+                            //                 $set('amount', $amount + 10000);
+                            //               break;
+                            //             case '3':
+                            //                 $set('amount', $amount + 50000);
+                            //               break;
+                            //             case '4':
+                            //                 $set('amount', $amount + 55000);
+                            //               break;
+                            //             case '5':
+                            //                 $set('amount', $amount + 50000);
+                            //               break;
+                            //             case '6':
+                            //                 $set('amount', $amount + 1000);
+                            //               break;
+                            //             case '7':
+                            //                 $set('amount', $amount + 2900);
+                            //               break;
+                            //             default:
+                            //             $set('amount', 0);
+                            //           }
+                            //     }elseif($get('age') >= 61 && $get('age') <= 86){
+                            //         switch ($get('coverage_type')) {
+                            //             case '1':
+                            //                 $set('amount', $amount + 100000);
+                            //               break;
+                            //             case '2':
+                            //                 $set('amount',$amount +  10000);
+                            //               break;
+                            //             case '3':
+                            //                 $set('amount', $amount + 50000);
+                            //               break;
+                            //             case '4':
+                            //                 $set('amount', $amount + 55000);
+                            //               break;
+                            //             case '5':
+                            //                 $set('amount', $amount + 50000);
+                            //               break;
+                            //             case '6':
+                            //                 $set('amount', $amount + 1000);
+                            //               break;
+                            //             case '7':
+                            //                 $set('amount', $amount + 4200);
+                            //               break;
+                            //             default:
+                            //             $set('amount', $amount + 0);
+                            //           }
+                            //     }else{
+                            //         if($get('age') != null)
+                            //         {
+                            //             $this->dialog()->error(
+                            //                 $title = 'Invalid Age!',
+                            //                 $description = 'Replacement must be 18 - 86 years old.'
+                            //             );
+                            //             $set('birthday', null);
+                            //             $set('age', null);
+                            //         }
+                            //     }
+                            // }
+                            elseif($get('enrollment_status') == 'member' || $get('enrollment_status') == 'replacement'){
                                 if($get('age') >= 18 && $get('age') <= 60)
                                 {
                                     switch ($get('coverage_type')) {

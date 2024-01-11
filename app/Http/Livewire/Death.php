@@ -245,7 +245,6 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             ])->columns(3),
                             Forms\Components\Select::make('enrollment_status')->label('Are you a')
                             ->options([
-                                'test' => 'Test',
                                 'member' => 'Member',
                                 'replacement' => 'Replacement',
                                 'dependent' => 'Dependent',
@@ -495,71 +494,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                             $set('age', null);
                                         }
                                     }
-                                    elseif($get('enrollment_status') == 'member'){
-                                        if($get('age') >= 18 && $get('age') <= 60)
-                                        {
-                                            switch ($state) {
-                                                case '1':
-                                                    $set('amount', $amount + 100000);
-                                                  break;
-                                                case '2':
-                                                    $set('amount', $amount + 10000);
-                                                  break;
-                                                case '3':
-                                                    $set('amount', $amount + 50000);
-                                                  break;
-                                                case '4':
-                                                    $set('amount', $amount + 55000);
-                                                  break;
-                                                case '5':
-                                                    $set('amount', $amount + 50000);
-                                                  break;
-                                                case '6':
-                                                    $set('amount', $amount + 1000);
-                                                  break;
-                                                case '7':
-                                                    $set('amount', $amount + 2900);
-                                                  break;
-                                                default:
-                                                $set('amount', 0);
-                                              }
-                                        }elseif($get('age') >= 61 && $get('age') <= 86){
-                                            switch ($state) {
-                                                case '1':
-                                                    $set('amount', $amount + 100000);
-                                                  break;
-                                                case '2':
-                                                    $set('amount',$amount +  10000);
-                                                  break;
-                                                case '3':
-                                                    $set('amount', $amount + 50000);
-                                                  break;
-                                                case '4':
-                                                    $set('amount', $amount + 55000);
-                                                  break;
-                                                case '5':
-                                                    $set('amount', $amount + 50000);
-                                                  break;
-                                                case '6':
-                                                    $set('amount', $amount + 1000);
-                                                  break;
-                                                case '7':
-                                                    $set('amount', $amount + 4200);
-                                                  break;
-                                                default:
-                                                $set('amount', $amount + 0);
-                                              }
-                                        }else{
-                                            $this->dialog()->error(
-                                                $title = 'Invalid Age!',
-                                                $description = 'Member must be 18 - 86 years old.'
-                                            );
-                                            $set('birthday', null);
-                                            $set('age', null);
-                                        }
-                                    }elseif($get('enrollment_status') == 'replacement')
-                                    {
-                                        dd($get('enrollment_status'));
+                                    elseif($get('enrollment_status') == 'member' || $get('enrollment_status') == 'replacement'){
                                         if($get('age') >= 18 && $get('age') <= 60)
                                         {
                                             switch ($state) {
