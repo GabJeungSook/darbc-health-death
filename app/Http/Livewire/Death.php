@@ -251,6 +251,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                             ])
                             ->reactive()
                             ->afterStateUpdated(function ($set, $get, $state) {
+                                dd($state);
                                 $url = 'https://darbcmembership.org/api/member-information/'.$get('member_id');
                                 $response = Http::withOptions(['verify' => false])->get($url);
                                 $member_data = $response->json();
