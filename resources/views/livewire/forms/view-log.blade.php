@@ -26,7 +26,7 @@
           <div class="mt-28">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
-          <div class="mt-10">
+          <div class="mt-8">
             <h3 class="text-lg font-bold ml-4">THE ADMINISTRATOR</h3>
           </div>
           <div class="">
