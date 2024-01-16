@@ -23,7 +23,7 @@
           </div>
           <div class="mt-2 h-0.5 bg-gray-700"></div>
           <div class="mt-0.5 h-0.5 bg-gray-700"></div> --}}
-          <div class="mt-32">
+          <div class="mt-28">
             <h3 class="text-md font-normal ml-4">{{\Carbon\Carbon::parse(now())->format('F d, Y')}}</h3>
           </div>
           <div class="mt-10">
