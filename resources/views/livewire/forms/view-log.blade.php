@@ -109,18 +109,18 @@
             @endphp
           up to <span class="font-bold"> {{$amountInWords}} (Php {{ number_format($record->amount, 2, '.', ',') }})</span> only.</p>
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Kindly submit your billing to our cashier for payment processing.</p>
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Thank you and more power.</p>
           </div>
-          <div class="mt-6">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Very truly yours,</p>
           </div>
-          <div class="mt-16">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">{{$signatory->name}}</p>
-            <p class="text-lg font-semibold ml-4">{{$signatory->position}}</p>
+            <p class="text-lg font-normal ml-4">{{$signatory->position}}</p>
           </div>
           <div class="">
 
