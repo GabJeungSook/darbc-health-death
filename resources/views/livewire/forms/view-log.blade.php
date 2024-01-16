@@ -36,10 +36,10 @@
           <div class="">
 
           </div>
-          <div class="mt-18">
+          <div class="mt-8">
             <h3 class="text-md font-normal ml-4">Sir/Madam:</h3>
           </div>
-          <div class="mt-10">
+          <div class="mt-8">
             <p class="text-md font-normal ml-4">Please charge to <span class="font-bold">Dolefil Agrarian Reform Beneficiaries Cooperative (DARBC)</span>
 
             @if ($record->enrollment_status == "member")
