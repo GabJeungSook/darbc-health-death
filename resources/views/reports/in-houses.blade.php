@@ -37,7 +37,13 @@
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
                 {{ $item->batch_number }}
               </td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $item->enrollment_status == 'member' ? 'M' : 'D' }}</td>
+              @if ($item->enrollment_status == "member")
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">M</td>
+              @elseif($item->enrollment_status == "dependent")
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">D</td>
+              @elseif($item->enrollment_status == "replacement")
+                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">R</td>
+              @endif
 
               @php
                   $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
