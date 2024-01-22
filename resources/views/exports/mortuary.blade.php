@@ -3,6 +3,7 @@
         <thead class="font-normal">
               <tr>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE</th>
+                  <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DARBC ID</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">MEMBER NAME</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">DATE OF DEATH</th>
                   <th class="border text-left whitespace-nowrap px-2 text-sm font-medium text-gray-500 py-2">CONTACT NUMBER</th>
@@ -31,6 +32,7 @@
                   . strtoupper($collection['user']['middle_name']);
                   @endphp
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  \Carbon\Carbon::parse($item->created_at)->format('F, d Y') }}</td>
+              <td class="border text-gray-600  text-3xs px-3 whitespace-nowrap py-1">{{  $darbc_id }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $member_name }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  \Carbon\Carbon::parse($item->date_of_death)->format('F, d Y') }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->contact_number }}</td>
