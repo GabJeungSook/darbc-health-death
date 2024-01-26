@@ -30,6 +30,11 @@ class Report extends Component
     protected $enrollment_status_health;
     protected $enrollment_status;
 
+    public function updatedEnrollmentStatusHealth()
+    {
+        dd($this->enrollment_status_health);
+    }
+
     public function render()
     {
 
