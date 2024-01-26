@@ -27,6 +27,7 @@ class Report extends Component
     public $transmittal_status = [];
     protected $health;
     protected $transmittal;
+    protected $enrollment_status_health;
     protected $enrollment_status;
 
     public function render()
@@ -65,8 +66,8 @@ class Report extends Component
                 $query->where('status', $this->status);
             }
         })
-        ->when(!empty($this->enrollment_status), function ($query) {
-            $query->where('enrollment_status', $this->enrollment_status);
+        ->when(!empty($this->enrollment_status_health), function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status_health);
         })
         ->paginate(100);
         return view('livewire.report', [
