@@ -41,7 +41,7 @@
                 <x-select.option label="Paid" value="PAID" />
                 <x-select.option label="Unpaid" value="UNPAID" />
             </x-select>
-            <x-select label="Enrollment Status" multiselect placeholder="All" wire:model="enrollment_status">
+            <x-select label="Enrollment Status" multiselect placeholder="All" wire:model="enrollment_status_health">
                 <x-select.option label="Member" value="member" />
                 <x-select.option label="Dependent" value="dependent" />
             </x-select>
