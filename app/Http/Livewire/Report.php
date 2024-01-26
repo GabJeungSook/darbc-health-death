@@ -71,7 +71,7 @@ class Report extends Component
             $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
-        dd($this->health->toSql());
+        dd($this->health);
         return view('livewire.report', [
             'healths' =>
                 $this->report_get != 1 ? [] : ($this->health == null ? [] : $this->health),
