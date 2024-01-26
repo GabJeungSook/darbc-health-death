@@ -65,7 +65,7 @@ class Report extends Component
                 $query->where('status', $this->status);
             }
         })
-        ->when($this->enrollment_status, function ($query) {
+        ->when(!empty($this->enrollment_status), function ($query) {
             $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
