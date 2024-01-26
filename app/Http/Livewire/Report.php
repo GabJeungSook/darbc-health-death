@@ -70,9 +70,9 @@ class Report extends Component
         })
         ->when(!empty($this->enrollment_status_health), function ($query) {
             if (is_array($this->enrollment_status_health)) {
-                $query->whereIn('status', $this->enrollment_status_health);
+                $query->whereIn('enrollment_status', $this->enrollment_status_health);
             } else {
-                $query->where('status', $this->enrollment_status_health);
+                $query->where('enrollment_status', $this->enrollment_status_health);
             }
         })
         ->paginate(100);
