@@ -27,55 +27,77 @@ class Report extends Component
     public $transmittal_status = [];
     protected $health;
     protected $transmittal;
-    protected $enrollment_status_health = [];
     protected $enrollment_status;
 
 
 
     public function render()
     {
-
         $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
             $query->where(function ($query) {
-                if($this->date_from === $this->date_to)
-                {
+                $query->when($this->date_from === $this->date_to, function ($query) {
                     $query->whereDate('confinement_date_from', $this->date_from);
-                }else{
+                }, function ($query) {
                     $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
-                    ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
-                }
-
+                        ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+                });
             });
         })
         ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
             $query->where(function ($query) {
-                if($this->encoded_date_from === $this->encoded_date_to)
-                {
+                $query->when($this->encoded_date_from === $this->encoded_date_to, function ($query) {
                     $query->whereDate('created_at', $this->encoded_date_from);
-                }else{
-                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
-                        $this->encoded_date_from,
-                        $this->encoded_date_to
-                    ]);
-                }
-
+                }, function ($query) {
+                    $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
+                });
             });
         })
         ->when(!empty($this->status), function ($query) {
-            if (is_array($this->status)) {
-                $query->whereIn('status', $this->status);
-            } else {
-                $query->where('status', $this->status);
-            }
+            $query->whereIn('status', (array)$this->status);
         })
-        ->when(!empty($this->enrollment_status_health), function ($query) {
-            if (is_array($this->enrollment_status_health)) {
-                $query->whereIn('enrollment_status', $this->enrollment_status_health);
-            } else {
-                $query->where('enrollment_status', $this->enrollment_status_health);
-            }
+        ->when(!empty($this->enrollment_status), function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
+
+
+        // $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
+        //     $query->where(function ($query) {
+        //         if($this->date_from === $this->date_to)
+        //         {
+        //             $query->whereDate('confinement_date_from', $this->date_from);
+        //         }else{
+        //             $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+        //             ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+        //         }
+
+        //     });
+        // })
+        // ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
+        //     $query->where(function ($query) {
+        //         if($this->encoded_date_from === $this->encoded_date_to)
+        //         {
+        //             $query->whereDate('created_at', $this->encoded_date_from);
+        //         }else{
+        //             $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+        //                 $this->encoded_date_from,
+        //                 $this->encoded_date_to
+        //             ]);
+        //         }
+
+        //     });
+        // })
+        // ->when(!empty($this->status), function ($query) {
+        //     if (is_array($this->status)) {
+        //         $query->whereIn('status', $this->status);
+        //     } else {
+        //         $query->where('status', $this->status);
+        //     }
+        // })
+        // ->when(!empty($this->enrollment_status), function ($query) {
+        //         $query->where('enrollment_status', $this->enrollment_status);
+        // })
+        // ->paginate(100);
 
         return view('livewire.report', [
             'healths' =>
