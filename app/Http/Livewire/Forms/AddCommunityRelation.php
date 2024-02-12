@@ -176,7 +176,7 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
 
             if ($isMonday && $isOtherDay) {
                 // increment the batch number if it's a Monday and the latest record was created on Sunday
-                $this->reference_number = $latestData->reference_number + 1;
+                $this->reference_number = $latestData->reference_number;
             } else {
                 // otherwise, use the latest batch number
                 $this->reference_number = $latestData->reference_number;
@@ -212,6 +212,8 @@ class AddCommunityRelation extends Component implements Forms\Contracts\HasForms
 
     public function save()
     {
+        // $ref = uniqid(mt_rand(), true);
+        // $ref = str_replace(".", "", $ref);
         $this->validate();
         DB::beginTransaction();
         CommunityRelation::create([
