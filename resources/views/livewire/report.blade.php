@@ -74,7 +74,7 @@
               <x-select.option label="Paid" value="PAID" />
               <x-select.option label="Unpaid" value="UNPAID" />
           </x-select>
-          @if ($report_get != 8 && $report_get != 29)
+          @if ($report_get != 8 || $report_get == 29)
           <x-select label="Enrollment Status" multiselect placeholder="All" wire:model="enrollment_status">
             <x-select.option label="Member" value="member" />
             <x-select.option label="Dependent" value="dependent" />
