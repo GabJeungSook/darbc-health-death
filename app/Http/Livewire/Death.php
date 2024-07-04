@@ -428,7 +428,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                     }
                                     if($get('enrollment_status') == 'dependent' && $get('dependent_type') == 'spouse')
                                     {
-                                        if($get('age') >= 18 && $get('age') <= 86)
+                                        if($get('age') >= 18 && $get('age') <= 200)
                                         {
                                             switch ($state) {
                                                 case '1':
@@ -455,7 +455,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                         }else{
                                             $this->dialog()->error(
                                                 $title = 'Invalid Age!',
-                                                $description = 'Spouse must be 18 - 86 years old.'
+                                                $description = 'Spouse must be 18 years old and above.'
                                             );
                                             $set('birthday', null);
                                             $set('age', null);
@@ -522,7 +522,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                                 default:
                                                 $set('amount', 0);
                                               }
-                                        }elseif($get('age') >= 61 && $get('age') <= 86){
+                                        }elseif($get('age') >= 61 && $get('age') <= 200){
                                             switch ($state) {
                                                 case '1':
                                                     $set('amount', $amount + 100000);
@@ -551,7 +551,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                                         }else{
                                             $this->dialog()->error(
                                                 $title = 'Invalid Age!',
-                                                $description = 'Member must be 18 - 86 years old.'
+                                                $description = 'Member must be 18 years old and above.'
                                             );
                                             $set('birthday', null);
                                             $set('age', null);
