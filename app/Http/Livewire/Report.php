@@ -27,14 +27,13 @@ class Report extends Component
     public $transmittal_status = [];
     protected $health;
     protected $transmittal;
-    public $enrollment_status;
+    public $enrollment_status = [];
 
 
 
     public function updatedReportGet()
     {
-        dd('working');
-        $this->enrollment_status = null;
+        $this->enrollment_status = [];
     }
 
     public function render()
