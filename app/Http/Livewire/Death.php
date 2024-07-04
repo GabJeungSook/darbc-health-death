@@ -150,6 +150,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 'amount' => $record->amount,
             ]))
             ->action(function (deathModel $record, array $data): void {
+                dd($record->member_id);
                 if($record->update_attempts == 2)
                 {
                     $this->dialog()->error(
