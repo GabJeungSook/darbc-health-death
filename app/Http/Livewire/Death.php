@@ -827,7 +827,18 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 })
                 ->label('MEMBER NAME')
-                ->searchable(['first_name', 'last_name']),
+                 ->searchable(['first_name', 'last_name']),
+                // ->searchable(query: function (Builder $query, string $search): Builder {
+                //     $url = 'https://darbcmembership.org/api/member-information/'.$search;
+                //     $response = Http::withOptions(['verify' => false])->get($url);
+                //     $member_data = $response->json();
+
+                //     $collection = collect($member_data['data']);
+                //     $filtered_members = $collection->filter(function ($member) use ($search) {
+                //         return str_contains(strtolower($member['name']), strtolower($search));
+                //     });
+                //     return $filtered_members;
+                // }),
             TextColumn::make('enrollment_status')
             ->sortable()
             ->formatStateUsing(function ($record) {
