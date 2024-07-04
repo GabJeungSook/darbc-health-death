@@ -154,7 +154,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 {
                     $this->dialog()->error(
                         $title = 'PERMISSION REQUIRED',
-                        $description = 'Supervisor Code reqiured after 2 attempts.'
+                        $description = 'Supervisor Code required after 2 attempts.'
                     );
                 }else{
                     DB::beginTransaction();
