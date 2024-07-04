@@ -33,6 +33,7 @@ class Report extends Component
 
     public function updatedReportGet()
     {
+        dd('working');
         $this->enrollment_status = null;
     }
 
