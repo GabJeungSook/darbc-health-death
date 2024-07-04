@@ -193,9 +193,9 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                              }
                         })
-                        ->when(!empty($this->enrollment_status), function ($query) { 
-                            $query->where('enrollment_status', $this->enrollment_status);
-                        })
+                        // ->when(!empty($this->enrollment_status), function ($query) { 
+                        //     $query->where('enrollment_status', $this->enrollment_status);
+                        // })
                         ->paginate(100),
             'encoded' =>
                     $this->report_get != 8
@@ -226,9 +226,9 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                              }
                         })
-                        ->when(!empty($this->enrollment_status), function ($query) { 
-                            $query->where('enrollment_status', $this->enrollment_status);
-                        })
+                        // ->when(!empty($this->enrollment_status), function ($query) { 
+                        //     $query->where('enrollment_status', $this->enrollment_status);
+                        // })
                         ->paginate(100),
             'below' =>
                     $this->report_get != 9
