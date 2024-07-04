@@ -31,7 +31,11 @@ class Report extends Component
 
 
 
-    
+    public function updatedReportGet()
+    {
+        $this->enrollment_status = null;
+    }
+
     public function render()
     {
         // $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
@@ -193,9 +197,9 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                              }
                         })
-                        // ->when(!empty($this->enrollment_status), function ($query) { 
-                        //     $query->where('enrollment_status', $this->enrollment_status);
-                        // })
+                        ->when(!empty($this->enrollment_status), function ($query) { 
+                            $query->where('enrollment_status', $this->enrollment_status);
+                        })
                         ->paginate(100),
             'encoded' =>
                     $this->report_get != 8
