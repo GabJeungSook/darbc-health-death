@@ -62,7 +62,7 @@
                 <x-select.option label="Dependent" value="dependent" />
             </x-select>
           </div>
-      @elseif ($report_get == 7 ||  $report_get == 8 || $report_get == 29)
+      @elseif ($report_get == 7 || $report_get == 29)
       <div class="flex space-x-2">
         <x-datetime-picker label="Encoded Date From" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_from" />
         <x-datetime-picker label="Encoded Date To" placeholder="Select Date" without-time without-timezone wire:model="encoded_date_to" />
