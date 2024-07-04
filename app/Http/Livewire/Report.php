@@ -27,18 +27,11 @@ class Report extends Component
     public $transmittal_status = [];
     protected $health;
     protected $transmittal;
-    protected $enrollment_status;
+    public $enrollment_status;
 
 
 
-    public function updatedEnrollmentStatus()
-    {
-        $this->health->when(!empty($this->enrollment_status), function ($query) { 
-            $query->where('enrollment_status', $this->enrollment_status);
-        })
-        ->paginate(100);
-    }
-
+    
     public function render()
     {
         // $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
