@@ -192,7 +192,11 @@ class Report extends Component
                             } else {
                                 $query->where('status', $this->transmittal_status);
                              }
-                        })->paginate(100),
+                        })
+                        ->when($this->enrollment_status, function ($query) {
+                            $query->where('enrollment_status', $this->enrollment_status);
+                        })
+                        ->paginate(100),
             'encoded' =>
                     $this->report_get != 8
                         ? []
