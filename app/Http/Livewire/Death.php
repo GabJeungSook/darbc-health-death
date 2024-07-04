@@ -947,8 +947,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     public function getDarbcFullName($member_id)
     {
-        dd($member_id);
         $mortuary = Mortuary::where('member_id', $member_id)->first();
+        dd($mortuary);
         return $mortuary->member_name;
     }
 
