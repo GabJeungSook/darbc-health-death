@@ -160,7 +160,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     DB::beginTransaction();
                     $record->enrollment_status = $data['enrollment_status'];
 
-                    if($data['enrollment_status'] == 'dependent' || $data['enrollment_status'] == 'replacement')
+                    if($data['enrollment_status'] == 'dependent')
                     {
                         $record->dependents_first_name = $data['dependents_first_name'];
                         $record->dependents_middle_name = $data['dependents_middle_name'];
@@ -170,7 +170,17 @@ class Death extends Component  implements Tables\Contracts\HasTable
                         $record->first_name = null;
                         $record->middle_name = null;
                         $record->last_name = null;
-                    }else{
+                    }elseif($data['enrollment_status'] == 'replacement')
+                    {
+                        $record->dependents_first_name = $data['dependents_first_name'];
+                        $record->dependents_middle_name = $data['dependents_middle_name'];
+                        $record->dependents_last_name = $data['dependents_last_name'];
+
+                        $record->first_name = null;
+                        $record->middle_name = null;
+                        $record->last_name = null;
+                    }
+                    else{
                         $record->first_name = $data['first_name'];
                         $record->middle_name = $data['middle_name'];
                         $record->last_name = $data['last_name'];
