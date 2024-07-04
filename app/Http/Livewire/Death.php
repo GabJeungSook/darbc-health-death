@@ -951,7 +951,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
         $death = deathModel::where('member_id', $member_id)->first();
         if($mortuary === null)
         {
-            return $death->last_name .', '. $death->first_name .' '. $death->middle_name;
+            return $death->dependents_last_name .', '. $death->dependents_first_name .' '. $death->middle_name;
         }else{
             return $mortuary->member_name;
         }
