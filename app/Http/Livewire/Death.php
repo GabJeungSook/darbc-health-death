@@ -819,6 +819,23 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
     }
 
+    public function searchNames($record, $search)
+    {
+        $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+        $response = Http::withOptions(['verify' => false])->get($url);
+        $member_data = $response->json();
+
+        $collection = collect($member_data['data']);
+
+        $filteredCollection = $collection->filter(function ($item) use ($search) {
+            return str_contains(strtolower($item['user']['first_name']), strtolower($search)) ||
+                   str_contains(strtolower($item['user']['surname']), strtolower($search));
+        });
+
+        
+        return $filteredCollection->toArray();
+    }
+
     protected function getTableColumns(): array
     {
         return [
@@ -837,7 +854,20 @@ class Death extends Component  implements Tables\Contracts\HasTable
                     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 })
                 ->label('MEMBER NAME')
-                 ->searchable(['first_name', 'last_name']),
+                ->searchable()
+                ->getSearchResultsUsing(function ($record, string $search) {
+                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+                    $response = Http::withOptions(['verify' => false])->get($url);
+                    $member_data = $response->json();
+
+                    $collection = collect($member_data['data']);
+
+                    $filteredCollection = $collection->filter(function ($item) use ($search) {
+                        return str_contains(strtolower($item['user']['first_name']), strtolower($search)) || str_contains(strtolower($item['user']['surname']), strtolower($search));
+                    });
+
+                    return $filteredCollection->toArray();
+                }),
                 // ->searchable(query: function (Builder $query, string $search): Builder {
                 //     $url = 'https://darbcmembership.org/api/member-information/'.$search;
                 //     $response = Http::withOptions(['verify' => false])->get($url);
