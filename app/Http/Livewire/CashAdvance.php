@@ -325,9 +325,9 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
             TextColumn::make('amount_approved')
             ->label('AMOUNT APPROVED')
             ->searchable()
-            ->formatStateUsing(function ($record) {
-                return   number_format($record->amount_approved, 2, '.', ',');
-            })
+            // ->formatStateUsing(function ($record) {
+            //     return   number_format($record->amount_approved, 2, '.', ',');
+            // })
             ->sortable(),
             TextColumn::make('date_received')
             ->label('DATE RECEIVED')
