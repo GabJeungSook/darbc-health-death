@@ -832,7 +832,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                    str_contains(strtolower($item['user']['surname']), strtolower($search));
         });
 
-        
+
         return $filteredCollection->toArray();
     }
 
@@ -853,8 +853,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
 
                     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
                 })
-                ->label('MEMBER NAME')
-                ->searchable(),
+                ->label('MEMBER NAME'),
                 // ->getSearchResultsUsing(function ($record, string $search) {
                 //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                 //     $response = Http::withOptions(['verify' => false])->get($url);
@@ -984,7 +983,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
         }else{
             return $mortuary->member_name;
         }
-        
+
     }
 
     public function getDarbcId($member_id)
