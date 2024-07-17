@@ -203,14 +203,14 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
                             $health->number_of_days = $data['number_of_days'];
                             $health->amount = $data['amount'];
 
-                            if($health->status != 'ENCODED' && $health->status != 'TRANSMITTED')
+                            if($health->status != 'ENCODED' && $health->status === 'TRANSMITTED')
                             {
                                 $health->transmittals()->update([
                                     'date_transmitted' => $data['transmittal_date'],
                                 ]);
                             }
 
-                            if($health->status != 'ENCODED' && $health->status != 'IN-HOUSE')
+                            if($health->status != 'ENCODED' && $health->status === 'IN-HOUSE')
                             {
                                 $health->in_houses()->update([
                                     'date_transmitted' => $data['transmittal_date'],
