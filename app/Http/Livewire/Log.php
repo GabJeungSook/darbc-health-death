@@ -270,7 +270,7 @@ class Log extends Component implements Tables\Contracts\HasTable
             TextColumn::make('hospitals.name')
             ->label('HOSPITAL')
             ->formatStateUsing(function ($record) {
-                return strtoupper($record->hospitals->name);
+                return strtoupper($record->hospitals?->name);
             })
             ->searchable()
             ->sortable(),
