@@ -46,7 +46,7 @@
             </td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
             @php
-                $url = 'https://darbcmembership.org/api/member-information/4544';
+                $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 
