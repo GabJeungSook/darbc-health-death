@@ -52,14 +52,14 @@
 
                 if($member_data == null)
                 {
-                    $darbc_id = $item->member_id;
+                    $darbc_id = '';
                     $member_name = '';
                 }else{
                 $collection = collect($member_data['data']);
                 $darbc_id = $collection['darbc_id'];
                 $member_name = strtoupper($collection['user']['surname']) . ', '
                 .strtoupper($collection['user']['first_name']) . ' '
-                .strtoupper($collection['user']['middle_name']);
+                . strtoupper($collection['user']['middle_name']);
                 }
 
 
