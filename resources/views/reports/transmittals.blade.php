@@ -45,20 +45,27 @@
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
-                    if ($member_data != null) {
-                        $collection = collect($member_data['data']);
-                        $darbc_id = $collection['darbc_id'];
-                    }else{
+                    if($member_data == null)
+                    {
                         $darbc_id = '';
+                        $member_name = '';
+                    }else{
+                    $collection = collect($member_data['data']);
+                    $darbc_id = $collection['darbc_id'];
+                    $member_name = strtoupper($collection['user']['surname']) . ', '
+                    .strtoupper($collection['user']['first_name']) . ' '
+                    .strtoupper($collection['user']['middle_name']);
                     }
+                    // $collection = collect($member_data['data']);
+                    // $darbc_id = $collection['darbc_id'];
+
 
 
                 @endphp
                  <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->transmittals->date_transmitted)->format('F d, Y') }}</td>
                  <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
                  <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
-                 <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
-                    strtoupper($collection['user']['first_name']).' '.strtoupper($collection['user']['middle_name']) }}</td>
+                 <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ $member_name }}</td>
                     @if ($item->enrollment_status == 'member')
                     {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
                       strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td> --}}
