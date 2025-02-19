@@ -104,7 +104,7 @@ class Report extends Component
         ->when(!empty($this->enrollment_status), function ($query) {
                 $query->where('enrollment_status', $this->enrollment_status);
         })
-        ->paginate(50);
+        ->paginate(30);
 
         // Fetch additional data from API
         $this->health->getCollection()->transform(function ($item) {
