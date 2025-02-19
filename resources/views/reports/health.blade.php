@@ -64,8 +64,8 @@
 
 
             @endphp --}}
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->darbc_id }}</td>
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->first_name }}
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_darbc_id }}</td>
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_first_name }}
             </td>
             @if ($item->enrollment_status == "member")
              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">---</td>

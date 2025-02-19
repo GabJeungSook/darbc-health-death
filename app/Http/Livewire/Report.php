@@ -113,17 +113,16 @@ class Report extends Component
             $member_data = $response->json();
             if ($member_data != null) {
                 $data = $member_data['data'];
-                $item->darbc_id = $data['darbc_id'] ?? null;
+                $item->member_darbc_id = $data['darbc_id'] ?? null;
                 $item->member_first_name = $data['user']['first_name'] ?? null;
             } else {
-                $item->darbc_id = null;
-                $item->first_name = null;
+                $item->member_darbc_id = null;
+                $item->member_first_name = null;
             }
 
             return $item;
         });
 
-        // dd($this->health->first());
 
         return view('livewire.report', [
             'healths' =>
