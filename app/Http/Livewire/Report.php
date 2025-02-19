@@ -112,7 +112,7 @@ class Report extends Component
             $response = Http::withOptions(['verify' => false])->get($url);
             $member_data = $response->json();
             if ($member_data != null) {
-                $data = $member_data->json();
+                $data = $member_data;
                 $item->darbc_id = $data['darbc_id'] ?? null;
                 $item->first_name = $data['user']['first_name'] ?? null;
             } else {
