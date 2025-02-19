@@ -111,9 +111,9 @@ class Report extends Component
             $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
             $response = Http::withOptions(['verify' => false])->get($url);
             $member_data = $response->json();
-            dd($member_data);
             if ($member_data != null) {
                 $data = $member_data;
+                dd($data);
                 $item->darbc_id = $data['darbc_id'] ?? null;
                 $item->member_first_name = $data['user']['first_name'] ?? null;
             } else {
