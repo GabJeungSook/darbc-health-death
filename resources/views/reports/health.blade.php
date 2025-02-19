@@ -38,15 +38,16 @@
         </tr>
       </thead>
       <tbody class="">
-
-        @dump($healths->first())
-        {{-- @foreach ($healths as $item)
+        @foreach ($healths as $item)
           <tr>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
               {{ $item->batch_number }}
             </td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
+            @if($item === null)
+            @dd($item);
+            @endif
             @php
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
@@ -57,7 +58,7 @@
                 $member_name = strtoupper($collection['user']['surname']) . ', '
                 .strtoupper($collection['user']['first_name']) . ' '
                 . strtoupper($collection['user']['middle_name']);
-                @endphp
+            @endphp
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
@@ -83,7 +84,7 @@
             <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->status }}
             </td>
           </tr>
-        @endforeach --}}
+        @endforeach
       </tbody>
     </table>
     <div class="mt-20 flex justify-around">
