@@ -114,7 +114,7 @@ class Report extends Component
             if ($member_data != null) {
                 $data = $member_data;
                 $item->darbc_id = $data['darbc_id'] ?? null;
-                $item->first_name = $data['user']['first_name'] ?? null;
+                $item->member_first_name = $data['user']['first_name'] ?? null;
             } else {
                 $item->darbc_id = null;
                 $item->first_name = null;
