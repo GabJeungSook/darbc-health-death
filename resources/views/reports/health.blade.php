@@ -38,7 +38,8 @@
         </tr>
       </thead>
       <tbody class="">
-        @dump($healths)
+
+        @dump($healths->first())
         {{-- @foreach ($healths as $item)
           <tr>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
