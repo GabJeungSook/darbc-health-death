@@ -113,7 +113,7 @@ class Report extends Component
             $member_data = $response->json();
             if ($member_data != null) {
                 $data = $member_data;
-                dd($data['darbc_id'].' '.$data['user']['first_name']);
+                dd($data);
                 $item->darbc_id = $data['darbc_id'] ?? null;
                 $item->member_first_name = $data['user']['first_name'] ?? null;
             } else {
