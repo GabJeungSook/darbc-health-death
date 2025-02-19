@@ -2,15 +2,17 @@
 
 namespace App\Http\Livewire;
 
-use Livewire\Component;
-use App\Models\HealthDeath;
+use App\Models\Death;
 use App\Models\Health;
 use App\Models\Member;
-use Livewire\WithPagination;
-use App\Models\Death;
-use App\Models\Report as ReportModel;
-use App\Models\ReportHeader;
+use Livewire\Component;
 use App\Models\Signatory;
+use App\Models\HealthDeath;
+use App\Models\ReportHeader;
+use Livewire\WithPagination;
+use Illuminate\Support\Facades\Http;
+use App\Models\Report as ReportModel;
+
 class Report extends Component
 {
     use WithPagination;
@@ -99,10 +101,26 @@ class Report extends Component
                 $query->where('status', $this->status);
             }
         })
-        ->when(!empty($this->enrollment_status), function ($query) { 
+        ->when(!empty($this->enrollment_status), function ($query) {
                 $query->where('enrollment_status', $this->enrollment_status);
         })
         ->paginate(100);
+
+        // Fetch additional data from API
+        $this->health->getCollection()->transform(function ($item) {
+            $apiResponse = Http::get("https://darbcmembership.org/api/member-information/{$item->member_id}");
+
+            if ($apiResponse->successful()) {
+                $data = $apiResponse->json();
+                $item->darbc_id = $data['darbc_id'] ?? null;
+                $item->first_name = $data['user']['first_name'] ?? null;
+            } else {
+                $item->darbc_id = null;
+                $item->first_name = null;
+            }
+
+            return $item;
+        });
 
         return view('livewire.report', [
             'healths' =>
@@ -133,7 +151,7 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                             }
                         })
-                        ->when(!empty($this->enrollment_status), function ($query) { 
+                        ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
                         ->paginate(100),
@@ -197,7 +215,7 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                              }
                         })
-                        ->when(!empty($this->enrollment_status), function ($query) { 
+                        ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
                         ->paginate(100),
@@ -230,7 +248,7 @@ class Report extends Component
                                 $query->where('status', $this->transmittal_status);
                              }
                         })
-                        // ->when(!empty($this->enrollment_status), function ($query) { 
+                        // ->when(!empty($this->enrollment_status), function ($query) {
                         //     $query->where('enrollment_status', $this->enrollment_status);
                         // })
                         ->paginate(100),
