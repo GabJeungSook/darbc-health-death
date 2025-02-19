@@ -45,8 +45,14 @@
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);
-                    $darbc_id = $collection['darbc_id'];
+                    if ($member_data != null) {
+                        $collection = collect($member_data['data']);
+                        $darbc_id = $collection['darbc_id'];
+                    }else{
+                        $darbc_id = '';
+                    }
+
+
                 @endphp
                  <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->transmittals->date_transmitted)->format('F d, Y') }}</td>
                  <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>

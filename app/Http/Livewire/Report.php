@@ -114,7 +114,10 @@ class Report extends Component
             if ($member_data != null) {
                 $data = $member_data['data'];
                 $item->member_darbc_id = $data['darbc_id'] ?? null;
-                $item->member_first_name = $data['user']['first_name'] ?? null;
+                // $item->member_first_name = $data['user']['first_name'] ?? null;
+                $item->member_first_name = strtoupper($data['user']['surname']) . ', '
+                .strtoupper($data['user']['first_name']) . ' '
+                .strtoupper($data['user']['middle_name']) ?? null;
             } else {
                 $item->member_darbc_id = null;
                 $item->member_first_name = null;
@@ -156,7 +159,7 @@ class Report extends Component
                         ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
-                        ->paginate(100),
+                        ->paginate(30),
         'in_house' =>
                         $this->report_get != 29
                             ? []
@@ -186,7 +189,7 @@ class Report extends Component
                                 } else {
                                     $query->where('status', $this->transmittal_status);
                                 }
-                            })->paginate(100),
+                            })->paginate(30),
             'payments' =>
                     $this->report_get != 7
                         ? []
@@ -220,7 +223,7 @@ class Report extends Component
                         ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
-                        ->paginate(100),
+                        ->paginate(30),
             'encoded' =>
                     $this->report_get != 8
                         ? []
@@ -253,15 +256,15 @@ class Report extends Component
                         // ->when(!empty($this->enrollment_status), function ($query) {
                         //     $query->where('enrollment_status', $this->enrollment_status);
                         // })
-                        ->paginate(100),
+                        ->paginate(30),
             'below' =>
                     $this->report_get != 9
                         ? []
-                        : Health::where('amount', '<', 10000)->paginate(100),
+                        : Health::where('amount', '<', 10000)->paginate(30),
             'above' =>
                     $this->report_get != 28
                         ? []
-                        : Health::where('amount', '>', 10000)->paginate(100),
+                        : Health::where('amount', '>', 10000)->paginate(30),
             'reports' => ReportHeader::where('report_id', 1)->get(),
             'first_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Health - Members & Dependent')->first(),
             'first_signatories' => Signatory::where('report_header_id', 1)->get(),
