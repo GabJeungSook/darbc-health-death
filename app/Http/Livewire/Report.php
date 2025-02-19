@@ -123,6 +123,8 @@ class Report extends Component
             return $item;
         });
 
+        dd($this->health->first());
+
         return view('livewire.report', [
             'healths' =>
                 $this->report_get != 1 ? [] : ($this->health == null ? [] : $this->health),
