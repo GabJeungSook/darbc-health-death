@@ -49,7 +49,7 @@
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
-                dd($member_data);
+                dd($response);
                 $collection = collect($member_data['data']);
                 $darbc_id = $collection['darbc_id'];
                 $member_name = strtoupper($collection['user']['surname']) . ', '
