@@ -108,6 +108,7 @@ class Report extends Component
 
         // Fetch additional data from API
         $this->health->getCollection()->transform(function ($item) {
+            dd($item);
             $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
             $response = Http::withOptions(['verify' => false])->get($url);
             $member_data = $response->json();
@@ -123,7 +124,7 @@ class Report extends Component
             return $item;
         });
 
-        dd($this->health->first());
+        // dd($this->health->first());
 
         return view('livewire.report', [
             'healths' =>
