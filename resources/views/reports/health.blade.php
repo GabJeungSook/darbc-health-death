@@ -45,14 +45,11 @@
               {{ $item->batch_number }}
             </td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
-            @if($item === null)
-            @dd($item);
-            @endif
             @php
                 $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
-
+                dd($member_data);
                 $collection = collect($member_data['data']);
                 $darbc_id = $collection['darbc_id'];
                 $member_name = strtoupper($collection['user']['surname']) . ', '
