@@ -108,10 +108,11 @@ class Report extends Component
 
         // Fetch additional data from API
         $this->health->getCollection()->transform(function ($item) {
-            $apiResponse = Http::get("https://darbcmembership.org/api/member-information/{$item->member_id}");
-            $response = Http::withOptions(['verify' => false])->get($apiResponse);
-            if ($response->successful()) {
-                $data = $apiResponse->json();
+            $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
+            $response = Http::withOptions(['verify' => false])->get($url);
+            $member_data = $response->json();
+            if ($member_data != null) {
+                $data = $member_data->json();
                 $item->darbc_id = $data['darbc_id'] ?? null;
                 $item->first_name = $data['user']['first_name'] ?? null;
             } else {
