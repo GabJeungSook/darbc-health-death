@@ -38,7 +38,8 @@
         </tr>
       </thead>
       <tbody class="">
-        @foreach ($healths as $item)
+        @dump($healths)
+        {{-- @foreach ($healths as $item)
           <tr>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->created_at)->format('F d, Y') }}</td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
@@ -59,10 +60,7 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
             </td>
-            {{-- <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}
-            </td> --}}
             @if ($item->enrollment_status == "member")
-            {{-- <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name ?? '' }}</td> --}}
              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">---</td>
             @else
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->last_name . ' ' . $item->first_name . ' ' . $item->middle_name ?? '' }}</td>
@@ -84,7 +82,7 @@
             <td class="border text-gray-600 uppercase  px-3  py-1">{{ $item->status }}
             </td>
           </tr>
-        @endforeach
+        @endforeach --}}
       </tbody>
     </table>
     <div class="mt-20 flex justify-around">
