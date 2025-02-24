@@ -131,18 +131,24 @@ class Log extends Component implements Tables\Contracts\HasTable
                         $response = Http::withOptions(['verify' => false])->get($url);
                         $member_data = $response->json();
 
-                        $collection = collect($member_data['data']);
-                        $set('member_id', $collection['darbc_id']);
-                            //$member = Member::where('member_id', $state)->first();
-                        if($get('enrollment_status') == 'member')
+                        if( $member_data === null)
                         {
-                            $set('patients_first_name', $collection['user']['first_name']);
-                            $set('patients_middle_name',$collection['user']['middle_name']);
-                            $set('patients_last_name', $collection['user']['surname']);
-                        }elseif($state == 'dependent'){
-                            $set('patients_first_name', null);
-                            $set('patients_middle_name', null);
-                            $set('patients_last_name', null);
+                            // dd($member_data);
+                            return '---';
+                        }else{
+                            $collection = collect($member_data['data']);
+                            $set('member_id', $collection['darbc_id']);
+                                //$member = Member::where('member_id', $state)->first();
+                            if($get('enrollment_status') == 'member')
+                            {
+                                $set('patients_first_name', $collection['user']['first_name']);
+                                $set('patients_middle_name',$collection['user']['middle_name']);
+                                $set('patients_last_name', $collection['user']['surname']);
+                            }elseif($state == 'dependent'){
+                                $set('patients_first_name', null);
+                                $set('patients_middle_name', null);
+                                $set('patients_last_name', null);
+                            }
                         }
                         }),
                     Card::make()

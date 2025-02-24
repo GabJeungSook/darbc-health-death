@@ -209,10 +209,16 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
                 $response = Http::withOptions(['verify' => false])->get($url);
                 $member_data = $response->json();
 
-                $collection = collect($member_data['data']);
 
-                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
-                // return strtoupper($record->claimants_last_name) . ', ' . strtoupper($record->claimants_first_name) . ' ' . strtoupper($record->claimants_middle_name) ;
+                if( $member_data === null)
+                {
+                    // dd($member_data);
+                    return '---';
+                }else{
+                    $collection = collect($member_data['data']);
+
+                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+                }
             })
             ->sortable(),
             // ->searchable(query: function (Builder $query, string $search): Builder {

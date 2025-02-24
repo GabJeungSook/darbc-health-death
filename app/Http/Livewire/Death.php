@@ -825,12 +825,20 @@ class Death extends Component  implements Tables\Contracts\HasTable
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
 
-        $collection = collect($member_data['data']);
+        if( $member_data === null)
+        {
+            // dd($member_data);
+            return '---';
+        }else{
+            $collection = collect($member_data['data']);
 
-        $filteredCollection = $collection->filter(function ($item) use ($search) {
-            return str_contains(strtolower($item['user']['first_name']), strtolower($search)) ||
-                   str_contains(strtolower($item['user']['surname']), strtolower($search));
-        });
+            $filteredCollection = $collection->filter(function ($item) use ($search) {
+                return str_contains(strtolower($item['user']['first_name']), strtolower($search)) ||
+                    str_contains(strtolower($item['user']['surname']), strtolower($search));
+            });
+        }
+
+
 
 
         return $filteredCollection->toArray();

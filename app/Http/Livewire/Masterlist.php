@@ -817,7 +817,8 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
 
                     if( $member_data === null)
                     {
-                        dd($member_data);
+                        // dd($member_data);
+                        return '---';
                     }else{
                         $collection = collect($member_data['data']);
                         return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
