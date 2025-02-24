@@ -24,7 +24,7 @@ class Health extends Model
             return $response->successful() ? collect($response->json()) : collect();
         });
 
-        return $apiData->where('member_id', $this->member_id)->first(); // Filter API data by member_id
+        return $apiData->where('id', $this->member_id)->first(); // Filter API data by member_id
     }
 
     // Define an accessor for darbc_id
