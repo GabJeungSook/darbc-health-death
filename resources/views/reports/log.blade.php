@@ -44,7 +44,7 @@
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $item->enrollment_status == 'member' ? 'M' : 'D' }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_name }}</td>
               @if ($item->enrollment_status == "member")
-            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}
+            <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_name }}
             </td>
             @elseif($item->enrollment_status == "dependent" || $item->enrollment_status == "replacement")
             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->dependents_first_name).' '.
