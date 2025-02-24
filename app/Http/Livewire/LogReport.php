@@ -42,7 +42,7 @@ class LogReport extends Component
         ->when($this->enrollment_status_selected, function ($query) {
             $query->where('enrollment_status', $this->enrollment_status_selected);
         })
-        ->get();
+        ->paginate(100);
         return view('livewire.log-report',[
         'logs' => $this->report_get != 1 ? [] : ($this->logs == null ? [] : $this->logs)]);
     }
