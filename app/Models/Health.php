@@ -25,6 +25,7 @@ class Health extends Model
         });
 
         return $apiData->where('id', $this->member_id)->first(); // Filter API data by member_id
+        dd($apiData);
     }
 
     // Define an accessor for darbc_id
