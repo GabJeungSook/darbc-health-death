@@ -25,7 +25,6 @@ class Health extends Model
         });
 
         return $apiData->where('id', $this->member_id)->first(); // Filter API data by member_id
-        dd($apiData);
     }
 
     // Define an accessor for darbc_id
@@ -33,6 +32,7 @@ class Health extends Model
     {
         $apiMember = $this->fetchMemberData();
         return $apiMember['darbc_id'] ?? null; // Return darbc_id from API if available
+        dd($apiMember);
     }
 
     // Define an accessor for member_name
