@@ -32,14 +32,13 @@ class Health extends Model
     {
         $apiMember = $this->fetchMemberData();
         return $apiMember['darbc_id'] ?? null; // Return darbc_id from API if available
-        dd($apiMember);
     }
 
     // Define an accessor for member_name
     public function getMemberNameAttribute()
     {
         $apiMember = $this->fetchMemberData();
-        return $apiMember['member_name'] ?? 'Unknown'; // Return member_name from API if available
+        return $apiMember['full_name'] ?? 'Unknown'; // Return member_name from API if available
     }
 
 
