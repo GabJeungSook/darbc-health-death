@@ -804,29 +804,24 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             TextColumn::make('created_at')
             ->label('Encoded Date')
             ->date('F d, Y'),
-            TextColumn::make('memberName')
-                // ->formatStateUsing(function ($record) {
-                //     return strtoupper($record->last_name) . ', ' . strtoupper($record->first_name) . ' ' . strtoupper($record->middle_name);
-                // })
-                ->label('MEMBERS NAME')
-                ->searchable(['first_name', 'last_name'])
-                ->formatStateUsing(function ($record) {
-                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = $response->json();
+            TextColumn::make('darbc_id')
+            ->label('DARBC ID'),
+            // TextColumn::make('memberName')
+            //     ->label('MEMBERS NAME')
+            //     ->searchable(['first_name', 'last_name'])
+            //     ->formatStateUsing(function ($record) {
+            //         $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            //         $response = Http::withOptions(['verify' => false])->get($url);
+            //         $member_data = $response->json();
 
-                    if( $member_data === null)
-                    {
-                        // dd($member_data);
-                        return '---';
-                    }else{
-                        $collection = collect($member_data['data']);
-                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                    }
-
-
-
-                }),
+            //         if( $member_data === null)
+            //         {
+            //             return '---';
+            //         }else{
+            //             $collection = collect($member_data['data']);
+            //             return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+            //         }
+            //     }),
             TextColumn::make('enrollment_status')
             ->label('ENROLLMENT STATUS')
             ->searchable()
