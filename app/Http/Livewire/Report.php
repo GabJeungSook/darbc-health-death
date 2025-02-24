@@ -107,24 +107,25 @@ class Report extends Component
         ->paginate(30);
 
         // Fetch additional data from API
-        $this->health->getCollection()->transform(function ($item) {
-            $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
-            $response = Http::withOptions(['verify' => false])->get($url);
-            $member_data = $response->json();
-            if ($member_data != null) {
-                $data = $member_data['data'];
-                $item->member_darbc_id = $data['darbc_id'] ?? null;
-                // $item->member_first_name = $data['user']['first_name'] ?? null;
-                $item->member_first_name = strtoupper($data['user']['surname']) . ', '
-                .strtoupper($data['user']['first_name']) . ' '
-                .strtoupper($data['user']['middle_name']) ?? null;
-            } else {
-                $item->member_darbc_id = null;
-                $item->member_first_name = null;
-            }
 
-            return $item;
-        });
+        // $this->health->getCollection()->transform(function ($item) {
+        //     $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
+        //     $response = Http::withOptions(['verify' => false])->get($url);
+        //     $member_data = $response->json();
+        //     if ($member_data != null) {
+        //         $data = $member_data['data'];
+        //         $item->member_darbc_id = $data['darbc_id'] ?? null;
+        //         // $item->member_first_name = $data['user']['first_name'] ?? null;
+        //         $item->member_first_name = strtoupper($data['user']['surname']) . ', '
+        //         .strtoupper($data['user']['first_name']) . ' '
+        //         .strtoupper($data['user']['middle_name']) ?? null;
+        //     } else {
+        //         $item->member_darbc_id = null;
+        //         $item->member_first_name = null;
+        //     }
+
+        //     return $item;
+        // });
 
 
         return view('livewire.report', [
