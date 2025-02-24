@@ -45,17 +45,11 @@
                 <td class="border text-gray-600  px-3 whitespace-nowrap py-1">R</td>
               @endif
 
-              @php
+              {{-- @php
                   $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                   $response = Http::withOptions(['verify' => false])->get($url);
                   $member_data = $response->json();
 
-
-                //   $collection = collect($member_data['data']);
-                //   $darbc_id = $collection['darbc_id'];
-                //   $member_name = strtoupper($collection['user']['surname']) . ', '
-                //   .strtoupper($collection['user']['first_name']) . ' '
-                //   . strtoupper($collection['user']['middle_name']);
                     if($member_data == null)
                     {
                         $darbc_id = '';
@@ -68,9 +62,9 @@
                     .strtoupper($collection['user']['middle_name']);
                     }
 
-                  @endphp
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $member_name }}</td>
+                  @endphp --}}
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->darbc_id }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->member_name }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->age }}</td>
               @if ($item->enrollment_status == "member")
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">---

@@ -104,7 +104,7 @@ class Report extends Component
         ->when(!empty($this->enrollment_status), function ($query) {
                 $query->where('enrollment_status', $this->enrollment_status);
         })
-        ->paginate(30);
+        ->paginate(100);
 
         // Fetch additional data from API
 
@@ -160,7 +160,7 @@ class Report extends Component
                         ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
-                        ->paginate(30),
+                        ->paginate(100),
         'in_house' =>
                         $this->report_get != 29
                             ? []
@@ -190,7 +190,7 @@ class Report extends Component
                                 } else {
                                     $query->where('status', $this->transmittal_status);
                                 }
-                            })->paginate(30),
+                            })->paginate(100),
             'payments' =>
                     $this->report_get != 7
                         ? []
@@ -224,7 +224,7 @@ class Report extends Component
                         ->when(!empty($this->enrollment_status), function ($query) {
                             $query->where('enrollment_status', $this->enrollment_status);
                         })
-                        ->paginate(30),
+                        ->paginate(100),
             'encoded' =>
                     $this->report_get != 8
                         ? []
@@ -257,15 +257,15 @@ class Report extends Component
                         // ->when(!empty($this->enrollment_status), function ($query) {
                         //     $query->where('enrollment_status', $this->enrollment_status);
                         // })
-                        ->paginate(30),
+                        ->paginate(100),
             'below' =>
                     $this->report_get != 9
                         ? []
-                        : Health::where('amount', '<', 10000)->paginate(30),
+                        : Health::where('amount', '<', 10000)->paginate(100),
             'above' =>
                     $this->report_get != 28
                         ? []
-                        : Health::where('amount', '>', 10000)->paginate(30),
+                        : Health::where('amount', '>', 10000)->paginate(100),
             'reports' => ReportHeader::where('report_id', 1)->get(),
             'first_report' => ReportHeader::where('report_id', 1)->where('report_name', 'Health - Members & Dependent')->first(),
             'first_signatories' => Signatory::where('report_header_id', 1)->get(),
