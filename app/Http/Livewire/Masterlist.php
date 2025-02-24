@@ -804,8 +804,10 @@ class Masterlist extends Component implements Tables\Contracts\HasTable
             TextColumn::make('created_at')
             ->label('Encoded Date')
             ->date('F d, Y'),
-            TextColumn::make('member_name')
+            TextColumn::make('darbc_id')
             ->label('DARBC ID'),
+            TextColumn::make('member_name')
+            ->label('MEMBER NAME'),
             // TextColumn::make('memberName')
             //     ->label('MEMBERS NAME')
             //     ->searchable(['first_name', 'last_name'])

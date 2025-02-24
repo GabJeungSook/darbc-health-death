@@ -235,19 +235,21 @@ class Log extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('member_id')
-            ->label('DARBC ID')
-            ->searchable()
-            ->formatStateUsing(function ($record) {
-                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                $response = Http::withOptions(['verify' => false])->get($url);
-                $member_data = $response->json();
+            TextColumn::make('darbc_id')
+            ->label('DARBC ID'),
+            // TextColumn::make('member_id')
+            // ->label('DARBC ID')
+            // ->searchable()
+            // ->formatStateUsing(function ($record) {
+            //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            //     $response = Http::withOptions(['verify' => false])->get($url);
+            //     $member_data = $response->json();
 
-                $collection = collect($member_data['data']);
+            //     $collection = collect($member_data['data']);
 
-                return $collection['darbc_id'];
-            })
-            ->sortable(),
+            //     return $collection['darbc_id'];
+            // })
+            // ->sortable(),
             TextColumn::make('enrollment_status')
             ->formatStateUsing(function ($record) {
                 return $record->enrollment_status == 'member' ? 'M' : 'D' ;

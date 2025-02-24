@@ -202,25 +202,27 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('memberName')
-            ->label('Member Name')
-            ->formatStateUsing(function ($record) {
-                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                $response = Http::withOptions(['verify' => false])->get($url);
-                $member_data = $response->json();
+            TextColumn::make('member_name')
+             ->label('Member Name'),
+            // TextColumn::make('memberName')
+            // ->label('Member Name')
+            // ->formatStateUsing(function ($record) {
+            //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            //     $response = Http::withOptions(['verify' => false])->get($url);
+            //     $member_data = $response->json();
 
 
-                if( $member_data === null)
-                {
-                    // dd($member_data);
-                    return '---';
-                }else{
-                    $collection = collect($member_data['data']);
+            //     if( $member_data === null)
+            //     {
+            //         // dd($member_data);
+            //         return '---';
+            //     }else{
+            //         $collection = collect($member_data['data']);
 
-                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
-                }
-            })
-            ->sortable(),
+            //         return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+            //     }
+            // })
+            // ->sortable(),
             // ->searchable(query: function (Builder $query, string $search): Builder {
             //     $url = 'https://darbcmembership.org/api/member-darbc-names';
             //     $response = Http::withOptions(['verify' => false])->get($url);

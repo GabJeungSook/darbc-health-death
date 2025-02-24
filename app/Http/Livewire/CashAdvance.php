@@ -281,19 +281,21 @@ class CashAdvance extends Component implements Tables\Contracts\HasTable
     protected function getTableColumns(): array
     {
         return [
-            TextColumn::make('member_id')
-            ->label('MEMBER NAME')
-            ->formatStateUsing(function ($record) {
-                $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                $response = Http::withOptions(['verify' => false])->get($url);
-                $member_data = $response->json();
+            TextColumn::make('member_name')
+            ->label('MEMBER NAME'),
+            // TextColumn::make('member_id')
+            // ->label('MEMBER NAME')
+            // ->formatStateUsing(function ($record) {
+            //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            //     $response = Http::withOptions(['verify' => false])->get($url);
+            //     $member_data = $response->json();
 
-                $collection = collect($member_data['data']);
+            //     $collection = collect($member_data['data']);
 
-                return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
-            })
-            ->searchable(['first_name', 'last_name'])
-            ->sortable(),
+            //     return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']);
+            // })
+            // ->searchable(['first_name', 'last_name'])
+            // ->sortable(),
             TextColumn::make('first_name')
             ->label('DEPENDENTS NAME')
             ->formatStateUsing(function ($record) {

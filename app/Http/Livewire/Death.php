@@ -851,17 +851,21 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 ->label('DATE')
                 ->date('F d, Y')
                 ->searchable(),
-            TextColumn::make('memberName')
-                ->formatStateUsing(function ($record) {
-                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = $response->json();
-
-                    $collection = collect($member_data['data']);
-
-                    return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                })
+            TextColumn::make('darbc_id')
+                ->label('DARBC ID'),
+            TextColumn::make('member_name')
                 ->label('MEMBER NAME'),
+            // TextColumn::make('memberName')
+            //     ->formatStateUsing(function ($record) {
+            //         $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+            //         $response = Http::withOptions(['verify' => false])->get($url);
+            //         $member_data = $response->json();
+
+            //         $collection = collect($member_data['data']);
+
+            //         return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+            //     })
+            //     ->label('MEMBER NAME'),
                 // ->getSearchResultsUsing(function ($record, string $search) {
                 //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                 //     $response = Http::withOptions(['verify' => false])->get($url);
