@@ -228,8 +228,16 @@ class Mortuary extends Component implements Forms\Contracts\HasForms
         $url = 'https://darbcmembership.org/api/member-darbc-names';
         $response = Http::withOptions(['verify' => false])->get($url);
         $member_data = $response->json();
+        //just get the full_name and id
+        $member_data = collect($member_data)->map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'full_name' => $item['full_name'],
+            ];
+        });
 
         $this->member_full_names = collect($member_data);
+        dd($this->member_full_names);
 
 
         // $url1 = 'https://darbc.org/api/member-darbc-ids?status=1';
