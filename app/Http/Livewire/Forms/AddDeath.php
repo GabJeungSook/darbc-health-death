@@ -869,6 +869,12 @@ class AddDeath extends Component implements Forms\Contracts\HasForms
         $url1 = 'https://darbcmembership.org/api/member-darbc-names';
         $response1 = Http::withOptions(['verify' => false])->get($url1);
         $member_data1 = $response1->json();
+        $member_data1 = collect($member_data1)->map(function ($item) {
+            return [
+                'id' => $item['id'],
+                'full_name' => $item['full_name'],
+            ];
+        });
 
         $this->member_full_names = collect($member_data1);
 
