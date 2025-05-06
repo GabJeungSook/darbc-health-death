@@ -110,7 +110,7 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
 
     public function chunkSize(): int
     {
-        return 300; // adjust based on your memory capacity
+        return 100; // adjust based on your memory capacity
     }
 
 }
