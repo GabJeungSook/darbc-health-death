@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Health;
+use Illuminate\Bus\Queueable;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -11,9 +12,11 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\Exportable;
 
 class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize, ShouldQueue
 {
+    use Exportable, Queueable;
     protected $encoded_date_from, $encoded_date_to, $date_from, $date_to, $status, $enrollment_status;
         /**
     * @return \Illuminate\Support\Collection
