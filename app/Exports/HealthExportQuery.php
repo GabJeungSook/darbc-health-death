@@ -9,9 +9,10 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-
-class HealthExportQuery implements FromCollection, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize
+class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize, ShouldQueue
 {
     protected $encoded_date_from, $encoded_date_to, $date_from, $date_to, $status, $enrollment_status;
         /**
@@ -28,7 +29,7 @@ class HealthExportQuery implements FromCollection, WithHeadings, WithMapping, Wi
         $this->enrollment_status = $enrollment_status;
     }
 
-    public function collection(): Collection
+    public function query()
     {
         return Health::when($this->date_from && $this->date_to, function ($query) {
                 if ($this->date_from === $this->date_to) {

@@ -10,6 +10,7 @@ use App\Models\Signatory;
 use App\Models\HealthDeath;
 use App\Models\ReportHeader;
 use Livewire\WithPagination;
+use App\Exports\HealthExportQuery;
 use Illuminate\Support\Facades\Http;
 use App\Models\Report as ReportModel;
 
@@ -294,9 +295,11 @@ class Report extends Component
     {
         switch ($this->report_get) {
             case 1:
-                return \Excel::download(
-                    new \App\Exports\HealthExportQuery($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
-                    'health-MembersAndDependent.xlsx');
+                (new HealthExportQuery($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status))
+                ->queue('health-MembersAndDependent.xlsx');
+                // return \Excel::download(
+                //     new \App\Exports\HealthExportQuery($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
+                //     'health-MembersAndDependent.xlsx');
 
                 break;
 
