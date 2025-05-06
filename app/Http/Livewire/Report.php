@@ -295,7 +295,7 @@ class Report extends Component
         switch ($this->report_get) {
             case 1:
                 return \Excel::download(
-                    new \App\Exports\HealthExport($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
+                    new \App\Exports\HealthExportQuery($this->encoded_date_from, $this->encoded_date_to, $this->date_from, $this->date_to, $this->status, $this->enrollment_status),
                     'health-MembersAndDependent.xlsx');
 
                 break;
