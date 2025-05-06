@@ -37,9 +37,6 @@ class TransmittalExport implements FromView
                       ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
             });
         })
-        // ->when($this->encoded_date, function ($query) {
-        //     $query->whereDate('created_at', $this->encoded_date);
-        // })
         ->when(!empty($this->transmittal_status), function ($query) {
             if (is_array($this->transmittal_status)) {
                 $query->whereIn('status', $this->transmittal_status);
@@ -51,6 +48,17 @@ class TransmittalExport implements FromView
             $query->where('enrollment_status', $this->enrollment_status);
         })
         ->get();
+
+        dd(
+            $this->transmitted_date,
+            $this->transmittal_date_from,
+            $this->transmittal_date_to,
+            $this->transmittal_status,
+            $this->enrollment_status,
+            Health::count(),
+            Health::has('transmittals')->count(),
+            $this->transmitted->count()
+        );
     }
 
     public function view(): View
