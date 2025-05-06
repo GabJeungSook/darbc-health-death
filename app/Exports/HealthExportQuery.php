@@ -58,7 +58,7 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
             $query->where('enrollment_status', $this->enrollment_status)
         )
         ->get();
-        return $query;
+
 
         dd(
             $this->encoded_date_from,
@@ -70,6 +70,8 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
             Health::count(),
             $query->count()
         );
+
+        return $query;
     }
 
     public function headings(): array
