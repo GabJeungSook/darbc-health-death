@@ -14,9 +14,9 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize, ShouldQueue
+class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize
 {
-    use Exportable, Queueable;
+    // use Exportable, Queueable;
     protected $encoded_date_from, $encoded_date_to, $date_from, $date_to, $status, $enrollment_status;
         /**
     * @return \Illuminate\Support\Collection
@@ -102,7 +102,7 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
 
     public function chunkSize(): int
     {
-        return 1000; // adjust based on your memory capacity
+        return 100; // adjust based on your memory capacity
     }
 
 }
