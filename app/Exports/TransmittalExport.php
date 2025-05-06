@@ -29,9 +29,16 @@ class TransmittalExport implements FromView
         $this->transmittal_status = $transmittal_status;
         $this->enrollment_status = $enrollment_status;
 
-        $this->transmitted = Health::whereHas('transmittals', function ($query) {
+        $this->transmitted = Health::when($this->transmitted_date, function ($query) {
+            $query->whereHas('transmittals', function ($query) {
                 $query->whereDate('date_transmitted', $this->transmitted_date);
-        })->where('status', 'TRANSMITTED')->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
+            });
+        }, function ($query) {
+            // If no specific date is provided, just make sure transmittals exist
+            $query->whereHas('transmittals');
+        })
+        ->where('status', 'TRANSMITTED')
+        ->when($this->transmittal_date_from && $this->transmittal_date_to, function ($query) {
             $query->where(function ($query) {
                 $query->whereBetween('confinement_date_from', [$this->transmittal_date_from, $this->transmittal_date_to])
                       ->whereBetween('confinement_date_to', [$this->transmittal_date_from, $this->transmittal_date_to]);
@@ -48,17 +55,6 @@ class TransmittalExport implements FromView
             $query->where('enrollment_status', $this->enrollment_status);
         })
         ->get();
-
-        dd(
-            $this->transmitted_date,
-            $this->transmittal_date_from,
-            $this->transmittal_date_to,
-            $this->transmittal_status,
-            $this->enrollment_status,
-            Health::count(),
-            Health::has('transmittals')->count(),
-            $this->transmitted->count()
-        );
     }
 
     public function view(): View
