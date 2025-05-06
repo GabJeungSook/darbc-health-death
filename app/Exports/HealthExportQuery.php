@@ -83,23 +83,29 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
 
     public function map($item): array
     {
-        return [
-            \Carbon\Carbon::parse($item->created_at)->format('F d, Y'),
-            $item->batch_number,
-            strtoupper($item->enrollment_status),
-            $item->darbc_id,
-            $item->member_name,
-            $item->enrollment_status === "member"
-                ? "---"
-                : trim("{$item->last_name} {$item->first_name} {$item->middle_name}"),
-            $item->age,
-            \Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y'),
-            \Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y'),
-            optional($item->hospitals)->name,
-            $item->number_of_days,
-            $item->amount,
-            $item->status,
-        ];
+        try {
+            return [
+                \Carbon\Carbon::parse($item->created_at)->format('F d, Y'),
+                $item->batch_number,
+                strtoupper($item->enrollment_status),
+                $item->darbc_id,
+                $item->member_name,
+                $item->enrollment_status === "member"
+                    ? "---"
+                    : trim("{$item->last_name} {$item->first_name} {$item->middle_name}"),
+                $item->age,
+                \Carbon\Carbon::parse($item->confinement_date_from)->format('F d, Y'),
+                \Carbon\Carbon::parse($item->confinement_date_to)->format('F d, Y'),
+                optional($item->hospitals)->name,
+                $item->number_of_days,
+                $item->amount,
+                $item->status,
+            ];
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+            // \Log::error('Mapping error: ' . );
+            return [];
+        }
     }
 
     public function chunkSize(): int
