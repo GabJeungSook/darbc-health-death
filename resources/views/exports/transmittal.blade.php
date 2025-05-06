@@ -28,19 +28,18 @@
         <tbody class="">
           @foreach ($transmittals as $item)
             <tr>
-                @php
+                {{-- @php
                     $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                     $response = Http::withOptions(['verify' => false])->get($url);
                     $member_data = $response->json();
 
                     $collection = collect($member_data['data']);
                     $darbc_id = $collection['darbc_id'];
-                @endphp
+                @endphp --}}
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ \Carbon\Carbon::parse($item->transmittals->date_transmitted)->format('F d, Y') }}</td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->darbc_id }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->enrollment_status) }}</td>
-              <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['surname']).', '.
-              strtoupper($collection['user']['first_name']).' '.strtoupper($collection['user']['middle_name']) }}</td>
+              <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ $item->member_name }}</td>
               @if ($item->enrollment_status == 'member')
               {{-- <td class="border text-gray-600 whitespace-nowrap  px-3  py-1">{{ strtoupper($collection['user']['first_name']).' '.
                 strtoupper($collection['user']['middle_name']).' '.strtoupper($collection['user']['surname']) }}</td> --}}
