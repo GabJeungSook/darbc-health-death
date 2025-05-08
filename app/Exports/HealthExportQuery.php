@@ -34,30 +34,47 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
 
     public function query()
     {
-        $query =  Health::when($this->date_from && $this->date_to, function ($query) {
+        $query = Health::select([
+            'created_at',
+            'batch_number',
+            'enrollment_status',
+            'darbc_id',
+            'member_name',
+            'last_name',
+            'first_name',
+            'middle_name',
+            'age',
+            'confinement_date_from',
+            'confinement_date_to',
+            'hospital_id',
+            'number_of_days',
+            'amount',
+            'status',
+        ])
+        ->with(['hospitals:id,name']) // Eager load only necessary fields
+        ->when($this->date_from && $this->date_to, function ($query) {
             if ($this->date_from === $this->date_to) {
-                $query->where('confinement_date_from', $this->date_from);
+            $query->where('confinement_date_from', $this->date_from);
             } else {
-                $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
-                      ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+            $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+                  ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
             }
         })
         ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
             if ($this->encoded_date_from === $this->encoded_date_to) {
-                $query->whereDate('created_at', $this->encoded_date_from);
+            $query->whereDate('created_at', $this->encoded_date_from);
             } else {
-                $query->whereBetween(DB::raw('DATE(created_at)'), [$this->encoded_date_from, $this->encoded_date_to]);
+            $query->whereBetween('created_at', [$this->encoded_date_from, $this->encoded_date_to]);
             }
         })
         ->when(!empty($this->status), fn ($query) =>
             is_array($this->status)
-                ? $query->whereIn('status', $this->status)
-                : $query->where('status', $this->status)
+            ? $query->whereIn('status', $this->status)
+            : $query->where('status', $this->status)
         )
         ->when($this->enrollment_status, fn ($query) =>
             $query->where('enrollment_status', $this->enrollment_status)
-        )
-        ;
+        );
 
         return $query;
     }
