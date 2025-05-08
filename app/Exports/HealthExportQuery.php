@@ -14,7 +14,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading, ShouldAutoSize
+class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChunkReading
 {
      use Exportable;
     protected $encoded_date_from, $encoded_date_to, $date_from, $date_to, $status, $enrollment_status;
