@@ -56,8 +56,7 @@ class HealthExportQuery implements FromQuery, WithHeadings, WithMapping, WithChu
         )
         ->when($this->enrollment_status, fn ($query) =>
             $query->where('enrollment_status', $this->enrollment_status)
-        )
-        ;
+        );
 
         return $query;
     }
