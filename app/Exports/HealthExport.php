@@ -28,28 +28,41 @@ class HealthExport implements FromView
         $this->enrollment_status = $enrollment_status;
 
         $this->health = Health::when($this->date_from && $this->date_to, function ($query) {
-            if ($this->date_from === $this->date_to) {
-                $query->where('confinement_date_from', $this->date_from);
-            } else {
-                $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
-                      ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
-            }
+            $query->where(function ($query) {
+                if($this->date_from === $this->date_to)
+                {
+                    $query->where('confinement_date_from', $this->date_from);
+                }else{
+                    $query->whereBetween('confinement_date_from', [$this->date_from, $this->date_to])
+                    ->whereBetween('confinement_date_to', [$this->date_from, $this->date_to]);
+                }
+
+            });
         })
         ->when($this->encoded_date_from && $this->encoded_date_to, function ($query) {
-            if ($this->encoded_date_from === $this->encoded_date_to) {
-                $query->whereDate('created_at', $this->encoded_date_from);
+            $query->where(function ($query) {
+                if($this->encoded_date_from === $this->encoded_date_to)
+                {
+                    $query->whereDate('created_at', $this->encoded_date_from);
+                }else{
+                    $query->whereRaw("DATE(created_at) BETWEEN ? AND ?", [
+                        $this->encoded_date_from,
+                        $this->encoded_date_to
+                    ]);
+                }
+
+            });
+        })
+        ->when(!empty($this->status), function ($query) {
+            if (is_array($this->status)) {
+                $query->whereIn('status', $this->status);
             } else {
-                $query->whereBetween(DB::raw('DATE(created_at)'), [$this->encoded_date_from, $this->encoded_date_to]);
+                $query->where('status', $this->status);
             }
         })
-        ->when(!empty($this->status), fn ($query) =>
-            is_array($this->status)
-                ? $query->whereIn('status', $this->status)
-                : $query->where('status', $this->status)
-        )
-        ->when($this->enrollment_status, fn ($query) =>
-            $query->where('enrollment_status', $this->enrollment_status)
-        )
+        ->when($this->enrollment_status, function ($query) {
+            $query->where('enrollment_status', $this->enrollment_status);
+        })
         ->get();
     }
 
