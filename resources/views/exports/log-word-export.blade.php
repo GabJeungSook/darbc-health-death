@@ -59,7 +59,7 @@ return $words;
                 $tens = array("", "", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY");
 
                 if ($num < 20) {
-                    return $ones[$num];
+                    return $ones[$num] ?? '';
                 } elseif ($num < 100) {
                     return $tens[floor($num/10)] . " " . $ones[$num%10];
                 } elseif ($num < 1000) {
@@ -78,8 +78,7 @@ $ones = array("", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT"
 $tens = array("", "", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY");
 
 if ($num < 20) {
-    dd($num, $ones[$num]);
-    return $ones[$num];
+    return $ones[$num] ?? 'test';
 } elseif ($num < 100) {
     return $tens[floor($num/10)] . " " . $ones[$num%10];
 } else {
