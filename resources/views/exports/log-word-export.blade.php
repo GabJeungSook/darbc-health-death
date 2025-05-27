@@ -59,7 +59,7 @@ return $words;
                 $tens = array("", "", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY");
 
                 if ($num < 20) {
-                    return $ones[$num] ?? '';
+                    return $ones[$num];
                 } elseif ($num < 100) {
                     return $tens[floor($num/10)] . " " . $ones[$num%10];
                 } elseif ($num < 1000) {
