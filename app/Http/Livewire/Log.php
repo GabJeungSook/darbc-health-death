@@ -84,11 +84,11 @@ class Log extends Component implements Tables\Contracts\HasTable
                     'date_received' => $record->date_received,
                 ]))
                 ->action(function (LogModel $record, array $data): void {
-                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = $response->json();
+                    // $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+                    // $response = Http::withOptions(['verify' => false])->get($url);
+                    // $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);
+                    // $collection = collect($member_data['data']);
 
                     $record->member_id = $data['full_name'];
                     $record->enrollment_status = $data['enrollment_status'];
@@ -103,9 +103,9 @@ class Log extends Component implements Tables\Contracts\HasTable
                         $record->dependents_middle_name = $data['patients_middle_name'];
                         $record->dependents_last_name = $data['patients_last_name'];
                     }else{
-                        $record->first_name = $data['patients_first_name'];
-                        $record->middle_name = $data['patients_middle_name'];
-                        $record->last_name = $data['patients_last_name'];
+                        // $record->first_name = $data['patients_first_name'];
+                        // $record->middle_name = $data['patients_middle_name'];
+                        // $record->last_name = $data['patients_last_name'];
                         $record->dependents_first_name = $data['dependents_first_name'];
                         $record->dependents_middle_name = $data['dependents_middle_name'];
                         $record->dependents_last_name = $data['dependents_last_name'];
