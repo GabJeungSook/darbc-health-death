@@ -36,8 +36,8 @@
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}</td>
              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->account }}</td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_requested, 2, '.', ',') }}</td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_approved, 2, '.', ',') }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_requested ?? 0, 2, '.', ',') }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_approved ?? 0, 2, '.', ',') }}</td>
              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ \Carbon\Carbon::parse($item->date_received)->format('F d, Y') }}</td>
              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->status }}</td>
             </tr>
