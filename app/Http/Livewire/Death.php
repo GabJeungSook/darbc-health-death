@@ -911,7 +911,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
             ->label('ENROLLMENT STATUS')
             ->searchable(['enrollment_status']),
             TextColumn::make('dependent_name')
-                ->label('CLAIMANT\'S NAME')
+                ->label('CLAIMANT\'S NAME'),
                 // ->formatStateUsing(function ($record) {
                 //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
                 //     $response = Http::withOptions(['verify' => false])->get($url);
@@ -925,7 +925,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 //         return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
                 //     }
                 // })
-                ->searchable(),
+                // ->searchable(),
                 BadgeColumn::make('has_diamond_package')
                 ->label('DIAMOND PACKAGE')
                 ->enum([
