@@ -19,7 +19,7 @@
         <tbody class="">
           @foreach ($cashAdvance as $item)
             <tr>
-              @php
+              {{-- @php
                   $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
                   $response = Http::withOptions(['verify' => false])->get($url);
                   $member_data = $response->json();
@@ -29,10 +29,10 @@
                   $member_name = strtoupper($collection['user']['surname']) . ' '
                   .strtoupper($collection['user']['first_name']) . ' '
                   . strtoupper($collection['user']['middle_name']);
-                  @endphp
+                  @endphp --}}
                <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->enrollment_status }}</td>
-               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $darbc_id }}</td>
-              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $member_name }}</td>
+               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->darbc_id }}</td>
+              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  $item->member_name }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}</td>
              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->account }}</td>
