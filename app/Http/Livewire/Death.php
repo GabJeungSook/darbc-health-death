@@ -925,30 +925,7 @@ class Death extends Component  implements Tables\Contracts\HasTable
                 //         return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
                 //     }
                 // })
-                ->searchable(query: function (Builder $query, string $search): Builder {
-                    // Fetch API members (cached to minimize API calls)
-                    $url = 'https://darbcmembership.org/api/member-darbc-names';
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = collect($response->json());
-
-                    // Filter members whose name matches search term
-                    $filteredIds = $member_data
-                        ->filter(function ($item) use ($search) {
-                            return str_contains(strtolower($item['full_name']), strtolower($search));
-                        })
-                        ->pluck('id') // get the IDs of matching members
-                        ->toArray();
-
-                    // If there are matches, filter your table's results by member_id
-                    if (!empty($filteredIds)) {
-                        $query->whereIn('member_id', $filteredIds);
-                    } else {
-                        // Make sure it returns nothing if no match
-                        $query->whereRaw('0 = 1');
-                    }
-
-                    return $query;
-                }),,
+                ->searchable(),
                 BadgeColumn::make('has_diamond_package')
                 ->label('DIAMOND PACKAGE')
                 ->enum([
