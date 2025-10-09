@@ -854,7 +854,8 @@ class Death extends Component  implements Tables\Contracts\HasTable
             TextColumn::make('darbc_id')
                 ->label('DARBC ID'),
             TextColumn::make('member_name')
-                ->label('MEMBER NAME'),
+                ->label('MEMBER NAME')
+                ->searchable(),
             // TextColumn::make('memberName')
             //     ->formatStateUsing(function ($record) {
             //         $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
@@ -886,22 +887,22 @@ class Death extends Component  implements Tables\Contracts\HasTable
             })
             ->label('ENROLLMENT STATUS')
             ->searchable(['enrollment_status']),
-            TextColumn::make('dependents_name')
+            TextColumn::make('dependent_name')
                 ->label('CLAIMANT\'S NAME')
-                ->formatStateUsing(function ($record) {
-                    $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
-                    $response = Http::withOptions(['verify' => false])->get($url);
-                    $member_data = $response->json();
+                // ->formatStateUsing(function ($record) {
+                //     $url = 'https://darbcmembership.org/api/member-information/'.$record->member_id;
+                //     $response = Http::withOptions(['verify' => false])->get($url);
+                //     $member_data = $response->json();
 
-                    $collection = collect($member_data['data']);
-                    if($record->enrollment_status == 'member')
-                    {
-                        return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
-                    }else{
-                        return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
-                    }
-                })
-                ->searchable(['first_name', 'last_name']),
+                //     $collection = collect($member_data['data']);
+                //     if($record->enrollment_status == 'member')
+                //     {
+                //         return strtoupper($collection['user']['surname']) . ', ' . strtoupper($collection['user']['first_name']) . ' ' . strtoupper($collection['user']['middle_name']) ;
+                //     }else{
+                //         return strtoupper($record->dependents_last_name) . ', ' . strtoupper($record->dependents_first_name) . ' ' . strtoupper($record->dependents_middle_name) ;
+                //     }
+                // })
+                ->searchable(),
                 BadgeColumn::make('has_diamond_package')
                 ->label('DIAMOND PACKAGE')
                 ->enum([

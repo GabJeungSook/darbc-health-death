@@ -42,6 +42,12 @@ class Death extends Model
         return $apiMember['full_name'] ?? 'Unknown'; // Return member_name from API if available
     }
 
+     public function getDependentNameAttribute()
+    {
+        $apiMember = $this->fetchMemberData();
+        return $apiMember['full_name'] ?? 'Unknown'; // Return member_name from API if available
+    }
+
     public function death_attachments()
     {
         return $this->morphMany(DeathAttachment::class, 'documentable');
