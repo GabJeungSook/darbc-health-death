@@ -203,7 +203,8 @@ class Mortuary extends Component implements Tables\Contracts\HasTable
     {
         return [
             TextColumn::make('member_name')
-             ->label('Member Name'),
+             ->label('Member Name')
+             ->searchable(),
             // TextColumn::make('memberName')
             // ->label('Member Name')
             // ->formatStateUsing(function ($record) {
