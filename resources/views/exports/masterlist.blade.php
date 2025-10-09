@@ -18,6 +18,10 @@
         </thead>
         <tbody class="">
           @foreach ($cashAdvance as $item)
+            @php
+                $requested = trim($item->amount_requested ?? '');
+                $approved = trim($item->amount_approved ?? '');
+            @endphp
             <tr>
               {{-- @php
                   $url = 'https://darbcmembership.org/api/member-information/'.$item->member_id;
@@ -36,8 +40,16 @@
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ strtoupper($item->last_name).', '.strtoupper($item->first_name).' '.strtoupper($item->middle_name) }}</td>
               <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->purpose }}</td>
              <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{ $item->account }}</td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_requested ?? 0, 2, '.', ',') }}</td>
-             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">{{  number_format($item->amount_approved ?? 0, 2, '.', ',') }}</td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
+                 {{ $requested !== '' && is_numeric(str_replace(' ', '', $requested))
+                    ? number_format((float) str_replace(' ', '', $requested), 2, '.', ',')
+                    : '—' }}
+            </td>
+             <td class="border text-gray-600  px-3 whitespace-nowrap py-1">
+                {{ $approved !== '' && is_numeric(str_replace(' ', '', $approved))
+                    ? number_format((float) str_replace(' ', '', $approved), 2, '.', ',')
+                    : '—' }}
+            </td>
              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ \Carbon\Carbon::parse($item->date_received)->format('F d, Y') }}</td>
              <td class="border text-gray-600  px-3 py-1 whitespace-pre-wrap">{{ $item->status }}</td>
             </tr>
